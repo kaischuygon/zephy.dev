@@ -1,0 +1,21 @@
+---
+const navlinks = [
+    '/',
+    'about',
+    'contact',
+    'work',
+    'blog'
+]
+---
+
+<nav class="flex gap-2 items-center border-b border-slate-400 p-2">
+    {navlinks.map(link => <a href={`/${link}`} class="block m-1">{link}</a>)}
+</nav>
+
+<style>
+    @import "tailwindcss";
+    
+    a {
+        @apply hover:text-teal-400 font-semibold;
+    }
+</style>
