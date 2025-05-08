@@ -1,3 +1,3 @@
-# [💨 zephy.dev](https://zephy.dev)
+# (💨 zephy.dev)[https://zephy.dev]
 
-My personal site, blog and portfolio. Built using [astro](https://astro.build) and [tailwindcss](https://tailwindcss.com).
+My personal site, blog and portfolio. Built using (astro)[https://astro.build] and (tailwindcss)[https://tailwindcss.com].
