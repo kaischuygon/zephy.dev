@@ -1,21 +1,74 @@
 ---
-const navlinks = [
-    '/',
-    'about',
-    'contact',
-    'work',
-    'blog'
-]
+import Logo from "../assets/favicon.svg";
+import { Icon } from "astro-icon/components";
+const navlinks = {
+    about: "/about",
+    portfolio: "/portfolio",
+    blog: "/blog",
+    contact: "/contact",
+    break: "break",
+    "📼 kino.wtf": "https://kino.wtf",
+    "🍿 letterboxd": "https://letterboxd.com/kschuyler/",
+};
+
+const socialLinks = {
+    github: {
+        href: "https://github.com/kaischuygon",
+        icon: "bx:bxl-github",
+    },
+    twitter: {
+        href: "https://twitter.com/kaischuyler",
+        icon: "bx:bxl-twitter",
+    },
+    linkedin: {
+        href: "https://www.linkedin.com/in/kaischuyler/",
+        icon: "bx:bxl-linkedin",
+    },
+    bluesky: {
+        href: "https://bsky.app/profile/zephy.dev",
+        icon: "bsky",
+    },
+};
 ---
 
-<nav class="flex gap-2 items-center border-b border-slate-400 p-2">
-    {navlinks.map(link => <a href={`/${link}`} class="block m-1">{link}</a>)}
+<nav class="flex flex-col items-end gap-2 text-right">
+    <div class="flex flex-wrap gap-2 text-2xl">
+        {
+            Object.entries(socialLinks).map(([name, { href, icon }]) => (
+                <a
+                    href={href}
+                    class="flex items-center gap-1"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <Icon name={icon} />
+                </a>
+            ))
+        }
+    </div>
+    <a href="/" class="m-1 block text-8xl">
+        <Icon name="wind" />
+    </a>
+    <h1 class="text-right text-xl font-bold"><a href="/">zephy.dev</a></h1>
+    <h3>Kai's portfolio and blog</h3>
+    <hr class="my-2 w-full border-t border-slate-300 dark:border-slate-700" />
+    {
+        Object.entries(navlinks).map(([title, link]) => (
+            link === "break" ? (
+                <hr class="my-2 w-full border-t border-slate-300 dark:border-slate-700" />
+            ) : (
+            <a href={`${link}`} target={link.substring(0, 4) === "http" ? "_blank" : ""} class="block font-mono">
+                {title}
+            </a>
+            )
+        ))
+    }
 </nav>
 
 <style>
     @import "tailwindcss";
-    
-    a {
-        @apply hover:text-teal-400 font-semibold;
+
+    nav a {
+        @apply font-semibold;
     }
 </style>
