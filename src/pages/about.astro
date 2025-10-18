@@ -1,9 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import "../styles/global.css";
 ---
 
-<Layout>
+<Layout title="About">
     <div class="prose dark:prose-invert">
         <section id="about-me">
             <h2>About Me</h2>
@@ -11,25 +10,15 @@ import "../styles/global.css";
             <p>
                 I'm Kai Schuyler Gonzalez, an experienced software developer and
                 designer dedicated to creating engaging and user-friendly
-                software. With a strong foundation in front-end, full-stack and
-                mobile development, I bring a comprehensive approach to every
-                project I work on.
+                software. I specialize in front-end, full-stack, and mobile
+                development.
             </p>
             <p>
                 I am originally from San Jose, Costa Rica and have lived in
                 Colorado since 2010. I have a B.S. in Computer Science from the <a
                     href="https://www.cu.edu/">University of Colorado Boulder</a
-                >. During my time there, I minored in <a
-                    href="https://www.colorado.edu/engineering/academics/degree-programs/creative-technology-design"
-                    >Creative Technology and Design</a
-                > and worked for the registrar office as a software developer. My
-                interests include game development, cooking, skiing, backpacking,
-                and photography.
-            </p>
-            <p>
-                I am currently a full-stack developer at <a
-                    href="https://corporate.charter.com/">Spectrum</a
-                > in Denver, CO.
+                >. My interests include game development, cooking, skiing,
+                traveling, and photography.
             </p>
         </section>
         <hr />
@@ -37,12 +26,13 @@ import "../styles/global.css";
             <h2>Work Experience</h2>
             <section id="spectrum">
                 <h3 class="block text-lg font-semibold">
-                    Spectrum <span class="float-right"
-                        >Jul. 2024 - Present</span>
+                    Spectrum <span class="float-right">Jul. 2024 - Present</span
+                    >
                 </h3>
                 <p class="text-base italic">
                     Software Engineer <span class="float-right"
-                        >Greenwood Village, CO</span>
+                        >Greenwood Village, CO</span
+                    >
                 </p>
                 <ul>
                     <li>
@@ -80,11 +70,13 @@ import "../styles/global.css";
             <section id="oori">
                 <h3 class="block text-lg font-semibold">
                     Oori Data <span class="float-right"
-                        >Apr. 2023 - Jul. 2024</span>
+                        >Apr. 2023 - Jul. 2024</span
+                    >
                 </h3>
                 <p class="text-base italic">
                     Full-stack Software Engineer <span class="float-right"
-                        >Superior, CO</span>
+                        >Superior, CO</span
+                    >
                 </p>
                 <ul>
                     <li>
@@ -120,11 +112,13 @@ import "../styles/global.css";
             <section id="cu-registrar">
                 <h3 class="block text-lg font-semibold">
                     CU Boulder Office of the Registrar <span class="float-right"
-                        >Jan. 2021 - May 2022</span>
+                        >Jan. 2021 - May 2022</span
+                    >
                 </h3>
                 <p class="text-base italic">
                     Student Software Engineer <span class="float-right"
-                        >Boulder, CO</span>
+                        >Boulder, CO</span
+                    >
                 </p>
                 <ul>
                     <li>
@@ -158,18 +152,19 @@ import "../styles/global.css";
             <section id="cu-boulder">
                 <h3 class="block text-lg font-semibold">
                     University of Colorado <span class="float-right"
-                        >Aug. 2018 - Aug. 2022</span>
+                        >Aug. 2018 - Aug. 2022</span
+                    >
                 </h3>
                 <p class="text-base italic">
                     Bachelor of Science in Computer Science <span
-                        class="float-right">Boulder, CO</span>
+                        class="float-right">Boulder, CO</span
+                    >
                 </p>
                 <ul>
                     <li>
                         Software Engineering and Human-Centered Computing track
                     </li>
                     <li>
-                        <b>GPA: 3.3/4.0;</b>
                         <a
                             href="https://www.colorado.edu/engineering/academics/degree-programs/creative-technology-design"
                             target="_blank"
@@ -181,11 +176,13 @@ import "../styles/global.css";
             <section id="uppsala">
                 <h3 class="block text-lg font-semibold">
                     Uppsala University <span class="float-right"
-                        >Jan. 2021 - Jun. 2021</span>
+                        >Jan. 2021 - Jun. 2021</span
+                    >
                 </h3>
                 <p class="text-base italic">
                     Computer Graphics program <span class="float-right"
-                        >Uppsala, Sweden</span>
+                        >Uppsala, Sweden</span
+                    >
                 </p>
                 <ul>
                     <li>
@@ -199,3 +196,7 @@ import "../styles/global.css";
         </section>
     </div>
 </Layout>
+
+<script>
+    console.log(document.querySelectorAll("section[id]"));
+</script>

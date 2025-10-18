@@ -1,13 +1,28 @@
-<footer class="flex justify-between gap-2 p-2">
-  <div>
-    © 2025 <a href="https://zephy.dev" target="_blank">zephy.dev</a> • Developed with <a href="https://astro.build">Astro</a>
-  </div>
-  <div>
-    <a href="https://github.com/kaischuygon/zephy.dev"> source</a> • <a
-      href="mailto:kai@zephy.dev">contact me</a>
-  </div>
-</footer>
+---
+import { Icon } from "astro-icon/components";
+---
 
-<style>
-  @import "tailwindcss";
-</style>
+<footer class="flex justify-between gap-2 p-2">
+    <div>
+        © 2025 <Icon name="wind" class="inline" />
+        <a href="https://zephy.dev" target="_blank" rel="noopener noreferrer"
+            >zephy.dev</a
+        > • Developed with
+        <Icon name="tabler:brand-astro" class="inline" />
+        <a href="https://astro.build" target="_blank" rel="noopener noreferrer"
+            >Astro</a
+        >
+    </div>
+    <div>
+        <Icon name="bx:bxl-github" class="inline" />
+        <a
+            href="https://github.com/kaischuygon/zephy.dev"
+            target="_blank"
+            rel="noopener noreferrer">source</a
+        > • <a
+            href="mailto:kai@zephy.dev"
+            target="_blank"
+            rel="noopener noreferrer">contact me</a
+        >
+    </div>
+</footer>

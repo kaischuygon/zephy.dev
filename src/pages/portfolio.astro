@@ -1,0 +1,25 @@
+---
+import { Icon } from "astro-icon/components";
+import Layout from "../layouts/Layout.astro";
+
+import { getCollection } from "astro:content";
+
+const allPortfolioItems = await getCollection('portfolio');
+---
+
+<Layout title="Portfolio">
+    <h1 class="mb-4 text-4xl font-bold">Portfolio</h1>
+    <p class="mb-8">
+        My portfolio of projects dating back to undergrad.
+    </p>
+    <div class="flex flex-col gap-4">
+        {allPortfolioItems.map(item => (
+            <a href={`portfolio/${item.id}`} class="w-full block border p-2 shadow-square hover:shadow-square-2">
+                <h2 class="text-3xl">{item.data.title}</h2>
+                <p>
+                    {item.data.description}
+                </p>
+            </a>
+        ))}
+    </div>
+</Layout>

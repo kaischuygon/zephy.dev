@@ -1,27 +1,54 @@
 ---
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
+import SocialLinks from "../components/SocialLinks.astro";
+import AccentSelect from "../components/AccentSelect.astro";
+import ThemeSelect from "../components/ThemeSelect";
+import "../styles/global.css";
+
+interface Props {
+    title?: string;
+}
+
+const { title } = Astro.props as Props;
+
+const formatTitle = (title: string | undefined) =>
+    title ? `${title} | zephy.dev` : "zephy.dev";
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scheme-light dark:scheme-dark">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <meta name="theme-color" content="#71717a" />
+        <meta name="color-scheme" content="light dark" />
         <meta name="generator" content={Astro.generator} />
-        <title>zephy.dev</title>
+        <title>{formatTitle(title)}</title>
     </head>
-    <body class="m-0 h-screen grid grid-cols-1 grid-rows-[8px_1fr_0fr] gap-4">
-        <div class="bg-slate-400" />
-        <div class="container mx-auto grid grid-cols-[1fr_3fr] gap-8">
-            <Nav />
-            <div>
-                <slot />
-            </div>
+    <body>
+        <div class="container mx-auto grid h-screen grid-rows-[0fr_1fr_0fr] gap-4 p-2">
+            <nav class="flex items-center justify-end gap-2">
+                <SocialLinks />
+                <ThemeSelect client:load />
+                <AccentSelect />
+            </nav>
+            <article class="mt-4 grid gap-8 sm:grid-rows-[0fr_1fr] md:grid-rows-1 md:grid-cols-[1fr_3fr]">
+                <Nav />
+                <div>
+                    <slot />
+                </div>
+            </article>
+            <Footer />
         </div>
-        <Footer />
     </body>
 </html>
+
+<script>
+    // Set external links to open in a new tab
+    document.querySelectorAll('a[target="_blank"]').forEach((link) => {
+        (link as HTMLAnchorElement).rel = "noopener noreferrer";
+    });
+</script>

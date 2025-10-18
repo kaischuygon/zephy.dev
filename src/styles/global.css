@@ -1,13 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Poly:ital@0;1&family=Space+Grotesk:wght@300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poly:ital@0;1&family=Space+Grotesk:wght@300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {  
-    --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif, "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";  
-    --font-serif: Poly, ui-serif, Georgia, Cambria, "Times New Roman", Times, serif, "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";  
+    --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";  
+    --font-serif: Poly, ui-serif, Georgia, Cambria, "Times New Roman", Times, serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";  
     --font-mono: "Space Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     
     --shadow-square: 2px 2px;
+    --shadow-square-2: 4px 4px;
 }
 
 @layer base {
@@ -21,9 +24,11 @@
 }
 
 body {
-    @apply font-sans dark:bg-slate-950 dark:text-slate-200 bg-slate-50 text-slate-900 antialiased;
+    /* @apply font-sans dark:bg-accent-950 dark:text-accent-200 bg-accent-50 text-accent-900 antialiased; */
+    @apply font-sans antialiased;
 }
 
 a {
-    @apply border-b border-dotted hover:bg-slate-100 dark:hover:bg-slate-800;
+    /* @apply border-b border-dotted hover:bg-accent-100 dark:hover:bg-accent-800; */
+    @apply border-b border-dotted hover:bg-black/5 dark:hover:bg-white/5;
 }

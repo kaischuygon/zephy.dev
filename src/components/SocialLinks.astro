@@ -1,0 +1,38 @@
+---
+import { Icon } from "astro-icon/components";
+
+const socialLinks = {
+    github: {
+        href: "https://github.com/kaischuygon",
+        icon: "bx:bxl-github",
+    },
+    twitter: {
+        href: "https://twitter.com/kaischuyler",
+        icon: "bx:bxl-twitter",
+    },
+    linkedin: {
+        href: "https://www.linkedin.com/in/kaischuyler/",
+        icon: "bx:bxl-linkedin",
+    },
+    bluesky: {
+        href: "https://bsky.app/profile/zephy.dev",
+        icon: "bsky",
+    },
+};
+---
+
+<>
+    {
+        Object.entries(socialLinks).map(([name, { href, icon }]) => (
+            <a
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-2xl"
+                title={name}
+            >
+                <Icon name={icon} />
+            </a>
+        ))
+    }
+</>

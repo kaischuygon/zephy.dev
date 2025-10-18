@@ -2,13 +2,13 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from "@tailwindcss/vite";
 import react from '@astrojs/react';
-import db from '@astrojs/db';
-import markdoc from '@astrojs/markdoc';
 import icon from 'astro-icon';
+
+import mdx from '@astrojs/mdx';
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [react(), db(), markdoc(), icon({include: {bx: ['*']}})],
+  integrations: [react(), mdx(), icon({include: {bx: ['*'], tabler: ['*']}})],
   vite: {
     plugins: [tailwindcss()]
   }

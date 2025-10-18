@@ -1,74 +1,62 @@
 ---
-import Logo from "../assets/favicon.svg";
 import { Icon } from "astro-icon/components";
-const navlinks = {
+
+let navlinks = {
+    home: "/",
     about: "/about",
     portfolio: "/portfolio",
     blog: "/blog",
-    contact: "/contact",
-    break: "break",
-    "📼 kino.wtf": "https://kino.wtf",
-    "🍿 letterboxd": "https://letterboxd.com/kschuyler/",
 };
 
-const socialLinks = {
-    github: {
-        href: "https://github.com/kaischuygon",
-        icon: "bx:bxl-github",
+let extraLinks = {
+    "📼 kino.wtf": {
+        href: "https://kino.wtf",
+        pinned: true,
     },
-    twitter: {
-        href: "https://twitter.com/kaischuyler",
-        icon: "bx:bxl-twitter",
+    "🍿 letterboxd": {
+        href: "https://letterboxd.com/kschuyler/",
+        pinned: false,
     },
-    linkedin: {
-        href: "https://www.linkedin.com/in/kaischuyler/",
-        icon: "bx:bxl-linkedin",
-    },
-    bluesky: {
-        href: "https://bsky.app/profile/zephy.dev",
-        icon: "bsky",
+    "✉️ contact": {
+        href: "mailto:kai@zephy.dev",
+        pinned: false,
     },
 };
 ---
 
-<nav class="flex flex-col items-end gap-2 text-right">
-    <div class="flex flex-wrap gap-2 text-2xl">
-        {
-            Object.entries(socialLinks).map(([name, { href, icon }]) => (
-                <a
-                    href={href}
-                    class="flex items-center gap-1"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    <Icon name={icon} />
-                </a>
-            ))
-        }
-    </div>
-    <a href="/" class="m-1 block text-8xl">
+<nav class="md:sticky flex-wrap top-0 flex h-min max-h-screen flex-col items-end gap-2 text-right">
+    <a href="/" class="m-1 block text-4xl md:text-8xl">
         <Icon name="wind" />
     </a>
-    <h1 class="text-right text-xl font-bold"><a href="/">zephy.dev</a></h1>
+    <h1 class="text-right text-xl font-bold">zephy.dev</h1>
     <h3>Kai's portfolio and blog</h3>
-    <hr class="my-2 w-full border-t border-slate-300 dark:border-slate-700" />
+    <hr class="my-1 w-full" />
     {
         Object.entries(navlinks).map(([title, link]) => (
-            link === "break" ? (
-                <hr class="my-2 w-full border-t border-slate-300 dark:border-slate-700" />
-            ) : (
-            <a href={`${link}`} target={link.substring(0, 4) === "http" ? "_blank" : ""} class="block font-mono">
+            <a href={link} class="block font-mono font-semibold">
                 {title}
             </a>
-            )
         ))
     }
-</nav>
-
-<style>
-    @import "tailwindcss";
-
-    nav a {
-        @apply font-semibold;
+    <hr class="my-1 w-full" />
+    {
+        // Display extra links, with pinned ones first
+        Object.entries(extraLinks)
+            .sort(([, a], [, b]) =>
+                a.pinned === b.pinned ? 0 : a.pinned ? -1 : 1
+            )
+            .map(([title, value]) => (
+                <div class="flex items-center gap-1">
+                    <a
+                        href={value.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="block font-mono font-semibold"
+                    >
+                        {title}
+                    </a>
+                    {value.pinned && <div class="text-xs">📌</div>}
+                </div>
+            ))
     }
-</style>
+</nav>

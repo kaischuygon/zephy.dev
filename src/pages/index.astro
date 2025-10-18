@@ -1,38 +1,39 @@
 ---
-import Card from "../components/Card.astro";
 import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
-import "../styles/global.css";
 
 import portrait from "../assets/portrait.png";
 ---
 
 <Layout>
-	<h1 class="text-4xl font-bold mb-4">👋🏼 Hello! </h1>
-	<div class="grid grid-cols-[3fr_1fr]">
-		<div class="prose dark:prose-invert">
+    <section id="splash" class="grid md:grid-cols-[1fr_auto] gap-4">
+		<div class="prose dark:prose-invert max-w-none">
+			<h1>👋🏼 Hello!</h1>
 			<p>
-				I'm Kai Schuyler Gonzalez, a software engineer 💻 and
-				designer 🎨 based in Colorado 🦬 🏔️.
+				I'm Kai Schuyler Gonzalez, a software engineer 💻 and designer 🎨
+				based in Colorado 🦬 🏔️.
 			</p>
 			<p>
-				I specialize in creating engaging and user-friendly software
-				with a focus on front-end, full-stack, and mobile development.
+				I specialize in creating engaging and user-friendly software with a
+				focus on front-end, full-stack, and mobile development.
 			</p>
 			<p>
-				Currently, I'm a software engineer focused at front-end development at <a href="https://corporate.charter.com/">Spectrum</a> in Denver, CO.
+				Currently, I'm a software engineer at <a
+					href="https://corporate.charter.com/">Spectrum</a
+				> in Denver, CO.
 			</p>
 		</div>
 		<Image
 			src={portrait}
 			loading="lazy"
 			decoding="async"
-			alt="Kai Schuyler Gonzalez"
+			alt="me, Kai Schuyler Gonzalez"
 			width={500}
 			height={500}
-			class="block border shadow-square aspect-square" />
-	</div>
-	<section id="featured">
-		<h2 class="text-2xl font-semibold mt-8 mb-4">Recent</h2>
-	</section>
+			class="shadow-square md:float-end block aspect-square border w-[200px]"
+		/>
+    </section>
+    <section id="featured">
+        <h2 class="mt-8 mb-4 text-2xl font-semibold">Recent</h2>
+    </section>
 </Layout>
