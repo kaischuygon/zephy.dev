@@ -4,6 +4,7 @@ import Footer from "../components/Footer.astro";
 import SocialLinks from "../components/SocialLinks.astro";
 import AccentSelect from "../components/AccentSelect.astro";
 import ThemeSelect from "../components/ThemeSelect";
+import { SEO } from "astro-seo";
 import "../styles/global.css";
 
 interface Props {
@@ -27,6 +28,33 @@ const formatTitle = (title: string | undefined) =>
         <meta name="color-scheme" content="light dark" />
         <meta name="generator" content={Astro.generator} />
         <title>{formatTitle(title)}</title>
+        <SEO
+            title="A Very Descriptive Title"
+            description="A heavily optimized description full of well-researched keywords."
+            openGraph={{
+                basic: {
+                title: "A Very Descriptive Title",
+                type: "A type.",
+                image: "https://user-images.githubusercontent.com/5182256/131216951-8f74f425-f775-463d-a11b-0e01ad9fce8d.png",
+                }
+            }}
+            twitter={{
+                creator: "@jonasmerlins1"
+            }}
+            extend={{
+                // extending the default link tags
+                link: [{ rel: "icon", href: "/favicon.ico" }],
+                // extending the default meta tags
+                meta: [
+                {
+                    name: "twitter:image",
+                    content: "https://user-images.githubusercontent.com/5182256/131216951-8f74f425-f775-463d-a11b-0e01ad9fce8d.png",
+                },
+                { name: "twitter:title", content: "Tinker Tailor Soldier Spy" },
+                { name: "twitter:description", content: "Agent" },
+                ],
+            }}
+        />
     </head>
     <body>
         <div class="container mx-auto grid h-screen grid-rows-[0fr_1fr_0fr] gap-4 p-2">
