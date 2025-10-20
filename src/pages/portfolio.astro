@@ -15,7 +15,7 @@ const allPortfolioItems = await getCollection('portfolio');
     <div class="flex flex-col gap-4">
         {allPortfolioItems.map(item => (
             <a href={`portfolio/${item.id}`} class="w-full block border p-2 shadow-square hover:shadow-square-2">
-                <h2 class="text-3xl">{item.data.title}</h2>
+                <h2 class="text-3xl font-semibold">{item.data.title}</h2>
                 <p>
                     {item.data.description}
                 </p>
