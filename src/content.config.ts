@@ -2,7 +2,7 @@
 import { defineCollection, z } from 'astro:content';
 
 // 2. Import loader(s)
-import { glob } from 'astro/loaders';
+import { file, glob } from 'astro/loaders';
 
 // 3. Define your collection(s)
 const portfolio = defineCollection({ 
@@ -13,11 +13,21 @@ const portfolio = defineCollection({
 		publishDate: z.coerce.date(),
 		tags: z.array(z.string()),
 		img: z.string(),
+		img_alt: z.string()
+	})
+});
+
+const blog = defineCollection({
+    loader: glob({ pattern: ["**/*.mdx", "**/*.md"], base: "./src/content/blog" }),
+	schema: z.object({
+		title: z.string(),
+		description: z.string(),
+		publishDate: z.coerce.date(),
+		tags: z.array(z.string()),
+		img: z.string().optional(),
 		img_alt: z.string().optional(),
 	})
 });
-const blog = defineCollection({ /* ... */ });
-
 
 // 4. Export a single `collections` object to register your collection(s)
-export const collections = { portfolio };
+export const collections = { portfolio, blog };

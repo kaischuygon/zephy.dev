@@ -1,7 +1,7 @@
 ---
 title: Cosmos Pizza
 publishDate: 2020-05-13 00:00:00
-img: /assets/cosmos-pizza.png
+img: /src/assets/images//cosmos-pizza.png
 img_alt: cosmos pizza startup page
 description: |
   A gameboy style game developed with GBStudio.

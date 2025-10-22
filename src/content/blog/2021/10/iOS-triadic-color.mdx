@@ -1,0 +1,65 @@
+---
+title: Creating a simple iOS app
+publishDate: 2021-10-9 00:00:00
+description: |
+  A simple iOS app that generates triadic colors. 
+tags:
+  - UX design
+  - iOS development
+---
+The first project for my mobile app development course was to create a single view interactive iOS app. Examples included apps that perform a calculation, respond to user input or selections, or respond to events in the app. We were encouraged to be creative and focus on design and user interaction.
+
+I decided to create a triadic color generator in which the user inputs a color (in hexadecimal or rgb) and the app will calculate triadic colors.
+
+### Triadic color computation
+I read up on some color theory to come up with the following pseudocode to calculate triadic colors:
+
+```js
+func calculateTriad(hex) {
+    // get rgb values from hex (can also be used to update sliders after user input)
+    red = hex[0:1]
+    green = hex[2:3] 
+    blue = hex[4:5]
+
+    // add and subtract by 85 (255 / 3), wrapping around if 0 or 255 is reached
+    color1 = (add85(red), add85(green), add85(blue))
+    color2 = (sub85(red), sub85(green), sub85(blue)) // add85 and sub85 deal with wrap around.
+
+    return (color1, color2) // returns in rgb format
+}
+```
+As this was my first time using Swift, I had to look up how to convert hex to rgb and back. I found a few examples online and decided to use the following code:
+
+```swift
+func calculateTriad() {
+  // formula for calculating secondary HEX: original = a1a2a3, secondary = a3a1a2
+  let (secondaryRed, secondaryGreen, secondaryBlue) = (blueSlider.value, redSlider.value, greenSlider.value)
+  secondaryColorImage.backgroundColor = UIColor(red: CGFloat(secondaryRed / 255), green: CGFloat(secondaryGreen / 255), blue: CGFloat(secondaryBlue / 255), alpha: 1.0)
+  let secondaryHex = calculateHex(red: Int(secondaryRed), green: Int(secondaryGreen), blue: Int(secondaryBlue))
+  secondaryColorLabel.text = "#\(secondaryHex)".uppercased()
+  
+  // formula for calculating tertiary HEX: original = a1a2a3, tertiary = a2a3a1
+  let (tertiaryRed, tertiaryGreen, tertiaryBlue) = (greenSlider.value, blueSlider.value, redSlider.value)
+  tertiaryColorImage.backgroundColor = UIColor(red: CGFloat(tertiaryRed / 255), green: CGFloat(tertiaryGreen / 255), blue: CGFloat(tertiaryBlue / 255), alpha: 1.0)
+  let tertiaryHex = calculateHex(red: Int(tertiaryRed), green: Int(tertiaryGreen), blue: Int(tertiaryBlue))
+  tertiaryColorLabel.text = "#\(tertiaryHex)".uppercased()
+}
+```
+
+### Prototype
+I drafted the following prototype in Figma:
+
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="100%" height="800px" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2F7lHdeYU4dRkmKiIpOeGhOK%2FTriad%3Fnode-id%3D5%253A41%26scaling%3Dscale-down%26page-id%3D0%253A1%26starting-point-node-id%3D5%253A41%26show-proto-sidebar%3D1" allowfullscreen></iframe> 
+
+### Process
+- This was my first time using Xcode and Swift, so I started by following the tutorials on Apple's developer website.
+- I created a single view app and added a text field for user input, sliders for red, green, and blue and views to display the colors.
+- I created a different layout for landscape mode and added constraints to make sure the app looks good on all devices.
+
+### Challenges
+- I had some trouble with the sliders and converting the values to hex. I had to look up how to convert the values to hex and back.
+- I also had some trouble with the layout and constraints. I had to look up how to add constraints and make sure the app looks good on all devices.
+
+### Screenshots
+Here are some screenshots of the app:
+![screenshots](https://github.com/kaischuygon/mobile-app-dev/raw/master/triadic/screenshots.png)

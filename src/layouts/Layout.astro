@@ -63,12 +63,12 @@ const formatTitle = (title: string | undefined) =>
                 <ThemeSelect client:load />
                 <AccentSelect />
             </nav>
-            <article class="mt-4 grid gap-8 sm:grid-rows-[0fr_1fr] md:grid-rows-1 md:grid-cols-[1fr_3fr]">
+            <div class="mt-4 grid gap-8 sm:grid-rows-[0fr_1fr] md:grid-rows-1 md:grid-cols-[1fr_3fr]">
                 <Nav />
-                <div>
+                <article>
                     <slot />
-                </div>
-            </article>
+                </article>
+            </div>
             <Footer />
         </div>
     </body>

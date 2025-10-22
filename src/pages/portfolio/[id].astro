@@ -1,35 +1,56 @@
 ---
-import { getCollection, render } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
-import { Icon } from 'astro-icon/components';
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+import RecentPortfolio from "../../components/RecentPortfolio.astro";
+import { isRenderTemplateResult } from "astro/runtime/server/render/astro/render-template.js";
 
 // 1. Generate a new path for every collection entry
 export async function getStaticPaths() {
-  const posts = await getCollection('portfolio');
-  return posts.map(post => ({
-    params: { id: post.id },
-    props: { post },
-  }));
+    const items = await getCollection("portfolio");
+    return items.map((item) => ({
+        params: { id: item.id },
+        props: { item },
+    }));
 }
 
 // 2. For your template, you can get the entry directly from the prop
-const { post } = Astro.props;
-const { Content } = await render(post);
+const { item } = Astro.props;
+const { Content } = await render(item);
 ---
 
 <Layout>
-  <a href="/portfolio" class="inline-block mb-2">
-    <Icon class="inline" name="bx:left-arrow-alt" /> Back to portfolio
-  </a>
-  <h1 class="text-4xl font-bold mb-2">{post.data.title}</h1>
-  <div class="flex gap-2 mb-2">
-    {post.data.tags.map(tag => (
-      <div class="border shadow-square p-1">
-        {tag}
-      </div>
-    ))}
-  </div>
-  <div class="prose dark:prose-invert">
-    <Content />
-  </div>
+    <div class="w-full flex flex-wrap gap-2">
+		<section id={item.id}>
+			<a href="/portfolio">
+				<Icon class="inline" name="tabler:arrow-left" />
+				back to projects
+			</a>
+			<h1 class="mb-2 text-4xl font-bold">
+				{item.data.title}
+			</h1>
+			<div class="mb-2 flex gap-2">
+				{
+					item.data.tags.map((tag) => (
+						<div class="shadow-square border p-1">{tag}</div>
+					))
+				}
+			</div>
+			<div class="prose dark:prose-invert">
+				<Image
+					src={item.data.img}
+					alt={item.data.img_alt}
+					width={500}
+					height={500}
+					class="shadow-square mb-2 aspect-video w-full border"
+				/>
+				<Content />
+			</div>
+		</section>
+		<section id='more' class="flex flex-col gap-2">
+			<h2 class="mb-2 text-2xl font-semibold">More</h2>
+			<RecentPortfolio ignore_id={item.id} />
+		</section>
+    </div>
 </Layout>

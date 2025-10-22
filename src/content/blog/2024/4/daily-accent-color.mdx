@@ -1,0 +1,118 @@
+---
+title: Random daily accent color in Astro
+publishDate: 2024-04-23 00:00:00
+description: |
+  A daily accent color +  picker built with Astro and Tailwind CSS.
+tags:
+    - Astro
+    - Tailwind CSS
+    - JavaScript
+---
+
+When redisigning my portfolio, I wanted to add a daily accent color to my site. I wanted to create a simple color picker that would change the accent color of my site every day, but still allow the visitor to maintain their favorite color. My site uses [Astro](https://astro.build/) and [Tailwind CSS](https://tailwindcss.com/), so I wanted to create a color picker that would work with these technologies, but it should be easy to implement in any site using JavaScript and CSS.
+
+All the code for this feature was done in a single `.astro` file and configured in `tailwind.config.mjs`. The main functionality is done in vanilla JavaScript, so it should be easy to implement in any site. 
+
+### Defining the colors
+- I created a list of colors that I wanted to use as accent colors. I used the Tailwind CSS colors as a base, but any color can be used in CSS format.
+- The daily color is calculated by taking the current day of the year and dividing it by the number of colors in the list. The remainder is used as the index of the color in the list. This way, the color changes every day.
+```js
+const colorArray = {
+    'amber': colors.amber['400'],
+    'blue': colors.blue['400'],
+    'cyan': colors.cyan['400'],
+    ...
+}
+
+// Choose a color from the array based on the current day of the year
+const defaultColor = Object.entries(colorArray)[new Date().getDay() % Object.keys(colorArray).length][1]
+```
+
+### Creating the color picker
+- I created a color picker using a `select` element.
+- The javascript code listens for the `change` event and sets the color in local storage.
+- `is:inline` and `define:vars` are Astro-specific, but you can use any method to set the color.
+- `astro-after-swap` is an event that is triggered after the page is swapped. This is necessary because the color picker is not present in the initial HTML, but is added later. If you are using a different framework, you can use a similar event or add the event listener in the HTML.
+
+```html
+<select title="Change accent color" name="colorSwitch" id="colorSwitch" class="bg-transparent">
+    <option value='daily'>daily</option>
+    <hr>
+    {
+        Object.keys(colorArray).map((color, index) => (
+            <option value={Object.entries(colorArray)[index][1]}>{color}</option>
+        ))
+    }
+</select>
+
+<script is:inline define:vars={{ defaultColor }}>
+    function changeAccent() {
+        // Split the color data into an array
+        const newAccent = document.querySelector('#colorSwitch').value
+        if (newAccent === 'daily') {
+            document.documentElement.style.setProperty('--ACCENT', defaultColor)
+            localStorage.setItem('accent', 'daily')
+            return
+        } 
+        document.documentElement.style.setProperty('--ACCENT', newAccent)
+        
+        // Save the new accent color to local storage
+        localStorage.setItem('accent', newAccent)
+    }
+
+    document.addEventListener('astro:after-swap', () => {
+        document.querySelector('#colorSwitch').addEventListener('change', changeAccent)
+    });
+</script>
+```
+
+### Load the color from local storage or use the default color
+- I used local storage to store the color chosen by the user. If the user has already chosen a color, it will be loaded from local storage. If not, the default color will be used.
+- Again, `define:vars` is Astro-specific, but you can use any method to set the default color.
+- The color is set as a CSS variable `--ACCENT` can be used in the CSS by using `var(--ACCENT)`.
+```html
+<script define:vars={{ defaultColor }}>
+    ...
+
+	// set the default color if not in local storage
+	document.addEventListener('astro:page-load', () => {
+		if (!localStorage.getItem('accent')) {
+			localStorage.setItem('accent', 'daily');
+			document.documentElement.style.setProperty('--ACCENT', defaultColor);
+            document.getElementById('colorSwitch').value = 'daily';
+		} else {
+            // load the color from local storage
+			document.documentElement.style.setProperty('--ACCENT', localStorage.getItem('accent'));
+            if (localStorage.getItem('accent') === 'daily') {
+                document.getElementById('colorSwitch').value = 'daily';
+    			document.documentElement.style.setProperty('--ACCENT', defaultColor);
+            }
+            document.getElementById('colorSwitch').value = localStorage.getItem('accent');
+		}
+        document.querySelector('#colorSwitch').addEventListener('change', changeAccent)
+	});
+</script>
+```
+
+### Updating `tailwind.config.mjs`
+- I added the color to the `extend` object in the `theme` object.
+- This way, I can use the color using tailwind classes.
+```js
+// tailwind.config.mjs
+...
+export default {
+	content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
+	theme: {
+		extend: {
+			colors: {
+				accent: 'var(--ACCENT)',
+			},
+            ...
+        },
+        ...
+    }
+    ...
+}
+```
+
+That is it! Now you have a daily accent color picker that works with Astro and Tailwind CSS. You can see the code for the full component `ColorSwitch.astro` [here](https://github.com/kaischuygon/kaischuygon.github.io/blob/1eb1acb5284ae1b7e82f9199d02ea124e82a09b4/src/components/ColorSwitch.astro).
