@@ -1,7 +1,7 @@
 ---
 title: History Through Battleship
 publishDate: 2021-04-25 00:00:00
-img: /assets/history-through-battleship.png
+img: /src/assets/images//history-through-battleship.png
 img_alt: History Through Battleship banner over an ocean background
 description: |
   A full-stack application developed for a course at CU Boulder. I worked alongside 4 other students to create a trivia battleship game.

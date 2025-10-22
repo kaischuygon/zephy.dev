@@ -1,0 +1,41 @@
+---
+title: Making wordle but for movies
+publishDate: 2024-01-15 00:00:00
+description: |
+  Using Solid.js, Vite, and Tailwind CSS to create a movie guessing game similar to wordle.
+tags:
+  - web dev
+  - kino.wtf
+---
+
+I've been playing a lot of wordle lately and I thought it would be fun to make a similar game but for movies.
+
+### Tech stack
+- [Solid.js](https://www.solidjs.com/). I've been wanting to try it out for a while now and this seemed like a good opportunity.
+- [Vite](https://vitejs.dev/). I've been using it for all my projects lately and I love it.
+- [Tailwind CSS](https://tailwindcss.com/). I like using Tailwind to make my projects look good without much effort, and it's approach to responsive design is more intuitive than vanilla css.
+
+### Description
+- Every day, a new movie and actor will be available to guess. The user will have 6 tries to guess the movie and actor. The hints are either the movie's castlist or the actor's filmography.
+
+### MVP (Minimum Viable Product)
+- A new movie and actor will be available to guess every day.
+- The user will have 6 tries to guess the movie and actor.
+- The hints are either the movie's castlist or the actor's filmography.
+- The user can see their past guesses.
+- A share button similar to wordle's.
+
+### Process
+- I used the [TMDb API](https://www.themoviedb.org/documentation/api) to get the movie and actor data, including pictures. The python script downloads the data and saves it to a json file.
+- I created a function that generates a random movie and actor from the json file based on the client's current date and time. This ensures that the movie and actor change every day but are the same for all users without the need for a backend.
+- On every guess, I check if the movie or actor is in the user's guess and display the results accordingly.
+- I created a function that generates the hints based on the user's guess and the movie or actor's data.
+- I created a function that saves the user's stats including streaks, wins, and losses to local storage.
+- I created a function that generates a shareable link with the user's stats.
+
+### Challenges
+- I had to learn how to use Solid.js and how to structure my components. Solid is similar to React but has some key differences that I had to get used to.
+
+### Play the game
+The game is live here: [kino.wtf](https://www.kino.wtf). I am still working on it so there might be some bugs. Issues and PRs are welcome.
+

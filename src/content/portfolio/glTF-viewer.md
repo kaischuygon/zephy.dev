@@ -1,7 +1,7 @@
 ---
 title: glTF Viewer w/ Cel Shading
 publishDate: 2021-04-24 00:00:00
-img: /assets/gltf-viewer.png
+img: /src/assets/images/cel-shading.png
 img_alt: a 3d model of a bunny
 description: |
   An 3d glTF viewer written in C++ with openGL.

@@ -1,7 +1,7 @@
 ---
 title: Choose Our Future
 publishDate: 2023-2-16 00:00:00
-img: /assets/choose-your-future.png
+img: /src/assets/images/choose-your-future.png
 img_alt: A screenshot of the choose your future application
 description: |
   A web application developed for UCAR.

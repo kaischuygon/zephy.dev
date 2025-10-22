@@ -1,0 +1,50 @@
+---
+title: Creating an android puzzle game
+publishDate: 2021-11-16 00:00:00
+description: |
+  A random picross puzzle built with Kotlin and Android Studio.
+tags:
+  - UX design
+  - android development
+---
+
+The second project for my mobile app development course was to create a single view interactive Anroid app using Android Studio and written in Kotlin.
+
+The project requirements were as follows:
+    - Think of a creative idea or concept
+    - Focus on how the design and interactivity flows for the user
+    - The scope of your project should be larger than that of a lab
+    - Your app should use a constraint layout for an adaptive layout for different device sizes including portrait and landscape orientations
+    - Your app should be complete with a custom theme and launcher icons
+    - Your app should use string resources for text in the user interface
+
+### App description
+For this project, I created a picross (nonogram) puzzle game. A nonogram puzzle is a picture logic puzzles in which cells in a grid must be colored or left blank according to numbers at the side of the grid to reveal a hidden picture.
+
+The user will be faced with a blank puzzle they will be asked to solve. When the puzzle is completed, another puzzle will be generated. 
+
+### MVP (Minimum Viable Product)
+
+The minimum functionality I want to be able to accomplish is as follows:
+    - To write a random picross puzzle generator to make the game replayable without hard coding lots of picross puzzles.
+    - Users will be able to choose the difficulty by utilizing the slider to increase/decrease the puzzle size (from 3 to 8, subject to change).
+    - Users will be able to scrub their current game at any time and restart.
+
+### Prototype
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="100%" height="700px" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FCHxpfjPtnmGTiDrscs5vkA%2FEndless-Picross%3Fnode-id%3D4%253A2%26starting-point-node-id%3D4%253A2" allowfullscreen></iframe> 
+
+### Process
+- I created a grid of buttons that the user can click on to fill in the squares of the puzzle.
+- I created a random puzzle generator that generates a random puzzle.
+- I calculated the numbers that should be displayed on the sides of the grid.
+- I created a function that checks if the user has completed the puzzle.
+- I created a button that allows the user to scrub the puzzle and start over.
+
+### Challenges
+- Kotlin is a new language for me, so I had to learn the syntax and how to use it.
+- Making the app look good and be user-friendly was a challenge as Android Studio's design tools are not as intuitive as Figma.
+- I had to learn how to use the ConstraintLayout to make the app responsive to different screen sizes and orientations.
+- Due to time constraints, I was not able to implement all the features I wanted to, such as a resize feature that allows the user to resize the grid.
+
+### Screenshots
+![recording](https://github.com/kaischuygon/mobile-app-dev/raw/master/EndlessPicross/picrossRecording.gif)

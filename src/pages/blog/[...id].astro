@@ -1,0 +1,59 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+import RecentPosts from "../../components/RecentPosts.astro";
+
+// 1. Generate a new path for every collection entry
+export async function getStaticPaths() {
+    const posts = await getCollection("blog");
+    return posts.map((post) => ({
+        params: { id: post.id },
+        props: { post },
+    }));
+}
+
+// 2. For your template, you can get the entry directly from the prop
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<Layout>
+    <div class="flex flex-col w-full gap-2">
+		<div>
+			<a href="/blog">
+				<Icon class="inline" name="tabler:arrow-left" />
+				back to blog
+			</a>
+		</div>
+		<section id={post.id}>
+			<h1 class="mb-2 text-4xl font-bold">
+				{post.data.title}
+			</h1>
+			<div class="mb-2 flex gap-2">
+				{
+					post.data.tags.map((tag) => (
+						<div class="shadow-square border p-1">{tag}</div>
+					))
+				}
+			</div>
+			<div class="prose dark:prose-invert">
+                {post.data.img && (
+                    <Image
+                        src={post.data.img}
+                        alt={post.data.img_alt ?? ""}
+                        width={500}
+                        height={500}
+                        class="shadow-square mb-2 aspect-video w-full border"
+                    />
+                )}
+				<Content />
+			</div>
+		</section>
+		<section id='more' class="flex flex-col gap-2">
+			<h2 class="mb-2 text-2xl font-semibold">More</h2>
+			<RecentPosts ignore_id={post.id} />
+		</section>
+    </div>
+</Layout>
