@@ -3,8 +3,7 @@ import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
-import RecentPortfolio from "../../components/RecentPortfolio.astro";
-import { isRenderTemplateResult } from "astro/runtime/server/render/astro/render-template.js";
+import PortfolioItems from "../../components/PortfolioItems.astro";
 
 // 1. Generate a new path for every collection entry
 export async function getStaticPaths() {
@@ -20,11 +19,11 @@ const { item } = Astro.props;
 const { Content } = await render(item);
 ---
 
-<Layout>
+<Layout collectionItem={item}>
     <div class="w-full flex flex-wrap gap-2">
 		<section id={item.id}>
 			<a href="/portfolio">
-				<Icon class="inline" name="tabler:arrow-left" />
+				<Icon class="inline" title="arrow-left" name="tabler:arrow-left" />
 				back to projects
 			</a>
 			<h1 class="mb-2 text-4xl font-bold">
@@ -37,10 +36,11 @@ const { Content } = await render(item);
 					))
 				}
 			</div>
-			<div class="prose dark:prose-invert">
+			<div class="prose prose-neutral dark:prose-invert">
 				<Image
 					src={item.data.img}
 					alt={item.data.img_alt}
+					loading="eager"
 					width={500}
 					height={500}
 					class="shadow-square mb-2 aspect-video w-full border"
@@ -50,7 +50,7 @@ const { Content } = await render(item);
 		</section>
 		<section id='more' class="flex flex-col gap-2">
 			<h2 class="mb-2 text-2xl font-semibold">More</h2>
-			<RecentPortfolio ignore_id={item.id} />
+			<PortfolioItems count={3} ignore_id={item.id} />
 		</section>
     </div>
 </Layout>

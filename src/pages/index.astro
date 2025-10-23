@@ -3,13 +3,13 @@ import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
 
 import portrait from "../assets/images/portrait.png";
-import RecentPortfolio from "../components/RecentPortfolio.astro";
-import RecentPosts from "../components/RecentPosts.astro";
+import PortfolioItems from "../components/PortfolioItems.astro";
+import Posts from "../components/Posts.astro";
 ---
 
 <Layout>
     <section id="splash" class="grid gap-4 md:grid-cols-[1fr_auto]">
-        <div class="prose dark:prose-invert max-w-none">
+        <div class="prose prose-neutral dark:prose-invert">
             <h1>👋🏼 Hello!</h1>
             <p>
                 I'm Kai Schuyler Gonzalez, a software engineer 💻 and designer
@@ -27,7 +27,7 @@ import RecentPosts from "../components/RecentPosts.astro";
         </div>
         <Image
             src={portrait}
-            loading="lazy"
+            loading="eager"
             decoding="async"
             alt="me, Kai Schuyler Gonzalez"
             width={500}
@@ -39,11 +39,11 @@ import RecentPosts from "../components/RecentPosts.astro";
     <section id="featured">
         <section id="recent-posts" class="mt-8 flex flex-col gap-2">
 			<h2 class="mb-2 text-2xl font-semibold">Recent posts</h2>
-            <RecentPosts />
+            <Posts count={2} />
         </section>
         <section id="recent-portfolio" class="mt-8 flex flex-col gap-2">
 			<h2 class="mb-2 text-2xl font-semibold">Recent projects</h2>
-			<RecentPortfolio />
+			<PortfolioItems count={2} />
         </section>
     </section>
 </Layout>

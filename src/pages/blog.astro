@@ -1,34 +1,21 @@
 ---
 import { Icon } from "astro-icon/components";
+import Posts from "../components/Posts.astro";
 import Layout from "../layouts/Layout.astro";
 
-import { getCollection } from "astro:content";
-
-const allPosts = (await getCollection('blog')).sort(
-    (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
-);
 ---
 
-<Layout title="Portfolio">
-    <h1 class="mb-4 text-4xl font-bold">Blog</h1>
+<Layout title="Blog">
+    <div class="flex gap-2 items-baseline">
+        <h1 class="mb-4 text-4xl font-bold">Blog</h1>
+        <div>
+            <a href="/rss.xml"><Icon title="rss-icon" name="tabler:rss" class="inline" /> RSS</a>
+        </div>
+    </div>
     <p class="mb-8">
         I write on software development and my interests.
     </p>
     <div class="flex flex-col gap-2">
-        {allPosts.map(post => (
-            <a href={`/blog/${post.id}`} class="shadow-square hover:shadow-square-2 flex flex-col gap-2 border">
-                <div class="p-2">
-                    <h2 class="text-xl font-semibold">
-                        {post.data.title}
-                    </h2>
-                    <span class="text-sm">
-                        {post.data.publishDate.toLocaleDateString()}
-                    </span>
-                    <p>
-                        {post.data.description}
-                    </p>
-                </div>
-            </a>
-        ))}
+        <Posts />
     </div>
 </Layout>

@@ -6,15 +6,23 @@ import AccentSelect from "../components/AccentSelect.astro";
 import ThemeSelect from "../components/ThemeSelect";
 import { SEO } from "astro-seo";
 import "../styles/global.css";
+import type { CollectionEntry } from "astro:content";
 
 interface Props {
-    title?: string;
+    title?: string,
+    collectionItem?: CollectionEntry<'blog'> | CollectionEntry<'portfolio'>
 }
 
-const { title } = Astro.props as Props;
+const { title, collectionItem } = Astro.props;
 
-const formatTitle = (title: string | undefined) =>
-    title ? `${title} | zephy.dev` : "zephy.dev";
+const getTitle = collectionItem?.data.title ?? title ?? "zephy.dev";
+
+const generalDescription =
+    "Personal portfolio site of Kai Schuyler Gonzalez, a software engineer / designer based in Denver, CO.";
+
+const getDescription = (collectionItem) ? collectionItem.data.description : generalDescription;
+
+const getImage = collectionItem?.data.img ?? "og-image.png";
 ---
 
 <!doctype html>
@@ -27,43 +35,72 @@ const formatTitle = (title: string | undefined) =>
         <meta name="theme-color" content="#71717a" />
         <meta name="color-scheme" content="light dark" />
         <meta name="generator" content={Astro.generator} />
-        <title>{formatTitle(title)}</title>
+        <title>{getTitle}</title>
+        <link
+            rel="alternate"
+            type="application/rss+xml"
+            title={getTitle}
+            href={new URL("rss.xml", Astro.site)}
+        />
+        <script is:inline>
+            const theme = localStorage.getItem("theme");
+
+            if (
+                theme === "dark" ||
+                (!theme &&
+                    window.matchMedia("(prefers-color-scheme: dark)").matches)
+            ) {
+                document.documentElement.classList.add("dark");
+            }
+        </script>
         <SEO
-            title="A Very Descriptive Title"
-            description="A heavily optimized description full of well-researched keywords."
+            title={getTitle}
+            titleTemplate="%s | zephy.dev"
+            titleDefault="zephy.dev"
+            description={getDescription}
+            canonical="https://zephy.dev",
             openGraph={{
                 basic: {
-                title: "A Very Descriptive Title",
-                type: "A type.",
-                image: "https://user-images.githubusercontent.com/5182256/131216951-8f74f425-f775-463d-a11b-0e01ad9fce8d.png",
+                    title: getTitle,
+                    type: "website",
+                    image: getImage
+                },
+                optional: {
+                    description: getDescription
+                },
+                article: {
+                    publishedTime: collectionItem?.data.pubDate?.toISOString(),
+                    authors: ["Kai Schuyler Gonzalez"],
+                    tags: collectionItem?.collection === 'blog' ? (collectionItem?.data?.categories ?? []) : []
                 }
             }}
             twitter={{
-                creator: "@jonasmerlins1"
+                card: 'summary',
+                site: 'zephy.dev',
+                creator: "@kaischuyler",
+                title: getTitle,
+                description: getDescription,
+                image: getImage,
+                imageAlt: collectionItem?.data.img_alt ?? 'zephy.dev: Kais personal site and portfolio'
             }}
             extend={{
                 // extending the default link tags
                 link: [{ rel: "icon", href: "/favicon.ico" }],
-                // extending the default meta tags
-                meta: [
-                {
-                    name: "twitter:image",
-                    content: "https://user-images.githubusercontent.com/5182256/131216951-8f74f425-f775-463d-a11b-0e01ad9fce8d.png",
-                },
-                { name: "twitter:title", content: "Tinker Tailor Soldier Spy" },
-                { name: "twitter:description", content: "Agent" },
-                ],
             }}
         />
     </head>
     <body>
-        <div class="container mx-auto grid h-screen grid-rows-[0fr_1fr_0fr] gap-4 p-2">
+        <div
+            class="container mx-auto grid h-screen grid-rows-[0fr_1fr_0fr] gap-4 p-2"
+        >
             <nav class="flex items-center justify-end gap-2">
                 <SocialLinks />
                 <ThemeSelect client:load />
                 <AccentSelect />
             </nav>
-            <div class="mt-4 grid gap-8 sm:grid-rows-[0fr_1fr] md:grid-rows-1 md:grid-cols-[1fr_3fr]">
+            <div
+                class="mt-4 grid gap-8 sm:grid-rows-[0fr_1fr] md:grid-cols-[1fr_3fr] md:grid-rows-1"
+            >
                 <Nav />
                 <article>
                     <slot />

@@ -1,11 +1,9 @@
 ---
 title: 25 Principles of Mobile App Design
-publishDate: 2021-10-21 00:00:00
-# img: /assets/choose-your-future.png
-# img_alt: A screenshot of the choose your future application
+pubDate: 2021-10-21 00:00:00
 description: |
   Thoughts "Principles of Mobile App Design" by Jenny Gove.
-tags:
+categories:
   - UX design
 ---
 As my Mobile App Development course is moving on from Swift and iOS development to Kotlin and Android development, we were asked to read _Principles of Mobile App Design: Engage Users and Drive Conversions_ by Jenny Gove, the UX Research Lead at Google. The following principles stood out to me when reading.

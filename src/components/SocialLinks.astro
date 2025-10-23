@@ -30,8 +30,9 @@ const socialLinks = {
                 rel="noopener noreferrer"
                 class="text-2xl"
                 title={name}
+                aria-label={name}
             >
-                <Icon name={icon} />
+                <Icon name={icon} title={name} />
             </a>
         ))
     }

@@ -1,0 +1,21 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getEntries } from "astro:content";
+import Post from "./Post.astro";
+
+interface Props {
+    post: CollectionEntry<'blog'>
+}
+
+const { post } = Astro.props as Props;
+
+const relatedPosts = await getEntries(post.data.related || [])
+---
+
+<div class="flex flex-col gap-2">
+    {
+        relatedPosts?.map(relatedPost => (
+            <Post post={relatedPost} />
+        ))
+    }
+</div>

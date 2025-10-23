@@ -24,14 +24,14 @@ const colorList = Object.keys(colorPalette);
             // Set the accent color to the daily color
             shades.forEach((shade) => {
                 document.documentElement.style.setProperty(
-                    `--color-accent-${shade}`,
+                    `--theme-accent-${shade}`,
                     `var(--color-${dailyAccentColor}-${shade})`,
                 );
             });
         } else {
             shades.forEach((shade) => {
                 document.documentElement.style.setProperty(
-                    `--color-accent-${shade}`,
+                    `--theme-accent-${shade}`,
                     `var(--color-${selectedColor}-${shade})`,
                 );
             });
@@ -45,8 +45,9 @@ const colorList = Object.keys(colorPalette);
 
 <select
     id="accentSelect"
-    class="shadow-square hover:shadow-square-2 border p-1"
+    class="shadow-square-clickable border p-1"
     title="set accent color"
+    aria-hidden="true"
 >
     <option value="daily">daily</option>
     <hr />

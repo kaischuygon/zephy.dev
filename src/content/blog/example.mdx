@@ -1,0 +1,104 @@
+---
+title: Example blogpost
+pubDate: 2025-10-22 00:00:00
+isDraft: true
+description: |
+    A comprehensive example demonstrating MDX features available in this Astro site.
+categories:
+    - mdx
+    - example
+    - demo
+img: "/assets/images/example-cover.jpg"
+img_alt: "Illustration: MDX features"
+related:
+    - 2024/1/making-my-own-wordle
+
+---
+import { Icon } from "astro-icon/components";
+
+Below is an example post demonstrating many MDX features supported by this project configuration. It is marked as draft 
+so as to now appear in the blogpost list when deployed.
+
+This file demonstrates an MDX post that matches the `blog` collection schema in `content.config.ts`.
+
+## 1. Images and static assets
+
+You can reference images that live in `src/assets/images`, in the `public/` folder or external.
+
+Inline image with alt text and a title: ![alt text](https://picsum.photos/100/100 "Title")
+
+## 2. Inline code and fenced code blocks
+
+Inline code looks like `const answer = 42;` and is great for short snippets.
+
+```js
+// A small JavaScript example
+function greet(name) {
+	return `Hello, ${name}!`;
+}
+
+console.log(greet('Astro'));
+```
+
+```tsx
+// You can include JSX/TSX too
+import React from 'react';
+
+export default function Demo() {
+	return <button onClick={() => alert('Clicked')}>Click me</button>;
+}
+```
+
+## 3. Tables
+
+| Feature | Supported |
+|---------|-----------|
+| Images  | ✅        |
+| Code    | ✅        |
+| Math    | ✅        |
+| Footnotes | ✅      |
+
+## 4. Lists, nested lists and blockquotes
+
+- Unordered list item
+	- Nested item
+		1. Nested ordered inside unordered
+
+1. Ordered item one
+2. Ordered item two
+
+> This is a blockquote with **bold** content and a [link](/about/).
+
+## 5. use components in markup
+HTML markup and custom components can be added to this mdx file to render if imported. 
+
+This:
+```mdx
+import { Icon } from "astro-icon/components";
+
+<div class="flex gap-2 text-4xl">
+    <Icon name="wind" />
+    <Icon name="bx:bxl-github" class="fill-accent-400" />
+</div>
+```
+
+Renders this: 
+<div class="flex gap-2 text-4xl">
+    <Icon name="wind" />
+    <Icon name="bx:bxl-github" class="text-accent-400" />
+</div>
+
+## 6. Footnotes
+
+Here's a sentence with a footnote.[^1]
+
+[^1]: This is the footnote text. Footnotes are useful for asides.
+
+## 7. Accessibility and SEO tips
+
+- Always provide `alt` attributes for images.
+- Use semantic headings (H1–H6) in order.
+- Keep frontmatter `description` short (150-160 chars) for meta descriptions.
+
+## 8. Related posts
+- Below you can also see a post that has been included as a related post in the blogpost's `meta` section.

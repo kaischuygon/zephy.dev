@@ -1,10 +1,10 @@
 ---
 title: Triadic Color Generator
-publishDate: 2020-03-02 00:00:00
+pubDate: 2020-03-02 00:00:00
 img: /src/assets/images//triadic-color-generator.png
 img_alt: An iPhone with triadic color generator installed
 description: |
-  An iOS app to calculate a triadic color palette
+  An iOS app to calculate a triadic color palette.
 tags:
   - iOS
   - UIKit
