@@ -10,7 +10,22 @@
     --font-mono: "Space Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     
     --shadow-square: 2px 2px;
-    --shadow-square-2: 4px 4px;
+    --shadow-square-2: 3px 3px;
+    --shadow-square-4: 4px 4px;
+}
+
+@theme inline {
+    --color-accent-50: var(--color-indigo-50);
+    --color-accent-100: var(--color-indigo-100);
+    --color-accent-200: var(--color-indigo-200);
+    --color-accent-300: var(--color-indigo-300);
+    --color-accent-400: var(--color-indigo-400);
+    --color-accent-500: var(--color-indigo-500);
+    --color-accent-600: var(--color-indigo-600);
+    --color-accent-700: var(--color-indigo-700);
+    --color-accent-800: var(--color-indigo-800);
+    --color-accent-900: var(--color-indigo-900);
+    --color-accent-950: var(--color-indigo-950);
 }
 
 @layer base {
@@ -24,11 +39,29 @@
 }
 
 body {
-    /* @apply font-sans dark:bg-accent-950 dark:text-accent-200 bg-accent-50 text-accent-900 antialiased; */
     @apply font-sans antialiased;
+
+    @apply bg-neutral-100 text-neutral-900 accent-accent-600;
+    
+    @variant dark {
+        @apply dark:bg-neutral-900 dark:text-neutral-100 dark:accent-accent-400;
+    }
+}
+
+.shadow-square-clickable {
+    @apply shadow-square hover:shadow-square-2 active:shadow-square-4;
+}
+
+a, input, select, textarea, button {
+    @apply text-accent-600  border-accent-600;
+    @apply bg-accent-600/5 hover:bg-accent-600/10 active:bg-accent-600/20 focus-visible:outline-accent-600;
+
+    @variant dark {
+        @apply text-accent-400  border-accent-400;
+        @apply bg-accent-400/5 hover:bg-accent-400/10 active:bg-accent-400/20 focus-visible:outline-accent-400;
+    }
 }
 
 a {
-    /* @apply border-b border-dotted hover:bg-accent-100 dark:hover:bg-accent-800; */
-    @apply border-b border-dotted hover:bg-black/5 dark:hover:bg-white/5;
+    @apply border-b border-dotted;
 }

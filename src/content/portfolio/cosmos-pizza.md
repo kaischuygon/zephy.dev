@@ -1,6 +1,6 @@
 ---
 title: Cosmos Pizza
-publishDate: 2020-05-13 00:00:00
+pubDate: 2020-05-13 00:00:00
 img: /src/assets/images//cosmos-pizza.png
 img_alt: cosmos pizza startup page
 description: |

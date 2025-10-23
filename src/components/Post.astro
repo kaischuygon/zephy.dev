@@ -1,0 +1,36 @@
+---
+import { Icon } from 'astro-icon/components';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+    post?: CollectionEntry<'blog'>
+}
+
+const { post } = Astro.props as Props;
+
+const link = post ? `/blog/${post.id}` : '/blog'
+---
+
+<a
+    href={link}
+    class="shadow-square-clickable flex flex-col gap-2 border"
+>
+    <div class="p-2">
+        {post ? (
+            <h2 class="text-xl font-semibold">{post.data.title}</h2>
+            <span class="text-xs font-light">
+                {post.data.pubDate?.toLocaleDateString()}
+            </span>
+            <p>{post.data.description}</p>
+        ) : (
+            <div class="text-center">
+                view all posts
+                <Icon
+                    class="inline"
+                    title="up-right"
+                    name="tabler:arrow-up-right"
+                />
+            </div>
+        )}
+    </div>
+</a>

@@ -1,0 +1,56 @@
+---
+import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+
+const { count=-1, ignore_id=undefined } = Astro.props;
+
+const portfolioItems = (await getCollection("portfolio"))
+    .filter((item) => (ignore_id ? item.id !== ignore_id : item))
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+    .slice(0, count);
+---
+
+<div class="flex flex-col gap-2">
+    {
+        portfolioItems.map(item => (
+            <a
+                href={`/portfolio/${item.id}`}
+                class="shadow-square-clickable flex w-full gap-2 border"
+            >
+                <Image
+                    src={item.data.img}
+                    alt={item.data.img_alt}
+                    loading="eager"
+                    width={250}
+                    height={250}
+                    class="aspect-video"
+                />
+                <div class="p-2">
+                    <h2 class="text-xl font-semibold">{item.data.title}</h2>
+                    <span class="text-xs font-light">
+                        {item.data.tags.join(" • ")}
+                    </span>
+                    <p>{item.data.description}</p>
+                </div>
+            </a>
+        ))
+    }
+    {
+        count >= portfolioItems.length && (
+            <a
+                href={`/portfolio`}
+                class="shadow-square-clickable flex w-full flex-col items-center justify-center gap-2 border"
+            >
+                <div class="p-2">
+                    view full portfolio
+                    <Icon
+                        class="inline"
+                        title="up-right"
+                        name="tabler:arrow-up-right"
+                    />
+                </div>
+            </a>
+        )
+    }
+</div>

@@ -1,6 +1,6 @@
 ---
 title: History Through Battleship
-publishDate: 2021-04-25 00:00:00
+pubDate: 2021-04-25 00:00:00
 img: /src/assets/images//history-through-battleship.png
 img_alt: History Through Battleship banner over an ocean background
 description: |

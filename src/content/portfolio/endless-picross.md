@@ -1,6 +1,6 @@
 ---
 title: Endless Picross
-publishDate: 2021-12-09 00:00:00
+pubDate: 2021-12-09 00:00:00
 img: /src/assets/images//endless-picross.png
 img_alt: A phone running endless picross
 description: |

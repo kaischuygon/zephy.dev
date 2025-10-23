@@ -1,6 +1,6 @@
 ---
 title: glTF Viewer w/ Cel Shading
-publishDate: 2021-04-24 00:00:00
+pubDate: 2021-04-24 00:00:00
 img: /src/assets/images/cel-shading.png
 img_alt: a 3d model of a bunny
 description: |

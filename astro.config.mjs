@@ -11,5 +11,6 @@ export default defineConfig({
   integrations: [react(), mdx(), icon({include: {bx: ['*'], tabler: ['*']}})],
   vite: {
     plugins: [tailwindcss()]
-  }
+  },
+  site: "https://zephy.dev"
 });

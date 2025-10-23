@@ -25,12 +25,11 @@ let extraLinks = {
 ---
 
 <nav class="md:sticky flex-wrap top-0 flex h-min max-h-screen flex-col items-end gap-2 text-right">
-    <a href="/" class="m-1 block text-4xl md:text-8xl">
-        <Icon name="wind" />
+    <a href="/" class="m-1 block text-4xl md:text-8xl" aria-label="site logo">
+        <Icon name="wind" title="site-logo" />
     </a>
     <h1 class="text-right text-xl font-bold">zephy.dev</h1>
     <h3>Kai's portfolio and blog</h3>
-    <hr class="my-1 w-full" />
     {
         Object.entries(navlinks).map(([title, link]) => (
             <a href={link} class="block font-mono font-semibold">
@@ -38,7 +37,7 @@ let extraLinks = {
             </a>
         ))
     }
-    <hr class="my-1 w-full" />
+    <hr class="prose w-full" />
     {
         // Display extra links, with pinned ones first
         Object.entries(extraLinks)
