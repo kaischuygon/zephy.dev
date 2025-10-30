@@ -7,11 +7,24 @@ import pagefind from "astro-pagefind";
 
 import mdx from '@astrojs/mdx';
 
+import vercel from '@astrojs/vercel';
+
 // https://astro.build/config
 export default defineConfig({
   integrations: [react(), mdx(), icon({include: {bx: ['*'], tabler: ['*']}}), pagefind()],
+
   vite: {
     plugins: [tailwindcss()]
   },
-  site: "https://zephy.dev"
+
+  site: "https://zephy.dev",
+  adapter: vercel({
+    webAnalytics: {
+      enabled: true,
+    },
+    imagesConfig: {
+      sizes: [320, 640, 1280],
+    },
+    imageService: true,
+  })
 });
