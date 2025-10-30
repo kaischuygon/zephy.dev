@@ -30,15 +30,12 @@ export default function ThemeSelect() {
     }, [theme]);
     
     return (
-
         <select
             id="themeSelect"
-            className="shadow-square-clickable border p-1"
             title="set theme"
-            aria-label="set theme"
+            aria-hidden="true"
             value={theme}
             onChange={e => setTheme(e.target.value)}
-            aria-hidden="true"
         >
             <option value="system">system</option>
             <option value="light">light</option>

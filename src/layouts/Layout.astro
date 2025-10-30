@@ -2,11 +2,13 @@
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
 import SocialLinks from "../components/SocialLinks.astro";
-import AccentSelect from "../components/AccentSelect.astro";
 import ThemeSelect from "../components/ThemeSelect";
 import { SEO } from "astro-seo";
 import "../styles/global.css";
 import type { CollectionEntry } from "astro:content";
+import AccentSelect from "../components/AccentSelect";
+import SearchModal from "../components/SearchModal.astro";
+import { Icon } from "astro-icon/components";
 
 interface Props {
     title?: string,
@@ -22,7 +24,7 @@ const generalDescription =
 
 const getDescription = (collectionItem) ? collectionItem.data.description : generalDescription;
 
-const getImage = collectionItem?.data.img ?? "og-image.png";
+const getImage = collectionItem?.data.img || "/og-image.png";
 ---
 
 <!doctype html>
@@ -30,18 +32,23 @@ const getImage = collectionItem?.data.img ?? "og-image.png";
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width" />
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <meta name="theme-color" content="#71717a" />
         <meta name="color-scheme" content="light dark" />
         <meta name="generator" content={Astro.generator} />
+        
+        <!-- Favicon -->
+        <link rel="icon" href="/favicon.ico" sizes="any">
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+        <meta name="theme-color" content="#737373">
+        
         <title>{getTitle}</title>
+        <!-- RSS -->
         <link
             rel="alternate"
             type="application/rss+xml"
             title={getTitle}
             href={new URL("rss.xml", Astro.site)}
         />
+        <!-- Load preferred color scheme on load -->
         <script is:inline>
             const theme = localStorage.getItem("theme");
 
@@ -53,6 +60,7 @@ const getImage = collectionItem?.data.img ?? "og-image.png";
                 document.documentElement.classList.add("dark");
             }
         </script>
+        <!-- All SEO goes here -->
         <SEO
             title={getTitle}
             titleTemplate="%s | zephy.dev"
@@ -95,8 +103,18 @@ const getImage = collectionItem?.data.img ?? "og-image.png";
         >
             <nav class="flex items-center justify-end gap-2">
                 <SocialLinks />
-                <ThemeSelect client:load />
-                <AccentSelect />
+                <label aria-hidden="true" for="themeSelect" class="clickable shadow-square-clickable border p-1">
+                    <Icon name="tabler:moon" class="inline" />
+                    <ThemeSelect client:load />
+                </label>
+                <label aria-hidden="true" for="accentSelect" class="clickable shadow-square-clickable border p-1">
+                    <Icon name="tabler:palette" class="inline" />
+                    <AccentSelect client:load />
+                </label>
+                <label for="searchButton" class="clickable shadow-square-clickable border p-1">
+                    <Icon title="search" name="tabler:search" class="inline" />
+                    <SearchModal />
+                </label>
             </nav>
             <div
                 class="mt-4 grid gap-8 sm:grid-rows-[0fr_1fr] md:grid-cols-[1fr_3fr] md:grid-rows-1"
@@ -110,10 +128,3 @@ const getImage = collectionItem?.data.img ?? "og-image.png";
         </div>
     </body>
 </html>
-
-<script>
-    // Set external links to open in a new tab
-    document.querySelectorAll('a[target="_blank"]').forEach((link) => {
-        (link as HTMLAnchorElement).rel = "noopener noreferrer";
-    });
-</script>

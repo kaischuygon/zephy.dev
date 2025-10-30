@@ -3,9 +3,9 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="About">
-    <div class="prose prose-neutral dark:prose-invert">
+    <div class="prose prose-neutral dark:prose-invert" data-pagefind-body>
         <section id="about-me">
-            <h2>About Me</h2>
+            <h1 data-pagefind-meta="title">About Me</h1>
 
             <p>
                 I'm Kai Schuyler Gonzalez, an experienced software developer and
@@ -16,7 +16,9 @@ import Layout from "../layouts/Layout.astro";
             <p>
                 I am originally from San Jose, Costa Rica and have lived in
                 Colorado since 2010. I have a B.S. in Computer Science from the <a
-                    href="https://www.cu.edu/">University of Colorado Boulder</a
+                    href="https://www.cu.edu/"
+                    target="_blank"
+                    rel="noopener noreferrer">University of Colorado Boulder</a
                 >. My interests include game development, cooking, skiing,
                 traveling, and photography.
             </p>
@@ -168,6 +170,7 @@ import Layout from "../layouts/Layout.astro";
                         <a
                             href="https://www.colorado.edu/engineering/academics/degree-programs/creative-technology-design"
                             target="_blank"
+                            rel="noopener noreferrer"
                             >Creative Technology and Design Minor</a
                         >; CU Boulder Esteemed Scholar
                     </li>
@@ -188,7 +191,8 @@ import Layout from "../layouts/Layout.astro";
                     <li>
                         <a
                             href="https://www.uu.se/en/study/course?query=1MD150"
-                            target="_blank">Curriculum</a
+                            target="_blank"
+                            rel="noopener noreferrer">Curriculum</a
                         >
                     </li>
                 </ul>

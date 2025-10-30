@@ -1,13 +1,8 @@
 ---
-import { Icon } from "astro-icon/components";
 import Layout from "../layouts/Layout.astro";
 
 import { getCollection } from "astro:content";
 import PortfolioItems from "../components/PortfolioItems.astro";
-
-const allPortfolioItems = (await getCollection('portfolio')).sort(
-    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
 ---
 
 <Layout title="Portfolio">

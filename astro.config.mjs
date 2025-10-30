@@ -3,12 +3,13 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from "@tailwindcss/vite";
 import react from '@astrojs/react';
 import icon from 'astro-icon';
+import pagefind from "astro-pagefind";
 
 import mdx from '@astrojs/mdx';
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [react(), mdx(), icon({include: {bx: ['*'], tabler: ['*']}})],
+  integrations: [react(), mdx(), icon({include: {bx: ['*'], tabler: ['*']}}), pagefind()],
   vite: {
     plugins: [tailwindcss()]
   },
