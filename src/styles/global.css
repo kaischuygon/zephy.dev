@@ -1,14 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Poly:ital@0;1&family=Space+Grotesk:wght@300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poly:ital@0;1&family=Space+Grotesk:wght@300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-@theme {  
-    --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";  
-    --font-serif: Poly, ui-serif, Georgia, Cambria, "Times New Roman", Times, serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";  
-    --font-mono: "Space Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    
+@theme {
+    --font-sans:
+        "Space Grotesk", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --font-serif:
+        Poly, ui-serif, Georgia, Cambria, "Times New Roman", Times, serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --font-mono:
+        "Space Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+
     --shadow-square: 2px 2px;
     --shadow-square-2: 3px 3px;
     --shadow-square-4: 4px 4px;
@@ -32,7 +38,7 @@
     .prose {
         @apply !font-serif;
     }
-    
+
     .prose a {
         @apply !no-underline;
     }
@@ -41,10 +47,10 @@
 body {
     @apply font-sans antialiased;
 
-    @apply bg-neutral-100 text-neutral-900 accent-accent-600;
-    
+    @apply accent-accent-600 bg-neutral-100 text-neutral-900;
+
     @variant dark {
-        @apply dark:bg-neutral-900 dark:text-neutral-100 dark:accent-accent-400;
+        @apply accent-accent-400 bg-neutral-900 text-neutral-100;
     }
 }
 
@@ -52,16 +58,28 @@ body {
     @apply shadow-square hover:shadow-square-2 active:shadow-square-4;
 }
 
-a, input, select, textarea, button {
-    @apply text-accent-600  border-accent-600;
+a, .clickable {
+    @apply text-accent-600 border-accent-600;
     @apply bg-accent-600/5 hover:bg-accent-600/10 active:bg-accent-600/20 focus-visible:outline-accent-600;
 
     @variant dark {
-        @apply text-accent-400  border-accent-400;
+        @apply text-accent-400 border-accent-400;
         @apply bg-accent-400/5 hover:bg-accent-400/10 active:bg-accent-400/20 focus-visible:outline-accent-400;
     }
 }
 
 a {
     @apply border-b border-dotted;
+}
+
+dialog {
+    @apply border-accent-600 shadow-square shadow-accent-600 border backdrop:bg-neutral-900/75;
+
+    @variant dark {
+        @apply border-accent-400 shadow-square shadow-accent-400;
+    }
+}
+
+input, select, textarea, button, .clickable {
+    @apply h-full;
 }

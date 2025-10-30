@@ -20,13 +20,13 @@ const { Content } = await render(item);
 ---
 
 <Layout collectionItem={item}>
-    <div class="w-full flex flex-wrap gap-2">
+    <div class="w-full flex flex-wrap gap-2" data-pagefind-body>
 		<section id={item.id}>
 			<a href="/portfolio">
 				<Icon class="inline" title="arrow-left" name="tabler:arrow-left" />
 				back to projects
 			</a>
-			<h1 class="mb-2 text-4xl font-bold">
+			<h1 class="mb-2 text-4xl font-bold" data-pagefind-meta="title">
 				{item.data.title}
 			</h1>
 			<div class="mb-2 flex gap-2">

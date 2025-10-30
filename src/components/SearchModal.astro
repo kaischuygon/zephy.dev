@@ -1,0 +1,109 @@
+---
+import { Icon } from "astro-icon/components";
+import Search from "astro-pagefind/components/Search";
+---
+<button id="searchButton">search</button>
+
+<dialog
+    id="searchDialog"
+    closedby="any"
+    class="absolute mx-auto mt-8 max-h-[90vh] overflow-scroll"
+>
+    <div class="flex w-100 max-w-md flex-col gap-2 p-4">
+        <div class="flex gap-2 justify-between items-center">
+            <h2 class="font-semibold">Search</h2>
+            <Icon
+                name="tabler:x"
+                role="button"
+                id="closeButton"
+                class="clickable ml-auto text-2xl"
+            />
+        </div>
+        <Search id="search" uiOptions={{ showImages: true }} />
+    </div>
+</dialog>
+
+<style is:inline>
+    :root {
+        /* Pagefind */
+        --pagefind-ui-scale: 0.75;
+        --pagefind-ui-primary: var(--color-accent-500);
+        --pagefind-ui-text: unset;
+        --pagefind-ui-message-text: unset;
+        --pagefind-ui-result-title-text: var(--color-accent-500);
+        --pagefind-ui-result-text: unset;
+        --pagefind-ui-background: unset;
+        --pagefind-input-background: unset;
+        --pagefind-ui-border: var(--color-accent-500);
+        --pagefind-ui-tag: var(--color-accent-500);
+        
+        --pagefind-ui-border-width: 2px;
+        --pagefind-ui-border-radius: 0px;
+        --pagefind-ui-image-border-radius: 0px;
+        --pagefind-ui-image-box-ratio: 3 / 2;
+        --pagefind-ui-font: var(--font-sans);
+        
+        --pagefind-button-background: var(--pagefind-input-background);
+        --pagefind-button-color: var(--pagefind-ui-message-text);
+    }
+
+    #search .pagefind-ui__search-input,
+    #search .pagefind-ui__search-clear {
+        background-color: var(--pagefind-input-background);
+        color: var(--pagefind-ui-text);
+    }
+
+    #search .pagefind-ui__result-title,
+    #search .pagefind-ui__result-link {
+        display: inline-block;
+        font-weight: 700;
+        font-size: calc(2rem * var(--pagefind-ui-scale));
+        color: var(--pagefind-ui-result-title-text);
+    }
+
+    #search .pagefind-ui__result-excerpt {
+        color: var(--pagefind-ui-result-text);
+        font-weight: 400;
+        font-size: calc(1.25rem * var(--pagefind-ui-scale));
+    }
+
+    #search .pagefind-ui__message {
+        color: var(--pagefind-ui-message-text);
+        margin: calc(0.5rem * var(--pagefind-ui-scale)) 0
+            calc(1.5rem * var(--pagefind-ui-scale))
+            calc(0.5rem * var(--pagefind-ui-scale));
+    }
+
+    #search .pagefind-ui__button {
+        color: var(--pagefind-button-color);
+        background: var(--pagefind-button-background);
+    }
+
+    #search .pagefind-ui__result {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #search .pagefind-ui__result-thumb:empty {
+        display: none;
+    }
+</style>
+
+<script is:inline>
+    const searchButton = document.getElementById("searchButton");
+    const searchDialog = document.getElementById("searchDialog");
+    const closeBtn = document.getElementById("closeButton");
+
+    searchButton.addEventListener("click", () => {
+        searchDialog.showModal();
+    });
+
+    closeBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        searchDialog.close();
+    });
+
+    searchDialog.addEventListener("toggle", () => {
+        document.body.classList.toggle('overflow-hidden');
+    })
+</script>

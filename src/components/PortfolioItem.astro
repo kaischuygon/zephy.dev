@@ -1,0 +1,45 @@
+---
+import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+    item?: CollectionEntry<'portfolio'>
+}
+
+const { item } = Astro.props as Props;
+
+const link = item ? `/portfolio/${item.id}` : '/portfolio'
+---
+
+<a
+    href={link}
+    class="shadow-square-clickable flex w-full gap-2 border"
+>
+    {item ? (
+        <Image
+            src={item.data.img}
+            alt={item.data.img_alt}
+            loading="eager"
+            width={250}
+            height={250}
+            class="aspect-video"
+        />
+        <div class="p-2">
+            <h2 class="text-xl font-semibold">{item.data.title}</h2>
+            <span class="text-xs font-light">
+                {item.data.tags.join(" • ")}
+            </span>
+            <p>{item.data.description}</p>
+        </div>
+    ) : (
+        <div class="text-center p-2 w-full">
+            view full portfolio
+            <Icon
+                class="inline"
+                title="up-right"
+                name="tabler:arrow-up-right"
+            />
+        </div>
+    )}
+</a>
