@@ -23,14 +23,14 @@ const link = item ? `/portfolio/${item.id}` : '/portfolio'
             loading="eager"
             width={250}
             height={250}
-            class="aspect-video"
+            class="aspect-video h-full"
         />
-        <div class="p-2">
+        <div class="p-2 h-full">
             <h2 class="text-xl font-semibold">{item.data.title}</h2>
             <span class="text-xs font-light">
                 {item.data.tags.join(" • ")}
             </span>
-            <p>{item.data.description}</p>
+            <p class="text-ellipsis">{item.data.description}</p>
         </div>
     ) : (
         <div class="text-center p-2 w-full">
