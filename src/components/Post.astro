@@ -21,7 +21,7 @@ const link = post ? `/blog/${post.id}` : '/blog'
             <span class="text-xs font-light">
                 {post.data.pubDate?.toLocaleDateString()}
             </span>
-            <p>{post.data.description}</p>
+            <p class="text-ellipsis">{post.data.description}</p>
         ) : (
             <div class="text-center">
                 view all posts

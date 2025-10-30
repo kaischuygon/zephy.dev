@@ -23,7 +23,7 @@ export default defineConfig({
       enabled: true,
     },
     imagesConfig: {
-      sizes: [320, 640, 1280],
+      sizes: [250, 320, 640, 1280],
     },
     imageService: true,
   })
