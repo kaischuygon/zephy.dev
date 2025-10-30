@@ -20,69 +20,32 @@ export default function AccentSelect() {
         "purple",
         "fuchsia",
         "pink",
-        "rose",
-        "slate",
-        "gray",
-        "zinc",
-        "neutral",
-        "stone"
+        "rose"
     ]
 
     const today = new Date();
     const dailyAccentColor = colorSchemes[today.getDate() % colorSchemes.length];
-    const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 
     useEffect(() => {
-        console.log(dailyAccentColor);
-        if (!localStorage.getItem('accent')) {
-            localStorage.setItem('accent', 'daily');
-            shades.forEach((shade) => {
-                document.documentElement.style.setProperty(
-                    `--color-accent-${shade}`,
-                    `var(--color-${dailyAccentColor}-${shade})`,
-                );
-            });
+        // load the color from local storage
+        
+        const selected = localStorage.getItem('accent');
+        if (!selected) {
+            // if not set, set to daily
             setAccentColor('daily');
         } else {
-            // load the color from local storage
-            const selected = localStorage.getItem('accent');
-            if (selected === 'daily') {
-                shades.forEach((shade) => {
-                    document.documentElement.style.setProperty(
-                        `--color-accent-${shade}`,
-                        `var(--color-${dailyAccentColor}-${shade})`,
-                    );
-                });
-            } else {
-                shades.forEach((shade) => {
-                    document.documentElement.style.setProperty(
-                        `--color-accent-${shade}`,
-                        `var(--color-${selected}-${shade})`,
-                    );
-                });
-            }
             setAccentColor(selected);
         }
     }, []);
 
     useEffect(() => {
-        console.log(accentColor);
-
-        if (accentColor === "daily") {
+        if (accentColor === 'daily') {
             // Set the accent color to the daily color
-            shades.forEach((shade) => {
-                document.documentElement.style.setProperty(
-                    `--color-accent-${shade}`,
-                    `var(--color-${dailyAccentColor}-${shade})`,
-                );
-            });
+            localStorage.setItem('accent', 'daily');
+            document.documentElement.dataset['theme'] = dailyAccentColor;
         } else {
-            shades.forEach((shade) => {
-                document.documentElement.style.setProperty(
-                    `--color-accent-${shade}`,
-                    `var(--color-${accentColor}-${shade})`,
-                );
-            });
+            localStorage.setItem('accent', accentColor);
+            document.documentElement.dataset['theme'] = accentColor;
         }
     }, [accentColor]);
 

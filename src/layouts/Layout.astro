@@ -60,6 +60,40 @@ const getImage = collectionItem?.data.img || "/og-image.png";
                 document.documentElement.classList.add("dark");
             }
         </script>
+        <!-- Load saved accent color or daily -->
+         <script is:inline>
+            const colorSchemes = [
+                "red",
+                "orange",
+                "amber",
+                "yellow",
+                "lime",
+                "green",
+                "emerald",
+                "teal",
+                "cyan",
+                "sky",
+                "blue",
+                "indigo",
+                "violet",
+                "purple",
+                "fuchsia",
+                "pink",
+                "rose"
+            ]
+
+            const today = new Date();
+            const dailyAccentColor = colorSchemes[today.getDate() % colorSchemes.length];
+            // load the color from local storage
+            const selected = localStorage.getItem('accent');
+
+            if (!selected || selected === 'daily') {
+                // if not set, set to daily
+                document.documentElement.dataset['theme'] = dailyAccentColor;
+            } else {
+                document.documentElement.dataset['theme'] = selected;
+            }
+         </script>
         <!-- All SEO goes here -->
         <SEO
             title={getTitle}
