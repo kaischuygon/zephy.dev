@@ -37,7 +37,7 @@
     }
     
     .prose a {
-        @apply !no-underline;
+        @apply !no-underline !text-accent-600 dark:!text-accent-400;
     }
     
     .shadow-square-clickable {

@@ -15,6 +15,7 @@ export async function getStaticPaths() {
 }
 
 // 2. For your template, you can get the entry directly from the prop
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/*.{jpeg,jpg,png,gif}');
 const { item } = Astro.props;
 const { Content } = await render(item);
 ---
@@ -38,7 +39,7 @@ const { Content } = await render(item);
 			</div>
 			<div class="prose prose-neutral dark:prose-invert">
 				<Image
-					src={item.data.img}
+					src={images[item.data.img]()}
 					alt={item.data.img_alt}
 					loading="eager"
 					width={500}

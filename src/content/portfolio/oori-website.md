@@ -1,7 +1,7 @@
 ---
 title: Oori Company Site
 pubDate: 2023-10-15 00:00:00
-img: /src/assets/images//oori-site.png
+img: /src/assets/images/oori-site.png
 img_alt: A screenshot of the oori site
 description: |
   Company landing page for Oori Data.

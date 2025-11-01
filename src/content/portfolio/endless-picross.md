@@ -1,7 +1,7 @@
 ---
 title: Endless Picross
 pubDate: 2021-12-09 00:00:00
-img: /src/assets/images//endless-picross.png
+img: /src/assets/images/endless-picross.png
 img_alt: A phone running endless picross
 description: |
   An Android game that generates random picross puzzles.
