@@ -135,20 +135,23 @@ const getImage = collectionItem?.data.img || "/og-image.png";
         <div
             class="container mx-auto grid h-screen grid-rows-[0fr_1fr_0fr] gap-4 p-2"
         >
-            <nav class="flex items-center justify-end gap-2">
+            <nav class="flex flex-wrap items-center justify-end gap-2">
                 <SocialLinks />
-                <label aria-hidden="true" for="themeSelect" class="clickable shadow-square-clickable border p-1">
-                    <Icon name="tabler:moon" class="inline" />
-                    <ThemeSelect client:load />
-                </label>
-                <label aria-hidden="true" for="accentSelect" class="clickable shadow-square-clickable border p-1">
-                    <Icon name="tabler:palette" class="inline" />
-                    <AccentSelect client:load />
-                </label>
-                <label for="searchButton" class="clickable shadow-square-clickable border p-1">
-                    <Icon title="search" name="tabler:search" class="inline" />
-                    <SearchModal />
-                </label>
+                <div class="flex items-center justify-end gap-2">
+                    <label aria-hidden="true" for="themeSelect" class="clickable shadow-square-clickable border p-1">
+                        <Icon name="tabler:moon" class="inline" />
+                        <ThemeSelect client:load />
+                    </label>
+                    <label aria-hidden="true" for="accentSelect" class="clickable shadow-square-clickable border p-1">
+                        <Icon name="tabler:palette" class="inline" />
+                        <AccentSelect client:load />
+                    </label>
+                    <label for="searchButton" class="clickable shadow-square-clickable border p-1">
+                        <Icon title="search" name="tabler:search" class="inline" />
+                        <SearchModal />
+                    </label>
+                </div>
+
             </nav>
             <div
                 class="mt-4 grid gap-8 sm:grid-rows-[0fr_1fr] md:grid-cols-[1fr_3fr] md:grid-rows-1"
