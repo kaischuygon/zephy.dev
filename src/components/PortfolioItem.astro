@@ -15,7 +15,7 @@ const link = item ? `/portfolio/${item.id}` : '/portfolio'
 
 <a
     href={link}
-    class="shadow-square-clickable flex w-full gap-2 border"
+    class="shadow-square-clickable flex flex-col md:flex-row w-full gap-2 border"
 >
     {item ? (
         <Image
@@ -24,7 +24,7 @@ const link = item ? `/portfolio/${item.id}` : '/portfolio'
             loading="eager"
             width={250}
             height={250}
-            class="aspect-video w-[250px]"
+            class="aspect-video w-100 md:w-[250px]"
         />
         <div class="p-2 h-full">
             <h2 class="text-xl font-semibold">{item.data.title}</h2>
