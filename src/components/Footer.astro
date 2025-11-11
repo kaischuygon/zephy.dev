@@ -3,26 +3,42 @@ import { Icon } from "astro-icon/components";
 ---
 
 <footer class="flex justify-between gap-2 p-2">
-    <div>
-        © 2025 <Icon name="wind" title="site-logo" class="inline" />
-        <a href="https://zephy.dev" target="_blank" rel="noopener noreferrer"
-            >zephy.dev</a
-        > • Developed with
-        <Icon name="tabler:brand-astro" title="astro" class="inline" />
-        <a href="https://astro.build" target="_blank" rel="noopener noreferrer"
-            >Astro</a
-        >
+    <div class="flex gap-2 flex-col md:flex-row">
+        <span>
+            © 2025 <Icon name="wind" title="site-logo" class="inline" />
+            <a href="https://zephy.dev" target="_blank" rel="noopener noreferrer">
+                zephy.dev
+            </a>
+        </span>
+        <span class="hidden md:inline">
+            •
+        </span>
+        <span>
+            Developed with: <Icon name="lineicons:astro" title="astro" class="inline" />
+            <a href="https://astro.build" target="_blank" rel="noopener noreferrer">
+                Astro
+            </a>
+        </span>
     </div>
-    <div>
-        <Icon name="bx:bxl-github" title="github" class="inline" />
-        <a
-            href="https://github.com/kaischuygon/zephy.dev"
-            target="_blank"
-            rel="noopener noreferrer">source</a
-        > • <a
-            href="mailto:kai.schuyler@gmail.com"
-            target="_blank"
-            rel="noopener noreferrer">contact me</a
-        >
+    <div class="flex gap-2 flex-col md:flex-row text-right">
+        <span>
+            <Icon name="lineicons:github" title="github" class="inline" />
+            <a
+                href="https://github.com/kaischuygon/zephy.dev"
+                target="_blank"
+                rel="noopener noreferrer">source</a
+            > 
+        </span>
+        <span class="hidden md:inline">
+            •
+        </span>
+        <span>
+            <Icon name="lineicons:envelope-1" title="mail" class="inline" />
+            <a
+                href="mailto:kai.schuyler@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer">contact me</a
+            >
+        </span>
     </div>
 </footer>
