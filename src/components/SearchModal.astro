@@ -2,25 +2,25 @@
 import { Icon } from "astro-icon/components";
 import Search from "astro-pagefind/components/Search";
 ---
-<button id="searchButton">search</button>
+<button id="searchButton" title="Search">search&nbsp;<kbd title="press s to search">s</kbd></button>
 
 <dialog
     id="searchDialog"
     closedby="any"
-    class="absolute mx-auto mt-8 max-h-[90vh] overflow-scroll"
+    class="absolute mx-auto w-sm max-w-11/12 mt-8 max-h-[90vh] overflow-scroll"
 >
-    <div class="flex w-100 max-w-md flex-col gap-2 p-4">
+    <search class="flex flex-col gap-2 p-4">
         <div class="flex gap-2 justify-between items-center">
             <h2 class="font-semibold">Search</h2>
             <Icon
-                name="tabler:x"
+                name="lineicons:xmark"
                 role="button"
                 id="closeButton"
                 class="clickable ml-auto text-2xl"
             />
         </div>
         <Search id="search" uiOptions={{ showImages: false }} />
-    </div>
+    </search>
 </dialog>
 
 <style is:inline>
@@ -94,16 +94,35 @@ import Search from "astro-pagefind/components/Search";
     const searchDialog = document.getElementById("searchDialog");
     const closeBtn = document.getElementById("closeButton");
 
-    searchButton.addEventListener("click", () => {
+    // searchDialog.showModal();
+
+    searchButton.addEventListener("click", e => {
+        e.preventDefault();
         searchDialog.showModal();
     });
 
-    closeBtn.addEventListener("click", (e) => {
+    closeBtn.addEventListener("click", e => {
         e.preventDefault();
         searchDialog.close();
     });
 
-    searchDialog.addEventListener("toggle", () => {
-        document.body.classList.toggle('overflow-hidden');
-    })
+    searchDialog.addEventListener("toggle", e => {
+        e.preventDefault();
+        if(e.newState === "open") {
+            document.body.classList.add("overflow-hidden");
+        } else {
+            document.body.classList.remove("overflow-hidden");
+        }
+    });
+
+    document.addEventListener("keypress", e => {
+        e.preventDefault();
+        switch(e.key) {
+            case "s":
+                searchButton.click();
+                break;
+            default:
+                break;
+        }
+    });
 </script>
