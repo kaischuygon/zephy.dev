@@ -1,27 +1,8 @@
 import { useEffect, useState } from "react";
+import colorSchemes from "../content/color-schemes.json";
 
 export default function AccentSelect() {
     const [ accentColor, setAccentColor ] = useState();
-
-    const colorSchemes = [
-        "red",
-        "orange",
-        "amber",
-        "yellow",
-        "lime",
-        "green",
-        "emerald",
-        "teal",
-        "cyan",
-        "sky",
-        "blue",
-        "indigo",
-        "violet",
-        "purple",
-        "fuchsia",
-        "pink",
-        "rose"
-    ]
 
     const today = new Date();
     const dailyAccentColor = colorSchemes[today.getDate() % colorSchemes.length];

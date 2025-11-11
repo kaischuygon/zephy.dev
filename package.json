@@ -10,15 +10,15 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/mdx": "4.3.7",
-    "@astrojs/react": "^4.4.0",
-    "@astrojs/rss": "^4.0.12",
+    "@astrojs/mdx": "4.3.10",
+    "@astrojs/react": "4.4.2",
+    "@astrojs/rss": "4.0.13",
     "@astrojs/vercel": "^9.0.0",
-    "@iconify-json/tabler": "^1.2.18",
+    "@iconify-json/lineicons": "^1.2.6",
     "@tailwindcss/vite": "^4.1.5",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
-    "astro": "5.14.5",
+    "astro": "5.15.5",
     "astro-icon": "^1.1.5",
     "astro-pagefind": "^1.8.5",
     "astro-seo": "^0.8.4",
@@ -28,7 +28,6 @@
     "tailwindcss": "^4.1.5"
   },
   "devDependencies": {
-    "@iconify-json/bx": "^1.2.2",
     "@tailwindcss/typography": "^0.5.16",
     "prettier": "^3.5.3",
     "prettier-plugin-astro": "^0.14.1",

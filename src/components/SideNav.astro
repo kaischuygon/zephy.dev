@@ -20,11 +20,13 @@ let extraLinks = {
     "✉️ contact": {
         href: "mailto:kai.schuyler@gmail.com",
         pinned: false,
-    }
+    },
 };
 ---
 
-<nav class="md:sticky flex-wrap top-0 flex h-min max-h-screen flex-col items-end gap-2 text-right">
+<nav
+    class="top-0 flex h-min max-h-screen flex-col flex-wrap items-end gap-2 text-right md:sticky"
+>
     <a href="/" class="m-1 block text-4xl md:text-8xl" aria-label="site logo">
         <Icon name="wind" title="site-logo" />
     </a>
@@ -32,7 +34,7 @@ let extraLinks = {
     <h3>Kai's portfolio and blog</h3>
     {
         Object.entries(navlinks).map(([title, link]) => (
-            <a href={link} class="block font-mono font-semibold">
+            <a href={link} class="font-mono font-semibold">
                 {title}
             </a>
         ))

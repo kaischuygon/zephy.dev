@@ -8,7 +8,7 @@ import Posts from "../components/Posts.astro";
 ---
 
 <Layout>
-    <section id="splash" class="grid gap-4 md:grid-cols-[1fr_auto]">
+    <section id="splash" class="grid gap-4 grid-rows-2 md:grid-rows-1 grid-cols-1 md:grid-cols-[1fr_auto]">
         <div class="prose prose-neutral dark:prose-invert">
             <h1>👋🏼 Hello!</h1>
             <p>
@@ -30,9 +30,9 @@ import Posts from "../components/Posts.astro";
             loading="eager"
             decoding="async"
             alt="me, Kai Schuyler Gonzalez"
-            width={500}
-            height={500}
-            class="shadow-square block aspect-square w-[200px] border md:float-end"
+            width={250}
+            height={250}
+            class="shadow-square block aspect-square border row-start-1 md:row-start-auto md:float-end"
         />
     </section>
 

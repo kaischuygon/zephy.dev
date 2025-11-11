@@ -21,52 +21,54 @@
     --shadow-square-4: 4px 4px;
 }
 
-@layer base {
-    body {
-        @apply font-sans antialiased;
-        
-        @apply accent-accent-600 bg-neutral-100 text-neutral-900;
-        
-        @variant dark {
-            @apply accent-accent-400 bg-neutral-900 text-neutral-100;
-        }
+body {
+    @apply font-sans antialiased;
+    
+    @apply accent-accent-600 bg-neutral-100 text-neutral-900;
+    
+    @variant dark {
+        @apply accent-accent-400 bg-neutral-900 text-neutral-100;
     }
-    
-    .prose {
-        @apply !font-serif;
+}
+
+.prose {
+    @apply !font-serif;
+}
+
+.prose a {
+    @apply !no-underline !text-accent-600 dark:!text-accent-400;
+}
+
+.shadow-square-clickable {
+    @apply shadow-square hover:shadow-square-2 active:shadow-square-4;
+}
+
+a, .clickable {
+    @apply text-accent-600 border-accent-600;
+    @apply bg-accent-600/5 hover:bg-accent-600/10 active:bg-accent-600/20 focus-visible:outline-accent-600;
+
+    @variant dark {
+        @apply text-accent-400 border-accent-400;
+        @apply bg-accent-400/5 hover:bg-accent-400/10 active:bg-accent-400/20 focus-visible:outline-accent-400;
     }
-    
-    .prose a {
-        @apply !no-underline !text-accent-600 dark:!text-accent-400;
+}
+
+a {
+    @apply border-b border-dotted;
+}
+
+dialog {
+    @apply border-accent-600 shadow-square shadow-accent-600 border backdrop:bg-neutral-900/75;
+
+    @variant dark {
+        @apply border-accent-400 shadow-square shadow-accent-400;
     }
-    
-    .shadow-square-clickable {
-        @apply shadow-square hover:shadow-square-2 active:shadow-square-4;
-    }
-    
-    a, .clickable {
-        @apply text-accent-600 border-accent-600;
-        @apply bg-accent-600/5 hover:bg-accent-600/10 active:bg-accent-600/20 focus-visible:outline-accent-600;
-    
-        @variant dark {
-            @apply text-accent-400 border-accent-400;
-            @apply bg-accent-400/5 hover:bg-accent-400/10 active:bg-accent-400/20 focus-visible:outline-accent-400;
-        }
-    }
-    
-    a {
-        @apply border-b border-dotted;
-    }
-    
-    dialog {
-        @apply border-accent-600 shadow-square shadow-accent-600 border backdrop:bg-neutral-900/75;
-    
-        @variant dark {
-            @apply border-accent-400 shadow-square shadow-accent-400;
-        }
-    }
-    
-    input, select, textarea, button, .clickable {
-        @apply h-full;
-    }
+}
+
+input, select, textarea, button, .clickable {
+    @apply h-full;
+}
+
+kbd {
+    @apply text-xs border px-0.5 rounded-sm;
 }
