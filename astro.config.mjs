@@ -11,7 +11,7 @@ import vercel from '@astrojs/vercel';
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [react(), mdx(), icon({include: {bx: ['*'], tabler: ['*']}}), pagefind()],
+  integrations: [react(), mdx(), icon({include: {lineicons: ['*']}}), pagefind()],
 
   vite: {
     plugins: [tailwindcss()]
