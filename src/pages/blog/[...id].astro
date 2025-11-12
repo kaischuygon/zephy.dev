@@ -20,15 +20,15 @@ const { Content } = await render(post);
 ---
 
 <Layout collectionItem={post}>
-    <div class="flex flex-col w-full gap-2" data-pagefind-body>
-		<div>
-			<a href="/blog">
-				<Icon class="inline" title="arrow-left" name="lineicons:arrow-left" />
-				back to blog
-			</a>
-		</div>
-		<section id={post.id}>
-			<h1 class="mb-2 text-4xl font-bold" data-pagefind-meta="title">
+    <div class="flex flex-wrap justify-between gap-2">
+		<section id={post.id} class="prose prose-neutral dark:prose-invert" data-pagefind-body>
+			<div>
+				<a href="/blog">
+					<Icon class="inline" title="arrow-left" name="lineicons:arrow-left" />
+					back to blog
+				</a>
+			</div>
+			<h1 data-pagefind-meta="title">
 				{post.data.title}
 			</h1>
 			<div class="mb-2 flex gap-2">
@@ -38,19 +38,21 @@ const { Content } = await render(post);
 					))
 				}
 			</div>
-			<div class="prose prose-neutral dark:prose-invert">
-				<Content />
-			</div>
+			<span class="text-xs font-light">
+				{post.data.pubDate?.toLocaleDateString()}
+			</span>
+			<Content />
+			<hr />
 		</section>
-		{post.data.related && (
-			<section id='related' class="flex flex-col gap-2">
+		
+		<aside id="related_more" class="w-sm">
+			{post.data.related && (
 				<h2 class="mb-2 text-2xl font-semibold">Related Posts</h2>
 				<RelatedPosts post={post} />
-			</section>
-		)}
-		<section id='more' class="flex flex-col gap-2">
+				<br/>
+			)}
 			<h2 class="mb-2 text-2xl font-semibold">More</h2>
-			<Posts count={3} ignore_id={post.id} />
-		</section>
+			<Posts count={3} ignore_ids={[...post.data.related?.map(r => r.id) || [], post.id]} />
+		</aside>
     </div>
 </Layout>

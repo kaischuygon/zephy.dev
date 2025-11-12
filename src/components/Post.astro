@@ -3,12 +3,12 @@ import { Icon } from 'astro-icon/components';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
-    post?: CollectionEntry<'blog'>
+    post: CollectionEntry<'blog'>
 }
 
 const { post } = Astro.props as Props;
 
-const link = post ? `/blog/${post.id}` : '/blog'
+const link = `/blog/${post.id}`
 ---
 
 <a
@@ -16,21 +16,10 @@ const link = post ? `/blog/${post.id}` : '/blog'
     class="shadow-square-clickable flex flex-col gap-2 border"
 >
     <div class="p-2">
-        {post ? (
-            <h2 class="text-xl font-semibold">{post.data.title}</h2>
-            <span class="text-xs font-light">
-                {post.data.pubDate?.toLocaleDateString()}
-            </span>
-            <p class="text-ellipsis">{post.data.description}</p>
-        ) : (
-            <div class="text-center">
-                view all posts
-                <Icon
-                    class="inline"
-                    title="up-right"
-                    name="lineicons:arrow-angular-top-right"
-                />
-            </div>
-        )}
+        <h2 class="text-xl font-semibold">{post.data.title}</h2>
+        <span class="text-xs font-light">
+            {post.data.pubDate?.toLocaleDateString()}
+        </span>
+        <p class="text-ellipsis">{post.data.description}</p>
     </div>
 </a>

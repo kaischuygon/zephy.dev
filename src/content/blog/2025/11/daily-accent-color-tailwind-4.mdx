@@ -1,0 +1,195 @@
+---
+title: Daily accent color using Tailwind v4, React and Astro
+pubDate: 2025-11-11 00:00:00
+isDraft: false
+description: |
+  A color picker for changing site wide accent color, updated for Tailwind v4 and up.
+categories:
+  - Tailwind CSS
+  - React
+  - Astro
+related:
+    - 2024/4/daily-accent-color
+---
+
+I wrote a [blog post in 2024](/blog/2024/4/daily-accent-color) on creating a random accent color in Astro using tailwind 3. Since then, [Tailwind V4](https://tailwindcss.com/blog/tailwindcss-v4) came out and has a lot of new changes, including the removal of a `tailwind.config.mjs` file and css-first configuration.
+
+These changes made my old method of choosing a daily accent color obsolete, but I much prefer the new approach I've figured out for creating a daily color accent picker. 
+
+My implementation is active on this site, which is built using [Astro](https://www.astro.build/), [Tailwind CSS](https://www.tailwindcss.com) and a [React](https://www.react.dev) island for the picker itself. 
+
+---
+
+## How the daily accent color works
+
+There are four pieces that work together to provide a site-wide accent color that can be user-selected or set automatically each day:
+
+- `src/styles/themes.css` - A Tailwind file that has all the available theme colors.
+- `src/components/AccentSelect.jsx` — a small React island that lets the user choose an accent.
+- `src/content/color-schemes.json` — the list of available accent names.
+- The inline `<script>` in `src/layouts/Layout.astro` — picks and applies the stored or "daily" accent on initial page load.
+
+### 1) `themes.css`
+
+`themes.css` is the CSS-first theme layer that actually defines what each accent name means visually. It does two main things:
+
+- Defines a set of CSS custom properties for an accent scale (e.g. `--color-accent-50` … `--color-accent-950`) in a default `@theme` block.
+- Provides per-theme overrides using attribute selectors like `[data-theme="teal"] { --color-accent-500: ... }` so changing `document.documentElement.dataset.theme` swaps the whole accent palette.
+
+Why this matters
+- The `AccentSelect` component and the inline script only set `document.documentElement.dataset.theme` to a string like `blue` or `emerald`.
+- `themes.css` contains `[data-theme="blue"] { ... }` and `[data-theme="emerald"] { ... }` blocks that map those string names to real color tokens (the `oklch(...)` values in the file).
+
+How the site uses the variables
+- Tailwind v4's css-first approach makes it easy to rely on these variables directly in your utilities. A typical usage example in markup:
+
+```html
+<button class="bg-accent-500 text-white px-3 py-1 rounded">Accent button</button>
+```
+
+Or for text:
+
+```html
+<h2 class="text-accent-600">Section title</h2>
+```
+
+Because `--color-accent-500` gets different values depending on the active `[data-theme="..."]` rule, the above elements automatically pick up the current accent color without changing classes.
+
+Notes about the implementation in `themes.css`
+- The file uses the same `oklch()` colors provided by [tailwind's default color palette reference](https://tailwindcss.com/docs/colors#default-color-palette-reference). You can easily add your own color scheme here in whatever format you prefer. 
+
+### 2) `AccentSelect.jsx`
+
+This React component renders a `<select>` that can be used to pick the site's accent color. Key behaviors:
+
+- It reads a saved value from `localStorage` under the key `accent`.
+- It supports a special value `'daily'` which means "use the computed daily accent".
+- When the selected accent changes it writes back to `localStorage` and updates the document's dataset (`document.documentElement.dataset.theme`) so Tailwind's CSS variables / selectors can react.
+
+Here is the important part of the component (simplified for clarity):
+
+```jsx
+import { useEffect, useState } from "react";
+import colorSchemes from "../content/color-schemes.json";
+
+export default function AccentSelect() {
+  const [accentColor, setAccentColor] = useState('daily');
+
+  const today = new Date();
+  const dailyAccentColor = colorSchemes[today.getDate() % colorSchemes.length];
+
+  // on mount: load saved accent or default to 'daily' (safe localStorage access)
+  useEffect(() => {
+    let selected = null;
+    try { selected = localStorage.getItem('accent'); } catch (e) { selected = null; }
+
+    if (!selected) setAccentColor('daily');
+    else if (selected === 'daily' || colorSchemes.includes(selected)) setAccentColor(selected);
+    else setAccentColor('daily');
+  }, []);
+
+  // when accentColor changes: persist and apply it
+  useEffect(() => {
+    try {
+      if (accentColor === 'daily') {
+        localStorage.setItem('accent', 'daily');
+        document.documentElement.dataset['theme'] = dailyAccentColor;
+      } else {
+        localStorage.setItem('accent', accentColor);
+        document.documentElement.dataset['theme'] = accentColor;
+      }
+    } catch (e) {
+      // fallback: try to at least set the data attribute if possible
+      try {
+        document.documentElement.dataset['theme'] = accentColor === 'daily' ? dailyAccentColor : accentColor;
+      } catch (err) {}
+    }
+  }, [accentColor]);
+
+  return (
+    <select value={accentColor} onChange={e => setAccentColor(e.target.value)}>
+      <option value="daily">daily</option>
+      {colorSchemes.map(color => <option key={color} value={color}>{color}</option>)}
+    </select>
+  );
+}
+```
+
+Notes and small details:
+- The component imports the array of accent names from `color-schemes.json`.
+- `dailyAccentColor` is computed using the current date's day-of-month modulo the list length, so the "daily" color rotates once per day.
+- The component sets the accent by writing to `document.documentElement.dataset.theme`. The site's CSS or Tailwind config is expected to use this data attribute to switch accent variables.
+
+### 3) `color-schemes.json`
+
+This file is a simple JSON array enumerating the named accent colors your Tailwind config knows about (Tailwind v4 uses a CSS-first approach, so these names map to theme names / classes you define). Example:
+
+```json
+[
+    "red",
+    "orange",
+    "amber",
+    "yellow",
+    "lime",
+    "green",
+    "emerald",
+    "teal",
+    "cyan",
+    "sky",
+    "blue",
+    "indigo",
+    "violet",
+    "purple",
+    "fuchsia",
+    "pink",
+    "rose"
+]
+```
+
+How it's used:
+- The React selector reads it to populate the list of options.
+- The "daily" computation uses this array to pick a pseudo-random daily accent (based on day-of-month).
+- The names in this file should match the accent names your CSS/Tailwind tokens expect (e.g., `data-theme="teal"`).
+
+### 4) The inline `<script>` in `Layout.astro`
+
+To avoid a flash of the wrong color on first paint, `Layout.astro` contains a small inline script in the `<head>` that sets the initial accent before the React island hydrates. The script does two things:
+
+1. Ensures the correct color scheme (light/dark) class is applied early (separate script).
+2. Chooses and applies the initial accent color using the same "daily" logic and `localStorage` key `accent`.
+
+A simplified version of the inline script that sets the accent:
+
+```html
+<script is:inline data-astro-rerun define:vars={{colorSchemes}}>
+  const today = new Date();
+  const dailyAccentColor = colorSchemes[today.getDate() % colorSchemes.length];
+  let selected = null;
+  try { selected = localStorage.getItem('accent'); } catch (e) { selected = null; }
+
+  if (!selected || selected === 'daily' || !colorSchemes.includes(selected)) {
+    document.documentElement.dataset['theme'] = dailyAccentColor;
+  } else {
+    document.documentElement.dataset['theme'] = selected;
+  }
+</script>
+```
+
+Why this exists:
+- Because this runs before the page finishes parsing and before client JavaScript hydrates, it prevents a visual mismatch where the page briefly uses the default accent then jumps to the user's saved choice or daily color.
+- It mirrors the React island's behavior so initial rendering and the interactive control stay consistent.
+- `is:inline`, `data-astro-rerun` and `define:vars` are Astro-specific directives, they can be omitted or modified based on your implementation.
+
+### How these parts play together
+
+- On first load, the `<head>`-inline script checks `localStorage.accent`:
+  - If the value is `'daily'` or missing, it computes `dailyAccentColor` and sets `document.documentElement.dataset.theme` to that name.
+  - If the value is a named accent, it sets the `dataset.theme` to that name (only if validated).
+  - CSS/Tailwind styles respond to `data-theme` and apply the corresponding accent tokens.
+- After hydration, `AccentSelect` mounts:
+  - It reads `localStorage.accent` and sets its `<select>` to the right value.
+  - When the user changes the select, the component updates `localStorage` and `document.documentElement.dataset.theme` immediately.
+
+### Wrapup
+
+That's it! I much prefer this implementation because it is a lot more customizable to different colors and uses modern tailwind directives like `@theme`. You can view the source code for [this site](https://github.com/kaischuygon/zephy.dev) for the full implementation.

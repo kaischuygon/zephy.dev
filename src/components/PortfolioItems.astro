@@ -1,8 +1,7 @@
 ---
-import { Icon } from "astro-icon/components";
-import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import PortfolioItem from "./PortfolioItem.astro";
+import { Icon } from "astro-icon/components";
 
 const { count=-1, ignore_id=undefined } = Astro.props;
 
@@ -12,7 +11,17 @@ const portfolioItems = (await getCollection("portfolio"))
     .slice(0, count);
 ---
 
-<div class="flex flex-col gap-2">
+<div class="flex flex-wrap gap-2">
     {portfolioItems.map((item) => <PortfolioItem item={item} />)}
-    {count >= portfolioItems.length && <PortfolioItem />}
 </div>
+
+{count >= portfolioItems.length && (
+    <a href="/portfolio" class="inline-block mt-2 font-semibold">
+        view full portfolio
+        <Icon
+            class="inline"
+            title="up-right"
+            name="lineicons:arrow-angular-top-right"
+        />
+    </a>
+)}

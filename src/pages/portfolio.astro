@@ -1,7 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
-import { getCollection } from "astro:content";
 import PortfolioItems from "../components/PortfolioItems.astro";
 ---
 
@@ -10,7 +9,5 @@ import PortfolioItems from "../components/PortfolioItems.astro";
     <p class="mb-8">
         My portfolio of projects dating back to undergrad.
     </p>
-    <div class="flex flex-col gap-2">
-        <PortfolioItems />
-    </div>
+    <PortfolioItems />
 </Layout>

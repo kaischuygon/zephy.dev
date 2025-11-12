@@ -1,46 +1,34 @@
 ---
-import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 
 interface Props {
-    item?: CollectionEntry<'portfolio'>
+    item: CollectionEntry<'portfolio'>
 }
 
 const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/*.{jpeg,jpg,png,gif}');
 const { item } = Astro.props as Props;
 
-const link = item ? `/portfolio/${item.id}` : '/portfolio'
+const link = `/portfolio/${item.id}`
 ---
 
 <a
     href={link}
-    class="shadow-square-clickable flex flex-col md:flex-row w-full gap-2 border"
+    class="w-xs shadow-square-clickable flex flex-col gap-2 border"
 >
-    {item ? (
-        <Image
-            src={images[item.data.img]()}
-            alt={item.data.img_alt}
-            loading="eager"
-            width={250}
-            height={250}
-            class="aspect-video w-100 md:w-[250px]"
-        />
-        <div class="p-2 h-full">
-            <h2 class="text-xl font-semibold">{item.data.title}</h2>
-            <span class="text-xs font-light">
-                {item.data.tags.join(" • ")}
-            </span>
-            <p class="text-ellipsis">{item.data.description}</p>
-        </div>
-    ) : (
-        <div class="text-center p-2 w-full">
-            view full portfolio
-            <Icon
-                class="inline"
-                title="up-right"
-                name="lineicons:arrow-angular-top-right"
-            />
-        </div>
-    )}
+    <Image
+        src={images[item.data.img]()}
+        alt={item.data.img_alt}
+        loading="eager"
+        width={320}
+        height={320}
+        class="aspect-video w-xs"
+    />
+    <div class="p-2 h-full w-auto">
+        <h2 class="text-xl font-semibold">{item.data.title}</h2>
+        <span class="text-xs font-light">
+            {item.data.tags.join(" • ")}
+        </span>
+        <p class="text-ellipsis">{item.data.description}</p>
+    </div>
 </a>
