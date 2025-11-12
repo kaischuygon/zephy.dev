@@ -70,11 +70,17 @@ const getImage = collectionItem?.data.img || "/og-image.png";
 
             const today = new Date();
             const dailyAccentColor = colorSchemes[today.getDate() % colorSchemes.length];
-            // load the color from local storage
-            const selected = localStorage.getItem('accent');
+            // load the color from local storage, guarded for environments where it's unavailable
+            let selected = null;
+            try {
+                selected = localStorage.getItem('accent');
+            } catch (e) {
+                selected = null;
+            }
 
-            if (!selected || selected === 'daily') {
-                // if not set, set to daily
+            // validate selected value against the known colorSchemes
+            if (!selected || selected === 'daily' || !colorSchemes.includes(selected)) {
+                // default to the computed daily accent
                 document.documentElement.dataset['theme'] = dailyAccentColor;
             } else {
                 document.documentElement.dataset['theme'] = selected;

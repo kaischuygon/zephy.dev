@@ -4,7 +4,7 @@ import { getEntries } from "astro:content";
 import Post from "./Post.astro";
 
 interface Props {
-    post: CollectionEntry<'blog'>
+    post: CollectionEntry<'blog'>,
 }
 
 const { post } = Astro.props as Props;

@@ -1,11 +1,12 @@
 ---
 import { getCollection } from "astro:content";
 import Post from "./Post.astro";
+import { Icon } from "astro-icon/components";
 
-const { count = -1, ignore_id = undefined } = Astro.props;
+const { count = -1, ignore_ids = [] } = Astro.props;
 
 const posts = (await getCollection("blog"))
-    .filter((post) => (ignore_id ? post.id !== ignore_id : post))
+    .filter((post) => (ignore_ids ? !ignore_ids.includes(post.id) : post))
     .filter((post) => !post.data.isDraft)
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
     .slice(0, count);
@@ -13,5 +14,15 @@ const posts = (await getCollection("blog"))
 
 <div class="flex flex-col gap-2">
     {posts.map((post) => <Post post={post} />)}
-    {count >= posts.length && <Post />}
 </div>
+
+{count >= posts.length && (
+    <a href="/blog" class="inline-block mt-2 font-semibold">
+        view all posts
+        <Icon
+            class="inline"
+            title="up-right"
+            name="lineicons:arrow-angular-top-right"
+        />
+    </a>
+)}

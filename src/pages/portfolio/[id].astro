@@ -21,37 +21,37 @@ const { Content } = await render(item);
 ---
 
 <Layout collectionItem={item}>
-    <div class="w-full flex flex-wrap gap-2" data-pagefind-body>
-		<section id={item.id}>
-			<a href="/portfolio">
-				<Icon class="inline" title="arrow-left" name="lineicons:arrow-left" />
-				back to projects
-			</a>
-			<h1 class="mb-2 text-4xl font-bold" data-pagefind-meta="title">
+    <div class="flex flex-wrap justify-between gap-4" data-pagefind-body>
+		<section id={item.id} class="prose prose-neutral dark:prose-invert">
+			<div>
+				<a href="/portfolio">
+					<Icon class="inline" title="arrow-left" name="lineicons:arrow-left" />
+					back to projects
+				</a>
+			</div>
+			<h1 data-pagefind-meta="title">
 				{item.data.title}
 			</h1>
 			<div class="mb-2 flex gap-2">
-				{
-					item.data.tags.map((tag) => (
-						<div class="shadow-square border p-1">{tag}</div>
-					))
-				}
+				{item.data.tags.map((tag) => (
+					<div class="shadow-square border p-1">{tag}</div>
+				))}
 			</div>
-			<div class="prose prose-neutral dark:prose-invert">
-				<Image
-					src={images[item.data.img]()}
-					alt={item.data.img_alt}
-					loading="eager"
-					width={500}
-					height={500}
-					class="shadow-square mb-2 aspect-video w-full border"
-				/>
-				<Content />
-			</div>
+			<Image
+				src={images[item.data.img]()}
+				alt={item.data.img_alt}
+				loading="eager"
+				width={500}
+				height={500}
+				class="shadow-square mb-2 aspect-video w-full border"
+			/>
+			<Content />
+			<hr />
 		</section>
-		<section id='more' class="flex flex-col gap-2">
+		
+		<aside id="more" class="w-xs">
 			<h2 class="mb-2 text-2xl font-semibold">More</h2>
 			<PortfolioItems count={3} ignore_id={item.id} />
-		</section>
+		</aside>
     </div>
 </Layout>
