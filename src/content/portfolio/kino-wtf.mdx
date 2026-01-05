@@ -1,31 +1,33 @@
 ---
-title: 📼 kino.wtf
+title: 🍿 kino.wtf
 pubDate: 2024-1-15 00:00:00
-img: /src/assets/images/kino-wtf.png
+img: https://www.kino.wtf/og-image.png
 img_alt: kino.wtf webapp
 description: |
-  A wordle-like game for movie lovers. Every day you can guess a new film based on its cast. 
+  A collection of daily/weekly games related to movies.
 tags:
   - webapp
-  - solid
+  - react
   - tailwind
+related:
+  - 2026/1/updating-kino-to-react
+  - 2024/1/making-my-own-wordle
 ---
 ### About
-[kino.wtf](https://kino.wtf) is a worlde-like game where you guess the daily movie based on its cast. 
+[kino.wtf](https://www.kino.wtf) is a a collection of daily/weekly games related to movies.
 
 ### How to play
-- Use the hints provided to guess a film.
-- If you guess incorrectly, another actor from the film will be revealed.
-- Leave the input blank to skip a guess and get the next hint.
-- You have 6 attempts to guess the film.
+- Use the hints provided to guess a film or person.
+- If you guess incorrectly, another hint and/or piece of trivia will be revealed.
+- You have 6 attempts to guess the answer.
 
 ### Credits
-- Curated list of movies comes from the letterboxd list [comprehensive framed.wtf film list](https://letterboxd.com/tispe/list/comprehensive-framedwtf-film-list/)
-- Metadata needed for each film scraped using the [TMDb API](https://developer.themoviedb.org/reference/intro/getting-started).
+- I curated the list of actors, directors and movies and update the list periodically. Find the lists on my [IMDb page](https://www.imdb.com/user/ur82737568/lists/?ref_=hm_nv_lst). 
+- Metadata needed for each game scraped using the [TMDb API](https://developer.themoviedb.org/reference/intro/getting-started).
 - Inspired by [Wordle](https://www.nytimes.com/games/wordle/index.html), [Framed](https://framed.wtf) and [all the other spinoffs](https://rwmpelstilzchen.gitlab.io/wordles/).
 
 ### Tools used
-- Built using [solid.js](https://solidjs.com) and [tailwindcss](https://tailwindcss.com).
+- Built using [React](https://react.dev), [Tailwind](https://tailwindcss.com) and [Daisy UI](https://daisyui.com/).
 - Deployed on [vercel](https://vercel.app).
 
 [GitHub](https://github.com/kaischuygon/kino.wtf)
@@ -35,6 +37,7 @@ tags:
 
 <iframe
     title="kino.wtf"
-    class="aspect-[9/12] max-w-screen-sm w-full mx-auto overflow-scroll brutalist-outline"
+    loading="lazy"
+    class="aspect-9/12 max-w-screen-sm w-full mx-auto overflow-scroll brutalist-outline"
     src="https://kino.wtf/">
 </iframe>

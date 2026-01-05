@@ -14,7 +14,8 @@ const portfolio = defineCollection({
 		pubDate: z.coerce.date(),
 		tags: z.array(z.string()),
 		img: z.string(),
-		img_alt: z.string()
+		img_alt: z.string(),
+		related: z.array(reference('blog')).optional() // must include full path (yyyy/mm/post)
 	})
 });
 

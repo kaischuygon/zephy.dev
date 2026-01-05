@@ -8,21 +8,22 @@ interface Props {
 
 const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/*.{jpeg,jpg,png,gif}');
 const { item } = Astro.props as Props;
+const imgSrc = images[item.data.img] ?? item.data.img;
 
 const link = `/portfolio/${item.id}`
 ---
 
 <a
     href={link}
-    class="w-xs shadow-square-clickable flex flex-col gap-2 border"
+    class="w-full max-w-md shadow-square-clickable flex flex-col gap-2 border"
 >
     <Image
-        src={images[item.data.img]()}
+        src={typeof imgSrc === "function" ? imgSrc() : imgSrc}
         alt={item.data.img_alt}
         loading="eager"
-        width={320}
-        height={320}
-        class="aspect-video w-xs"
+        width={500}
+        height={500}
+        class="aspect-video w-full"
     />
     <div class="p-2 h-full w-auto">
         <h2 class="text-xl font-semibold">{item.data.title}</h2>

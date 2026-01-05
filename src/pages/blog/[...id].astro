@@ -28,6 +28,9 @@ const { Content } = await render(post);
 					back to blog
 				</a>
 			</div>
+			<h4 class="font-light my-4">
+				{post.data.pubDate?.toLocaleDateString()}
+			</h4>
 			<h1 data-pagefind-meta="title">
 				{post.data.title}
 			</h1>
@@ -38,9 +41,6 @@ const { Content } = await render(post);
 					))
 				}
 			</div>
-			<span class="text-xs font-light">
-				{post.data.pubDate?.toLocaleDateString()}
-			</span>
 			<Content />
 			<hr />
 		</section>
@@ -48,7 +48,7 @@ const { Content } = await render(post);
 		<aside id="related_more" class="w-sm">
 			{post.data.related && (
 				<h2 class="mb-2 text-2xl font-semibold">Related Posts</h2>
-				<RelatedPosts post={post} />
+				<RelatedPosts item={post} />
 				<br/>
 			)}
 			<h2 class="mb-2 text-2xl font-semibold">More</h2>
