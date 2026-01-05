@@ -8,20 +8,25 @@ let navlinks = {
     blog: "/blog",
 };
 
-let extraLinks = {
-    "📼 kino.wtf": {
+const extraLinks:{title:string, icon?: String|HTMLElement, href:string, pinned:boolean}[] = [
+    {
+        title: "🍿\x20kino.wtf",
         href: "https://kino.wtf",
         pinned: true,
     },
-    "🍿 letterboxd": {
+    {
+        title: "letterboxd",
+        icon: "fa7-brands:letterboxd",
         href: "https://letterboxd.com/kschuyler/",
         pinned: false,
     },
-    "✉️ contact": {
+    {
+        title: "contact",
+        icon: "lineicons:envelope-1",
         href: "mailto:kai.schuyler@gmail.com",
         pinned: false,
     },
-};
+];
 ---
 
 <nav
@@ -42,21 +47,24 @@ let extraLinks = {
     <hr class="prose w-full" />
     {
         // Display extra links, with pinned ones first
-        Object.entries(extraLinks)
-            .sort(([, a], [, b]) =>
+        extraLinks
+            .sort((a, b) =>
                 a.pinned === b.pinned ? 0 : a.pinned ? -1 : 1
             )
-            .map(([title, value]) => (
+            .map((link) => (
                 <div class="flex items-center gap-1">
                     <a
-                        href={value.href}
+                        href={link.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="block font-mono font-semibold"
+                        class="block"
                     >
-                        {title}
+                        {link.icon && <Icon name={link.icon} class="inline mr-2" />}
+                        <span class="font-mono font-semibold">
+                            {link.title}
+                        </span>
                     </a>
-                    {value.pinned && <div class="text-xs">📌</div>}
+                    {link.pinned && <div class="text-xs">📌</div>}
                 </div>
             ))
     }

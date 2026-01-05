@@ -4,15 +4,15 @@ import { getEntries } from "astro:content";
 import Post from "./Post.astro";
 
 interface Props {
-    post: CollectionEntry<'blog'>,
+    item: CollectionEntry<'blog'|'portfolio'>,
 }
 
-const { post } = Astro.props as Props;
+const { item } = Astro.props as Props;
 
-const relatedPosts = await getEntries(post.data.related || [])
+const relatedPosts = await getEntries(item.data.related || [])
 ---
 
-<div class="flex flex-col gap-2">
+<div class="flex flex-col gap-2 w-full">
     {
         relatedPosts?.map(relatedPost => (
             <Post post={relatedPost} />

@@ -1,0 +1,70 @@
+---
+title: Kino.wtf gets a React makeover
+pubDate: 2026-1-5 00:00:00
+isDraft: false
+description: |
+  Migrating kino.wtf from Solid.js to React for better maintainability.
+categories:
+  - React
+  - tailwind
+related:
+    - 2024/1/making-my-own-wordle
+---
+Almost a year ago, I built [kino.wtf](https://www.kino.wtf) as a collection of daily movie guessing games inspired by [Wordle](https://www.nytimes.com/games/wordle/index.html). At the time, I used [Solid.js](https://www.solidjs.com/) because I wanted to try something new and different from React. The experiment was fun and the framework worked well, but as the project evolved, I found myself missing React's mature ecosystem and familiar patterns.
+
+## Why the migration?
+When I first built kino.wtf, trying out Solid.js seemed like a great opportunity to learn a new framework. And it was! Solid is fast, elegant, and has some really interesting reactivity patterns. 
+
+But over time, I ran into a few challenges:
+- __Ecosystem maturity.__ While Solid has a growing community, React's ecosystem is simply massive. Finding solutions to problems, third-party libraries, and community resources was often easier with React.
+- __Development velocity.__ Most of my other projects use React, and context-switching between Solid's reactive primitives and React's hooks was slowing me down. Consolidating on a single framework meant I could move faster.
+- __Future maintenance.__ As I continue to add features to kino.wtf, having the project in React makes it easier to bring in contributors who are already familiar with the framework.
+
+The decision wasn't a knock against Solid — it's a great framework. But for this project, React simply made more practical sense.
+
+## What changed under the hood
+The migration involved more than just swapping out framework code. Here's what got updated:
+
+- __Framework:__ Migrated from Solid.js to React with TypeScript.
+- __Styling:__ Upgraded to Tailwind CSS 4 and integrated DaisyUI for component theming.
+- __State management:__ Converted Solid's signals and stores to React hooks (useState, useEffect, useContext).
+- __Build tooling:__ Kept Vite but updated configuration for React's JSX transform.
+- __Component patterns:__ Rewrote components to use React's declarative patterns.
+- __Curated Games:__ The daily/weekly games of movies, actors, and directors is now hand-curated by me to have less obscure titles or people.
+- __Game fetching:__ Games for all modes are now fetched and cast to a reusable _Game_ object that makes it easy to add new game modes in the future. The script I created to fetch these objects ensures hints are ordered by popularity and is able to fetch enough hints/trivia/images for a full game with no missing data. 
+
+The core game logic and the daily puzzle system remained largely the same, but the way state flows through the application is now more aligned with React's unidirectional data flow.
+
+## What stayed the same
+From a player's perspective, nothing major changed. The games work exactly as before (but added a new gamemode: _Directors_):
+
+- Six attempts per game with progressive hints.
+- 3 trivia facts per game that are revealed every other hint. 
+- Stats tracking games played, games won, current streak and max streak. 
+- Shareable results.
+- Stats are still saved to local browser storage but I have plans to add a sign in feature to save stats between devices/browsers.
+
+## Technical details
+For those interested in the technical implementation, the source code is available on [GitHub](https://github.com/kaischuygon/kino.wtf). The latest release [(v2)](https://github.com/kaischuygon/kino.wtf/releases/tag/v2-React) includes the full React migration.
+
+### Some interesting implementation details:
+
+- Daily puzzles are generated deterministically based on the current date, so no backend is needed.
+- Game state persists in localStorage to track streaks and stats.
+- The app uses the [TMDb API](https://developer.themoviedb.org/reference/getting-started) for movie metadata and imagery. For more information regarding how I fetch game data, see the python script in the [GitHub repo](https://github.com/kaischuygon/kino.wtf).
+- Development builds include a handy `window.__simulateNextBoundary()` helper for testing new daily puzzles without waiting for midnight.
+
+## Moving forward
+The React migration gives me a solid foundation to add new features I've been thinking about — more game modes, better mobile experience and cross-device stats. The improved developer experience means I can iterate faster and refresh games more quickly.
+
+If you haven't played kino.wtf yet, give it a try below or visit [kino.wtf](https://www.kino.wtf) directly. And if you're interested in the code, check out the [project page](/portfolio/kino-wtf) or the [GitHub repo](https://github.com/kaischuygon/kino.wtf).
+
+## Play now
+Bookmark kino.wtf to play daily.
+
+<iframe
+    title="kino.wtf"
+    loading="lazy"
+    class="aspect-9/12 max-w-screen-sm w-full mx-auto overflow-scroll brutalist-outline"
+    src="https://kino.wtf/">
+</iframe>

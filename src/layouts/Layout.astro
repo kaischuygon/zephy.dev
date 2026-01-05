@@ -130,10 +130,12 @@ const getImage = collectionItem?.data.img || "/og-image.png";
                 <SocialLinks />
                 <div class="flex items-center justify-end gap-2">
                     <label aria-hidden="true" for="themeSelect" class="clickable shadow-square-clickable border p-1">
+                        <span class="hidden">Change theme</span>
                         <Icon name="lineicons:moon-half-right-5" class="inline" />
                         <ThemeSelect client:load />
                     </label>
                     <label aria-hidden="true" for="accentSelect" class="clickable shadow-square-clickable border p-1">
+                        <span class="hidden">Change accent</span>
                         <Icon name="lineicons:colour-palette-3" class="inline" />
                         <AccentSelect client:load />
                     </label>
