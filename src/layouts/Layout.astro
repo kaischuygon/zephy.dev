@@ -14,8 +14,8 @@ import SideNav from "../components/SideNav.astro";
 import colorSchemes from "../content/color-schemes.json";
 
 interface Props {
-    title?: string,
-    collectionItem?: CollectionEntry<'blog'> | CollectionEntry<'portfolio'>
+    title?: string;
+    collectionItem?: CollectionEntry<"blog"> | CollectionEntry<"portfolio">;
 }
 
 const { title, collectionItem } = Astro.props;
@@ -25,7 +25,9 @@ const getTitle = collectionItem?.data.title ?? title ?? "zephy.dev";
 const generalDescription =
     "Personal portfolio site of Kai Schuyler Gonzalez, a software engineer / designer based in Denver, CO.";
 
-const getDescription = (collectionItem) ? collectionItem.data.description : generalDescription;
+const getDescription = collectionItem
+    ? collectionItem.data.description
+    : generalDescription;
 
 const getImage = collectionItem?.data.img || "/og-image.png";
 ---
@@ -38,12 +40,12 @@ const getImage = collectionItem?.data.img || "/og-image.png";
         <meta name="color-scheme" content="light dark" />
         <meta name="generator" content={Astro.generator} />
         <title>{getTitle}</title>
-        
+
         <!-- Favicon -->
-        <link rel="icon" href="/favicon.ico" sizes="any">
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-        <meta name="theme-color" content="#737373">
-        
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <meta name="theme-color" content="#737373" />
+
         <!-- RSS -->
         <link
             rel="alternate"
@@ -51,7 +53,7 @@ const getImage = collectionItem?.data.img || "/og-image.png";
             title={getTitle}
             href={new URL("rss.xml", Astro.site)}
         />
-        
+
         <!-- Load preferred color scheme on load -->
         <script is:inline data-astro-rerun>
             const theme = localStorage.getItem("theme");
@@ -64,59 +66,68 @@ const getImage = collectionItem?.data.img || "/og-image.png";
                 document.documentElement.classList.add("dark");
             }
         </script>
-        
-        <!-- Load saved accent color or daily -->
-         <script is:inline data-astro-rerun define:vars={{colorSchemes}}>
 
+        <!-- Load saved accent color or daily -->
+        <script is:inline data-astro-rerun define:vars={{ colorSchemes }}>
             const today = new Date();
-            const dailyAccentColor = colorSchemes[today.getDate() % colorSchemes.length];
+            const dailyAccentColor =
+                colorSchemes[today.getDate() % colorSchemes.length];
             // load the color from local storage, guarded for environments where it's unavailable
             let selected = null;
             try {
-                selected = localStorage.getItem('accent');
+                selected = localStorage.getItem("accent");
             } catch (e) {
                 selected = null;
             }
 
             // validate selected value against the known colorSchemes
-            if (!selected || selected === 'daily' || !colorSchemes.includes(selected)) {
+            if (
+                !selected ||
+                selected === "daily" ||
+                !colorSchemes.includes(selected)
+            ) {
                 // default to the computed daily accent
-                document.documentElement.dataset['theme'] = dailyAccentColor;
+                document.documentElement.dataset["theme"] = dailyAccentColor;
             } else {
-                document.documentElement.dataset['theme'] = selected;
+                document.documentElement.dataset["theme"] = selected;
             }
-         </script>
-        
+        </script>
+
         <!-- All SEO goes here -->
         <SEO
             title={getTitle}
             titleTemplate="%s | zephy.dev"
             titleDefault="zephy.dev"
             description={getDescription}
-            canonical="https://zephy.dev",
+            canonical="https://zephy.dev"
             openGraph={{
                 basic: {
                     title: getTitle,
                     type: "website",
-                    image: getImage
+                    image: getImage,
                 },
                 optional: {
-                    description: getDescription
+                    description: getDescription,
                 },
                 article: {
                     publishedTime: collectionItem?.data.pubDate?.toISOString(),
                     authors: ["Kai Schuyler Gonzalez"],
-                    tags: collectionItem?.collection === 'blog' ? (collectionItem?.data?.categories ?? []) : []
-                }
+                    tags:
+                        collectionItem?.collection === "blog"
+                            ? (collectionItem?.data?.categories ?? [])
+                            : [],
+                },
             }}
             twitter={{
-                card: 'summary',
-                site: 'zephy.dev',
+                card: "summary",
+                site: "zephy.dev",
                 creator: "@kaischuyler",
                 title: getTitle,
                 description: getDescription,
                 image: getImage,
-                imageAlt: collectionItem?.data.img_alt ?? 'zephy.dev: Kais personal site and portfolio'
+                imageAlt:
+                    collectionItem?.data.img_alt ??
+                    "zephy.dev: Kais personal site and portfolio",
             }}
             extend={{
                 // extending the default link tags
@@ -125,28 +136,52 @@ const getImage = collectionItem?.data.img || "/og-image.png";
         />
     </head>
     <body>
-        <div class="container mx-auto grid h-screen grid-rows-[0fr_1fr_0fr] gap-4 p-2">
+        <div
+            class="container mx-auto grid h-screen grid-rows-[0fr_1fr_0fr] gap-4 p-2"
+        >
             <nav class="flex flex-wrap items-center justify-end gap-2 text-sm">
                 <SocialLinks />
                 <div class="flex items-center justify-end gap-2">
-                    <label aria-hidden="true" for="themeSelect" class="clickable shadow-square-clickable border p-1">
+                    <label
+                        aria-hidden="true"
+                        for="themeSelect"
+                        class="clickable shadow-square-clickable border p-1"
+                    >
                         <span class="hidden">Change theme</span>
-                        <Icon name="lineicons:moon-half-right-5" class="inline" />
+                        <Icon
+                            name="lineicons:moon-half-right-5"
+                            class="inline"
+                        />
                         <ThemeSelect client:load />
                     </label>
-                    <label aria-hidden="true" for="accentSelect" class="clickable shadow-square-clickable border p-1">
+                    <label
+                        aria-hidden="true"
+                        for="accentSelect"
+                        class="clickable shadow-square-clickable border p-1"
+                    >
                         <span class="hidden">Change accent</span>
-                        <Icon name="lineicons:colour-palette-3" class="inline" />
+                        <Icon
+                            name="lineicons:colour-palette-3"
+                            class="inline"
+                        />
                         <AccentSelect client:load />
                     </label>
-                    <label for="searchButton" class="clickable shadow-square-clickable border p-1">
-                        <Icon title="search" name="lineicons:search-1" class="inline" />
+                    <label
+                        for="searchButton"
+                        class="clickable shadow-square-clickable border p-1"
+                    >
+                        <Icon
+                            title="search"
+                            name="lineicons:search-1"
+                            class="inline"
+                        />
                         <SearchModal />
                     </label>
                 </div>
-
             </nav>
-            <div class="mt-4 grid gap-4 grid-rows-[0fr_1fr] md:grid-rows-1 grid-cols-1 md:grid-cols-[auto_1fr]">
+            <div
+                class="mt-4 grid grid-cols-1 grid-rows-[0fr_1fr] gap-4 md:grid-cols-[auto_1fr] md:grid-rows-1"
+            >
                 <SideNav />
                 <article>
                     <slot />
