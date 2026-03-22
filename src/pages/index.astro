@@ -8,7 +8,16 @@ import Posts from "../components/Posts.astro";
 ---
 
 <Layout>
-    <section id="splash" class="grid gap-4 grid-rows-2 md:grid-rows-1 grid-cols-1 md:grid-cols-[1fr_auto]">
+    <section id="splash" class="grid gap-4 grid-rows-2 md:grid-rows-1 grid-cols-1 md:grid-cols-[auto_1fr]">
+        <Image
+            src={portrait}
+            loading="eager"
+            decoding="async"
+            alt="me, Kai Schuyler Gonzalez"
+            width={250}
+            height={250}
+            class="shadow-square block aspect-square border row-start-1"
+        />
         <div class="prose dark:prose-invert">
             <h1>👋🏼 Hello!</h1>
             <p>
@@ -25,15 +34,6 @@ import Posts from "../components/Posts.astro";
                 > in Denver, CO.
             </p>
         </div>
-        <Image
-            src={portrait}
-            loading="eager"
-            decoding="async"
-            alt="me, Kai Schuyler Gonzalez"
-            width={250}
-            height={250}
-            class="shadow-square block aspect-square border row-start-1 md:row-start-auto md:float-end"
-        />
     </section>
 
     <section id="featured">
