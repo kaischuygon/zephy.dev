@@ -1,0 +1,100 @@
+---
+title: Kino.wtf after the React rebuild - auth, leaderboards, and a live game catalog
+pubDate: 2026-03-25 00:00:00
+isDraft: false
+description: |
+  Since the React migration, kino.wtf has grown from a frontend-only daily game into a full app with accounts, cloud sync, leaderboard support, and a database-backed catalog pipeline.
+categories:
+  - React
+  - Supabase
+  - TanStack Start
+tags:
+  - React
+  - Supabase
+  - TanStack Start
+  - kino.wtf
+related:
+  - 2026/1/updating-kino-to-react
+---
+
+When I wrote about moving kino.wtf from Solid to React, the goal was better maintainability and faster iteration. That part worked. What I did not expect was how quickly the project would expand after that foundation was in place.
+
+Since [v2](/blog/2026/1/updating-kino-to-react), kino.wtf has evolved from a mostly frontend game app into a more complete platform with authentication, cloud persistence, leaderboards, and automated content operations.
+
+## What changed since the React migration
+
+### 1. The app architecture modernized
+I migrated the app onto TanStack Start + TanStack Router with file-based routes and a cleaner feature structure.
+
+That gave me a few big wins:
+- Better separation between route-level loading and gameplay logic
+- Cleaner organization for gameplay and game-history features
+- Easier long-term scaling as more modes and account features get added
+
+The stack is still React + TypeScript + Vite + Tailwind/DaisyUI, but the project now feels much more production-ready.
+
+### 2. Authentication added
+kino.wtf now supports:
+- Email/password auth
+- Password reset
+- OAuth sign-in with Discord, Google, and GitHub
+- A branded email confirmation flow
+
+This unlocks persistent profiles and a better path to cross-device continuity.
+
+### 3. Persistence moved beyond local-only stats
+Originally, game state and stats were localStorage-first. That still works, but signed-in users now get cloud-backed persistence through Supabase.
+
+I spent time hardening sync behavior so local progress and remote state stay in sync without overwriting newer data.
+
+### 4. Leaderboards are live
+Leaderboards are now integrated into gameplay and endscreen flows, including ranking improvements and tie-aware behavior.
+
+This adds a social/competitive layer that feels natural without changing the core daily puzzle loop.
+
+### 5. Game catalog is now database-backed
+This is probably the biggest backend shift.
+
+I moved runtime catalogs from static JSON bundles to Supabase tables, with a bounded public RPC for fetching game data. Routes now load catalog entries dynamically, handle loading/error states, and normalize out-of-range URLs to valid game indices.
+
+Result:
+- No frontend deploy needed to refresh games
+- Safer control over what game data is exposed
+- Better operational flexibility
+
+### 6. Content operations are automated
+I added a buffer-based catalog generation workflow:
+- Scripted append flow for actors/movies/directors
+- Configurable thresholds for how far ahead each mode should stay
+- A scheduled GitHub Action that checks buffer health and can auto-refill when needed
+- Fail-fast exit code behavior for better observability
+
+In short, content maintenance became a system, not a manual chore.
+
+## What stayed the same
+Even with all these infrastructure changes, the core player experience is intentionally familiar:
+- Daily/weekly guessing gameplay
+- Six attempts and progressive hints
+- Share flow and streak-based motivation
+- Fast, low-friction play without mandatory sign-in
+
+I wanted the internals to get smarter without making the game feel heavier.
+
+## Why this phase mattered
+The React migration gave me velocity. This phase gave me durability.
+
+kino.wtf is now in a place where I can:
+- Add modes without rewriting core features
+- Support real user accounts and long-term progression
+- Operate catalog updates with less manual intervention
+- Build new features on a stable foundation
+
+## What’s next
+The immediate priorities are:
+- Continued UX polish on mobile and onboarding
+- More gameplay depth around history and social comparison
+- Better insights/telemetry around puzzle difficulty and completion behavior
+
+If you played during the early React version, you are now using a much more capable app under the hood, even if the game still feels purposely simple.
+
+[Play 🍿Kino.wtf now](https://www.kino.wtf/) and bookmark to play daily. 

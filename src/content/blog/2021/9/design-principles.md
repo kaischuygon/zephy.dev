@@ -6,6 +6,10 @@ description: |
 categories:
   - Design
   - App Dev
+tags:
+    - Design
+    - App Development
+    - UX Design
 ---
 Video link: [Essential Design Principles](https://developer.apple.com/videos/play/wwdc2017/802/)
 

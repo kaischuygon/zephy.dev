@@ -8,9 +8,15 @@ let navlinks = {
     blog: "/blog",
 };
 
-const extraLinks:{title:string, icon?: String|HTMLElement, href:string, pinned:boolean}[] = [
+const extraLinks: {
+    title: string;
+    icon?: string;
+    href: string;
+    pinned: boolean;
+}[] = [
     {
-        title: "🍿\x20kino.wtf",
+        title: "kino.wtf",
+        icon: "🍿",
         href: "https://kino.wtf",
         pinned: true,
     },
@@ -27,45 +33,126 @@ const extraLinks:{title:string, icon?: String|HTMLElement, href:string, pinned:b
         pinned: false,
     },
 ];
+
+const navEntries = Object.entries(navlinks);
+const sortedExtraLinks = [...extraLinks].sort((a, b) =>
+    a.pinned === b.pinned ? 0 : a.pinned ? -1 : 1,
+);
 ---
 
 <nav
-    class="top-0 flex h-min max-h-screen flex-col flex-wrap items-end gap-2 text-right md:sticky"
+    class="top-0 flex h-min max-h-screen w-full flex-col gap-2 text-left md:sticky md:items-end md:text-right"
 >
-    <a href="/" class="m-1 block text-4xl md:text-8xl" aria-label="site logo">
-        <Icon name="wind" title="site-logo" />
-    </a>
-    <h1 class="text-right text-xl font-bold">zephy.dev</h1>
-    <h3>Kai's portfolio and blog</h3>
-    {
-        Object.entries(navlinks).map(([title, link]) => (
-            <a href={link} class="font-mono font-semibold">
-                {title}
-            </a>
-        ))
-    }
-    <hr class="prose w-full" />
-    {
-        // Display extra links, with pinned ones first
-        extraLinks
-            .sort((a, b) =>
-                a.pinned === b.pinned ? 0 : a.pinned ? -1 : 1
-            )
-            .map((link) => (
-                <div class="flex items-center gap-1">
-                    <a
-                        href={link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="block"
-                    >
-                        {link.icon && <Icon name={link.icon} class="inline mr-2" />}
-                        <span class="font-mono font-semibold">
-                            {link.title}
-                        </span>
-                    </a>
-                    {link.pinned && <div class="text-xs">📌</div>}
-                </div>
-            ))
-    }
+    <div
+        class="flex w-full items-center justify-between md:w-auto md:flex-col md:items-end md:justify-start md:gap-2"
+    >
+        <a
+            href="/"
+            class="m-1 block text-4xl md:text-8xl"
+            aria-label="site logo"
+        >
+            <Icon name="wind" title="site-logo" />
+        </a>
+
+        <button
+            type="button"
+            class="clickable shadow-square active:shadow-square-2 aria-expanded:shadow-square-4 border px-2 py-1 font-mono font-semibold md:hidden"
+            data-nav-toggle
+            aria-expanded="false"
+            aria-controls="mobile-nav-content"
+        >
+            menu
+        </button>
+    </div>
+
+    <div
+        id="mobile-nav-content"
+        data-nav-content
+        class="hidden w-full gap-2 md:flex md:flex-col md:items-end md:text-right"
+    >
+        <h1 class="text-xl font-bold">zephy.dev</h1>
+        <h3>Kai's portfolio and blog</h3>
+        <hr class="prose my-2 w-full max-w-none" />
+        <div class="flex flex-row flex-wrap gap-2 md:flex-col items-center">
+            {
+                navEntries.map(([title, link], index) => (
+                    <>
+                        <a
+                            href={link}
+                            class="inline-flex w-min items-center gap-1 font-mono font-semibold md:ml-auto"
+                        >
+                            {title}
+                        </a>
+                        {index < navEntries.length - 1 && (
+                            <span class="text-xs opacity-60 md:hidden" aria-hidden="true">•</span>
+                        )}
+                    </>
+                ))
+            }
+        </div>
+        <hr class="prose my-2 w-full max-w-none" />
+        <div class="flex flex-row flex-wrap gap-2 md:flex-col items-center">
+            {
+                // Display extra links, with pinned ones first
+                sortedExtraLinks.map((link, index) => (
+                    <>
+                        <a
+                            href={link.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="inline-flex w-min items-center gap-1 font-mono font-semibold md:ml-auto"
+                        >
+                            {link?.icon?.match(/[a-z1-9]:[a-z\-]/) ? (
+                                <Icon name={link.icon} class="inline" />
+                            ) : (
+                                <span class="inline">{link.icon}</span>
+                            )}
+                            <span>{link.title}</span>
+                            {link.pinned && <span class="text-xs">📌</span>}
+                        </a>
+                        {index < sortedExtraLinks.length - 1 && (
+                            <span class="text-xs opacity-60 md:hidden" aria-hidden="true">•</span>
+                        )}
+                    </>
+                ))
+            }
+        </div>
+        <hr class="prose my-2 w-full max-w-none" />
+    </div>
+
+    <script is:inline>
+        const navRoot = document.currentScript?.closest("nav");
+        const toggleButton = navRoot?.querySelector("[data-nav-toggle]");
+        const navContent = navRoot?.querySelector("[data-nav-content]");
+
+        const setExpanded = (expanded) => {
+            if (!toggleButton || !navContent) {
+                return;
+            }
+
+            toggleButton.setAttribute(
+                "aria-expanded",
+                expanded ? "true" : "false",
+            );
+            navContent.classList.toggle("hidden", !expanded);
+        };
+
+        toggleButton?.addEventListener("click", () => {
+            const expanded =
+                toggleButton.getAttribute("aria-expanded") === "true";
+            setExpanded(!expanded);
+        });
+
+        const mq = window.matchMedia("(min-width: 768px)");
+        const syncWithViewport = () => {
+            if (mq.matches) {
+                setExpanded(true);
+            } else {
+                setExpanded(false);
+            }
+        };
+
+        mq.addEventListener("change", syncWithViewport);
+        syncWithViewport();
+    </script>
 </nav>

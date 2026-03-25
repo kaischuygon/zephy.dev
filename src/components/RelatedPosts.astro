@@ -10,11 +10,14 @@ interface Props {
 const { item } = Astro.props as Props;
 
 const relatedPosts = await getEntries(item.data.related || [])
+const validRelatedPosts = relatedPosts.filter(
+    (post): post is CollectionEntry<'blog'> => Boolean(post)
+)
 ---
 
 <div class="flex flex-col gap-2 w-full">
     {
-        relatedPosts?.map(relatedPost => (
+        validRelatedPosts.map(relatedPost => (
             <Post post={relatedPost} />
         ))
     }

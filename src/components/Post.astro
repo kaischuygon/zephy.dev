@@ -1,6 +1,6 @@
 ---
-import { Icon } from 'astro-icon/components';
 import type { CollectionEntry } from 'astro:content';
+import { getPostTags, getTagSlug } from '../utils/blogTags';
 
 interface Props {
     post: CollectionEntry<'blog'>
@@ -9,6 +9,7 @@ interface Props {
 const { post } = Astro.props as Props;
 
 const link = `/blog/${post.id}`
+const tags = getPostTags(post);
 ---
 
 <a
@@ -20,6 +21,13 @@ const link = `/blog/${post.id}`
         <span class="text-xs font-light">
             {post.data.pubDate?.toLocaleDateString()}
         </span>
+        {
+            tags.length > 0 && (
+                <div class="flex flex-wrap gap-1 text-xs italic">
+                    {tags.join(" • ")}
+                </div>
+            )
+        }
         <p class="text-ellipsis">{post.data.description}</p>
     </div>
 </a>
