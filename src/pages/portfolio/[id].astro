@@ -24,7 +24,7 @@ const imgSrc = images[item.data.img] ?? item.data.img;
 
 <Layout collectionItem={item}>
     <div class="flex flex-wrap justify-between gap-4" data-pagefind-body>
-		<section id={item.id} class="prose dark:prose-invert">
+		<section id={item.id} class="prose min-w-0 dark:prose-invert">
 			<div>
 				<a href="/portfolio">
 					<Icon class="inline" title="arrow-left" name="lineicons:arrow-left" />
@@ -51,7 +51,7 @@ const imgSrc = images[item.data.img] ?? item.data.img;
 			<hr />
 		</section>
 		
-		<aside id="related_more" class="w-sm">
+		<aside id="related_more" class="w-full md:w-sm">
 			{item.data.related && (
 				<>
 					<h2 class="mb-2 text-2xl font-semibold">Related Posts</h2>
