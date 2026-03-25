@@ -34,9 +34,9 @@ const imgSrc = images[item.data.img] ?? item.data.img;
 			<h1 data-pagefind-meta="title">
 				{item.data.title}
 			</h1>
-			<div class="mb-2 flex gap-2">
-				{item.data.tags.map((tag) => (
-					<div class="shadow-square border p-1">{tag}</div>
+			<div class="mb-2 flex flex-wrap gap-2 break-words whitespace-normal max-w-full overflow-x-auto">
+				{item.data.tags.map((tag, i) => (
+					<div class="shadow-square border p-1 break-all max-w-full">{tag}</div>
 				))}
 			</div>
 			<Image

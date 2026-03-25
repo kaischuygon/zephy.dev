@@ -73,13 +73,13 @@ const sortedExtraLinks = [...extraLinks].sort((a, b) =>
         <h1 class="text-xl font-bold">zephy.dev</h1>
         <h3>Kai's portfolio and blog</h3>
         <hr class="prose my-2 w-full max-w-none" />
-        <div class="flex flex-row flex-wrap gap-2 md:flex-col items-center">
+        <div class="flex flex-row flex-wrap gap-2 md:flex-col items-center wrap-break-word whitespace-normal max-w-full overflow-x-auto">
             {
                 navEntries.map(([title, link], index) => (
                     <>
                         <a
                             href={link}
-                            class="inline-flex w-min items-center gap-1 font-mono font-semibold md:ml-auto"
+                            class="inline-flex w-min items-center gap-1 font-mono font-semibold md:ml-auto break-all max-w-full"
                         >
                             {title}
                         </a>
