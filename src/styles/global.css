@@ -60,6 +60,19 @@ input, select, textarea, button, .clickable {
     @apply h-full;
 }
 
+[data-tag-filter][data-active="true"] {
+    @apply bg-accent-500/20 font-semibold shadow-square;
+}
+
+[data-year-filter][data-active="true"],
+[data-month-filter][data-active="true"] {
+    @apply bg-accent-500/20 font-semibold shadow-square border-solid;
+}
+
+[data-tag-filter][aria-pressed="true"] {
+    @apply border-solid;
+}
+
 kbd {
     @apply text-xs border px-0.5 rounded-sm;
 }

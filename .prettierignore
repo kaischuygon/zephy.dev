@@ -1,0 +1,7 @@
+# Content often contains pseudo-code blocks that are not valid language syntax
+src/content/**
+
+# Known prettier-plugin-astro parser edge cases in current templates
+src/components/Posts.astro
+src/pages/blog/[[]...id[]].astro
+src/pages/portfolio/[[]id[]].astro

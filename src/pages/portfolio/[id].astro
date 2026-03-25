@@ -53,9 +53,11 @@ const imgSrc = images[item.data.img] ?? item.data.img;
 		
 		<aside id="related_more" class="w-sm">
 			{item.data.related && (
-				<h2 class="mb-2 text-2xl font-semibold">Related Posts</h2>
-				<RelatedPosts item={item} />
-				<br/>
+				<>
+					<h2 class="mb-2 text-2xl font-semibold">Related Posts</h2>
+					<RelatedPosts item={item} />
+					<br />
+				</>
 			)}
 			<h2 class="mb-2 text-2xl font-semibold">More</h2>
 			<PortfolioItems count={3} ignore_id={item.id} />

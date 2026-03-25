@@ -24,6 +24,7 @@ const blog = defineCollection({
 	schema: rssSchema.extend({
 		isDraft: z.boolean().default(false),
 		pubDate: z.coerce.date(), // publication date in 2024-04-01 format
+		tags: z.array(z.string()).optional(), // optional canonical tag list
 		img: z.string().optional(), // path to image in src/assets/images
 		img_alt: z.string().optional(), // alt-text for provided image
 		related: z.array(reference('blog')).optional() // must include full path (yyyy/mm/post)

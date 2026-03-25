@@ -2,27 +2,337 @@
 import { getCollection } from "astro:content";
 import Post from "./Post.astro";
 import { Icon } from "astro-icon/components";
+import { getPostTags, getTagSlug } from "../utils/blogTags";
 
-const { count = -1, ignore_ids = [] } = Astro.props;
+interface Props {
+    count?: number;
+    ignore_ids?: string[];
+    enableTagFilter?: boolean;
+    enableDateFilter?: boolean;
+}
+
+const {
+    count = -1,
+    ignore_ids = [],
+    enableTagFilter = false,
+    enableDateFilter = false,
+} = Astro.props as Props;
 
 const posts = (await getCollection("blog"))
     .filter((post) => (ignore_ids ? !ignore_ids.includes(post.id) : post))
     .filter((post) => !post.data.isDraft)
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
     .slice(0, count);
+
+const postCards = posts.map((post) => {
+    const tags = getPostTags(post);
+    const year = post.data.pubDate.getFullYear();
+    const month = post.data.pubDate.getMonth() + 1;
+
+    return {
+        post,
+        tags,
+        tagSlugs: tags.map(getTagSlug),
+        year,
+        month,
+    };
+});
+
+const availableYears = [...new Set(postCards.map((postCard) => postCard.year))].sort((a, b) => b - a);
+
+const tagMap = new Map<string, string>();
+for (const postCard of postCards) {
+    postCard.tagSlugs.forEach((slug, index) => {
+        if (!tagMap.has(slug)) {
+            tagMap.set(slug, postCard.tags[index] ?? slug);
+        }
+    });
+}
+
+const availableTags = [...tagMap.entries()]
+    .map(([slug, label]) => ({ slug, label }))
+    .sort((a, b) => a.label.localeCompare(b.label));
 ---
 
-<div class="flex flex-col gap-2">
-    {posts.map((post) => <Post post={post} />)}
-</div>
+<section data-posts-root>
+    {
+        enableTagFilter && availableTags.length > 0 && (
+            <section class="mb-4">
+                <h2 class="mb-2 text-xl font-semibold">Filter by tags</h2>
+                <div class="flex flex-wrap gap-2" data-tag-filters>
+                    <button type="button" class="clickable border border-dotted px-2 py-1 text-sm" data-tag-filter="all" data-active="true" aria-pressed="true">
+                        All
+                    </button>
+                    {
+                        availableTags.map((tag) => (
+                            <button type="button" class="clickable border border-dotted px-2 py-1 text-sm" data-tag-filter={tag.slug} data-active="false" aria-pressed="false">
+                                {tag.label}
+                            </button>
+                        ))
+                    }
+                </div>
+            </section>
+        )
+    }
 
-{count >= posts.length && (
-    <a href="/blog" class="inline-block mt-2 font-semibold">
-        view all posts
-        <Icon
-            class="inline"
-            title="up-right"
-            name="lineicons:arrow-angular-top-right"
-        />
-    </a>
-)}
+    {
+        enableDateFilter && availableYears.length > 0 && (
+            <section class="mb-4 flex flex-wrap items-end gap-2" data-date-filters>
+                <div class="flex flex-col gap-1">
+                    <label for="post-year-filter" class="text-sm font-semibold">Year</label>
+                    <select id="post-year-filter" class="clickable border border-dotted px-2 py-1 text-sm" data-year-filter data-active="false">
+                        <option value="">All years</option>
+                        {
+                            availableYears.map((year) => (
+                                <option value={String(year)}>{year}</option>
+                            ))
+                        }
+                    </select>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <label for="post-month-filter" class="text-sm font-semibold">Month</label>
+                    <select id="post-month-filter" class="clickable border border-dotted px-2 py-1 text-sm" data-month-filter data-active="false" disabled>
+                        <option value="">All months</option>
+                    </select>
+                </div>
+            </section>
+        )
+    }
+
+    <div class="flex flex-col gap-2" data-post-list>
+        {
+            postCards.map((postCard) => (
+                <div
+                    data-post-card
+                    data-tags={postCard.tagSlugs.join(" ")}
+                    data-year={String(postCard.year)}
+                    data-month={String(postCard.month)}
+                >
+                    <Post post={postCard.post} />
+                </div>
+            ))
+        }
+    </div>
+
+    {count >= posts.length && (
+        <a href="/blog" class="inline-block mt-2 font-semibold">
+            view all posts
+            <Icon
+                class="inline"
+                title="up-right"
+                name="lineicons:arrow-angular-top-right"
+            />
+        </a>
+    )}
+
+    {
+        (enableTagFilter || enableDateFilter) && (
+            <script is:inline>
+                const root = document.currentScript?.closest("[data-posts-root]");
+                const filterContainer = root?.querySelector("[data-tag-filters]");
+                const filterButtons = filterContainer ? Array.from(filterContainer.querySelectorAll("[data-tag-filter]")) : [];
+                const cards = root ? Array.from(root.querySelectorAll("[data-post-card]")) : [];
+                const yearSelect = root?.querySelector("[data-year-filter]");
+                const monthSelect = root?.querySelector("[data-month-filter]");
+                const TAG_QUERY_KEY = "tag";
+                const YEAR_QUERY_KEY = "year";
+                const MONTH_QUERY_KEY = "month";
+
+                const MONTH_LABELS = [
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December",
+                ];
+
+                const validTagSlugs = new Set(
+                    filterButtons
+                        .map((button) => button.getAttribute("data-tag-filter") || "")
+                        .filter((slug) => Boolean(slug) && slug !== "all")
+                );
+
+                const validYears = new Set(
+                    cards
+                        .map((card) => card.getAttribute("data-year") || "")
+                        .filter(Boolean)
+                );
+
+                const getMonthsForYear = (year) => {
+                    if (!year) {
+                        return [];
+                    }
+
+                    const months = cards
+                        .filter((card) => (card.getAttribute("data-year") || "") === year)
+                        .map((card) => Number.parseInt(card.getAttribute("data-month") || "", 10))
+                        .filter((month) => Number.isInteger(month) && month >= 1 && month <= 12);
+
+                    return [...new Set(months)].sort((a, b) => a - b);
+                };
+
+                const getYearMonthFromUrl = () => {
+                    const params = new URLSearchParams(window.location.search);
+                    const yearParam = params.get(YEAR_QUERY_KEY) || "";
+                    const year = validYears.has(yearParam) ? yearParam : "";
+
+                    const validMonths = new Set(getMonthsForYear(year).map((month) => String(month)));
+                    const monthParam = params.get(MONTH_QUERY_KEY) || "";
+                    const month = validMonths.has(monthParam) ? monthParam : "";
+
+                    return { year, month };
+                };
+
+                const renderMonthOptions = (year, selectedMonth = "") => {
+                    if (!monthSelect) {
+                        return;
+                    }
+
+                    const monthValues = getMonthsForYear(year);
+                    monthSelect.innerHTML = '<option value="">All months</option>';
+                    monthSelect.disabled = !year || monthValues.length === 0;
+
+                    for (const month of monthValues) {
+                        const option = document.createElement("option");
+                        option.value = String(month);
+                        option.textContent = MONTH_LABELS[month - 1] || String(month);
+                        if (String(month) === selectedMonth) {
+                            option.selected = true;
+                        }
+                        monthSelect.append(option);
+                    }
+                };
+
+                const getSelectedTagsFromUrl = () => {
+                    const params = new URLSearchParams(window.location.search);
+                    const rawTags = params
+                        .getAll(TAG_QUERY_KEY)
+                        .flatMap((value) => value.split(","))
+                        .map((value) => value.trim())
+                        .filter(Boolean);
+
+                    return [...new Set(rawTags)].filter((slug) => validTagSlugs.has(slug));
+                };
+
+                const writeSelectedTagsToUrl = (selectedTags) => {
+                    const url = new URL(window.location.href);
+                    url.searchParams.delete(TAG_QUERY_KEY);
+                    url.searchParams.delete(YEAR_QUERY_KEY);
+                    url.searchParams.delete(MONTH_QUERY_KEY);
+
+                    for (const slug of selectedTags) {
+                        url.searchParams.append(TAG_QUERY_KEY, slug);
+                    }
+
+                    if (selectedYear) {
+                        url.searchParams.set(YEAR_QUERY_KEY, selectedYear);
+                    }
+
+                    if (selectedMonth) {
+                        url.searchParams.set(MONTH_QUERY_KEY, selectedMonth);
+                    }
+
+                    const search = url.searchParams.toString();
+                    const nextUrl = `${url.pathname}${search ? `?${search}` : ""}${url.hash}`;
+                    window.history.replaceState({}, "", nextUrl);
+                };
+
+                let selectedTags = getSelectedTagsFromUrl();
+                const initialDateFilters = getYearMonthFromUrl();
+                let selectedYear = initialDateFilters.year;
+                let selectedMonth = initialDateFilters.month;
+
+                const applyFilter = () => {
+                    const selectedSet = new Set(selectedTags);
+                    const showAll = selectedSet.size === 0;
+
+                    for (const card of cards) {
+                        const tagList = (card.getAttribute("data-tags") || "").split(" ").filter(Boolean);
+                        const cardYear = card.getAttribute("data-year") || "";
+                        const cardMonth = card.getAttribute("data-month") || "";
+                        const matchesTags = showAll || tagList.some((tag) => selectedSet.has(tag));
+                        const matchesYear = !selectedYear || cardYear === selectedYear;
+                        const matchesMonth = !selectedMonth || cardMonth === selectedMonth;
+                        const visible = matchesTags && matchesYear && matchesMonth;
+                        card.style.display = visible ? "block" : "none";
+                    }
+
+                    for (const button of filterButtons) {
+                        const slug = button.getAttribute("data-tag-filter") || "";
+                        const isAllButton = slug === "all";
+                        const isActive = isAllButton ? showAll : selectedSet.has(slug);
+                        button.setAttribute("data-active", isActive ? "true" : "false");
+                        button.setAttribute("aria-pressed", isActive ? "true" : "false");
+                    }
+
+                    if (yearSelect) {
+                        yearSelect.value = selectedYear;
+                        yearSelect.setAttribute("data-active", selectedYear ? "true" : "false");
+                    }
+
+                    renderMonthOptions(selectedYear, selectedMonth);
+
+                    if (monthSelect) {
+                        monthSelect.setAttribute("data-active", selectedMonth ? "true" : "false");
+                    }
+                };
+
+                for (const button of filterButtons) {
+                    button.addEventListener("click", () => {
+                        const slug = button.getAttribute("data-tag-filter") || "all";
+
+                        if (slug === "all") {
+                            selectedTags = [];
+                        } else {
+                            const selectedSet = new Set(selectedTags);
+                            if (selectedSet.has(slug)) {
+                                selectedSet.delete(slug);
+                            } else {
+                                selectedSet.add(slug);
+                            }
+                            selectedTags = [...selectedSet];
+                        }
+
+                        applyFilter();
+                        writeSelectedTagsToUrl(selectedTags);
+                    });
+                }
+
+                yearSelect?.addEventListener("change", () => {
+                    selectedYear = yearSelect.value;
+                    const validMonthsForYear = new Set(getMonthsForYear(selectedYear).map((month) => String(month)));
+                    if (!validMonthsForYear.has(selectedMonth)) {
+                        selectedMonth = "";
+                    }
+
+                    applyFilter();
+                    writeSelectedTagsToUrl(selectedTags);
+                });
+
+                monthSelect?.addEventListener("change", () => {
+                    selectedMonth = monthSelect.value;
+
+                    applyFilter();
+                    writeSelectedTagsToUrl(selectedTags);
+                });
+
+                window.addEventListener("popstate", () => {
+                    selectedTags = getSelectedTagsFromUrl();
+                    const dateFilters = getYearMonthFromUrl();
+                    selectedYear = dateFilters.year;
+                    selectedMonth = dateFilters.month;
+                    applyFilter();
+                });
+
+                applyFilter();
+            </script>
+        )
+    }
+</section>
