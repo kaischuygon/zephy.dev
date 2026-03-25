@@ -23,7 +23,7 @@ const tags = getPostTags(post);
         </span>
         {
             tags.length > 0 && (
-                <div class="flex flex-wrap gap-1 text-xs italic">
+                <div class="flex flex-wrap gap-1 text-xs italic wrap-break-word whitespace-normal">
                     {tags.join(" • ")}
                 </div>
             )
