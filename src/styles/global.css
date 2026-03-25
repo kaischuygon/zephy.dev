@@ -39,6 +39,14 @@ body {
     @apply no-underline! text-accent-500!;
 }
 
+.prose pre {
+    @apply max-w-full overflow-x-auto;
+}
+
+.prose code {
+    overflow-wrap: anywhere;
+}
+
 .shadow-square-clickable {
     @apply shadow-square hover:shadow-square-2 active:shadow-square-4;
 }

@@ -15,7 +15,7 @@ const link = `/portfolio/${item.id}`
 
 <a
     href={link}
-    class="w-sm shadow-square-clickable flex flex-col gap-2 border"
+    class="w-full md:w-sm shadow-square-clickable flex flex-col gap-2 border"
 >
     <Image
         src={typeof imgSrc === "function" ? imgSrc() : imgSrc}

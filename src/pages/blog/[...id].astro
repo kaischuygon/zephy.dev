@@ -9,7 +9,9 @@ import { getPostTags, getTagSlug } from "../../utils/blogTags";
 // 1. Generate a new path for every collection entry
 export async function getStaticPaths() {
     const posts = await getCollection("blog");
-    return posts.map((post) => ({
+	const publishedPosts = posts.filter((post) => !post.data.isDraft);
+
+	return publishedPosts.map((post) => ({
         params: { id: post.id },
         props: { post },
     }));
@@ -23,7 +25,7 @@ const tags = getPostTags(post);
 
 <Layout collectionItem={post}>
     <div class="flex flex-wrap justify-between gap-2">
-		<section id={post.id} class="prose dark:prose-invert" data-pagefind-body>
+		<section id={post.id} class="prose min-w-0 dark:prose-invert" data-pagefind-body>
 			<div>
 				<a href="/blog">
 					<Icon class="inline" title="arrow-left" name="lineicons:arrow-left" />
@@ -49,7 +51,7 @@ const tags = getPostTags(post);
 			<hr />
 		</section>
 		
-		<aside id="related_more" class="w-sm">
+		<aside id="related_more" class="w-full md:w-sm">
 			{post.data.related && (
 				<>
 					<h2 class="mb-2 text-2xl font-semibold">Related Posts</h2>
