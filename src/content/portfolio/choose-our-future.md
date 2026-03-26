@@ -6,9 +6,9 @@ img_alt: A screenshot of the choose your future application
 description: |
   A web application developed for UCAR.
 tags:
-  - TypeScript
-  - Tailwind
-  - React
+  - webapp
+  - educational
+  - exhibit
 ---
 ## Description
 A web version of the popular Choose Our Future exhibit at the [UCAR/NCAR Mesa Lab Visitor Center](https://scied.ucar.edu/visit) in Boulder, Colorado, USA. Developed for my senior capstone alongside 6 other developers and a project sponsor.

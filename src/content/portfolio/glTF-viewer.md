@@ -6,9 +6,9 @@ img_alt: a 3d model of a bunny
 description: |
   An 3d glTF viewer written in C++ with openGL.
 tags:
-  - OpenGL
-  - C++
-  - glTF
+  - desktop app
+  - 3d viewer
+  - graphics
 ---
 
 ## Description

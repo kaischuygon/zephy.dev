@@ -6,10 +6,9 @@ img_alt: A screenshot of the oori site
 description: |
   Company landing page for Oori Data.
 tags:
-  - TypeScript
-  - Astro
-  - Tailwind
-  - MDX
+  - website
+  - company
+  - landing page
 ---
 
 ## Description

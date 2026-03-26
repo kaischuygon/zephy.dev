@@ -6,9 +6,10 @@ img_alt: History Through Battleship banner over an ocean background
 description: |
   A full-stack application developed for a course at CU Boulder. I worked alongside 4 other students to create a trivia battleship game.
 tags:
-  - Full-stack
-  - Express
-  - PostgreSQL
+  - webapp
+  - game
+  - educational
+  - multiplayer
 ---
 
 ## Description
