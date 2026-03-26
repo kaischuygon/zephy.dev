@@ -2,18 +2,21 @@
 import { Icon } from "astro-icon/components";
 import Posts from "../components/Posts.astro";
 import Layout from "../layouts/Layout.astro";
-
 ---
 
 <Layout title="Blog">
-    <div class="flex gap-2 items-baseline">
+    <div class="flex items-baseline gap-2">
         <h1 class="mb-4 text-4xl font-bold">Blog</h1>
         <div>
-            <a href="/rss.xml"><Icon title="rss-icon" name="lineicons:rss-right" class="inline" /> RSS</a>
+            <a href="/rss.xml"
+                ><Icon
+                    title="rss-icon"
+                    name="lineicons:rss-right"
+                    class="inline"
+                /> RSS</a
+            >
         </div>
     </div>
-    <p class="mb-8">
-        I write on software development and my interests.
-    </p>
+    <p class="mb-8">I write on software development and my interests.</p>
     <Posts enableTagFilter enableDateFilter />
 </Layout>

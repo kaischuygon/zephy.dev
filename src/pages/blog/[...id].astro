@@ -9,9 +9,9 @@ import { getPostTags, getTagSlug } from "../../utils/blogTags";
 // 1. Generate a new path for every collection entry
 export async function getStaticPaths() {
     const posts = await getCollection("blog");
-	const publishedPosts = posts.filter((post) => !post.data.isDraft);
+    const publishedPosts = posts.filter((post) => !post.data.isDraft);
 
-	return publishedPosts.map((post) => ({
+    return publishedPosts.map((post) => ({
         params: { id: post.id },
         props: { post },
     }));
@@ -24,43 +24,54 @@ const tags = getPostTags(post);
 ---
 
 <Layout collectionItem={post}>
-    <div class="flex flex-wrap justify-between gap-2">
-		<section id={post.id} class="prose min-w-0 dark:prose-invert" data-pagefind-body>
-			<div>
-				<a href="/blog">
-					<Icon class="inline" title="arrow-left" name="lineicons:arrow-left" />
-					back to blog
-				</a>
-			</div>
-			<h4 class="font-light my-4">
-				{post.data.pubDate?.toLocaleDateString()}
-			</h4>
-			<h1 data-pagefind-meta="title">
-				{post.data.title}
-			</h1>
-			<div class="mb-2 flex flex-wrap gap-2">
-				{
-					tags.map((tag) => (
-						<a href={`/blog?tag=${encodeURIComponent(getTagSlug(tag))}`} class="border border-solid! shadow-square px-1 py-0.5">
-							{tag}
-						</a>
-					))
-				}
-			</div>
-			<Content />
-			<hr />
-		</section>
-		
-		<aside id="related_more" class="w-full md:w-sm">
-			{post.data.related && (
-				<>
-					<h2 class="mb-2 text-2xl font-semibold">Related Posts</h2>
-					<RelatedPosts item={post} />
-					<br />
-				</>
-			)}
-			<h2 class="mb-2 text-2xl font-semibold">More</h2>
-			<Posts count={3} ignore_ids={[...post.data.related?.map(r => r.id) || [], post.id]} />
-		</aside>
+    <div class="flex flex-col gap-4 lg:flex-row">
+        <section
+            id={post.id}
+            class="prose dark:prose-invert min-w-0 grow"
+            data-pagefind-body
+        >
+            <div>
+                <a href="/blog">
+                    <Icon
+                        class="inline"
+                        title="arrow-left"
+                        name="lineicons:arrow-left"
+                    />
+                    back to blog
+                </a>
+            </div>
+            <h4 class="my-4 font-light">
+                {post.data.pubDate?.toLocaleDateString()}
+            </h4>
+            <h1 data-pagefind-meta="title">
+                {post.data.title}
+            </h1>
+            <div class="mb-2 flex flex-wrap gap-2">
+                {
+                    tags.map((tag) => (
+                        <a
+                            href={`/blog?tag=${encodeURIComponent(getTagSlug(tag))}`}
+                            class="shadow-square border border-solid! px-1 py-0.5"
+                        >
+                            {tag}
+                        </a>
+                    ))
+                }
+            </div>
+            <Content />
+            <hr />
+        </section>
+
+        <aside id="related_more" class="flex w-full flex-col gap-2 lg:w-sm">
+            {post.data.related && <RelatedPosts item={post} />}
+            <Posts
+                count={3}
+                ignore_ids={[
+                    ...(post.data.related?.map((r) => r.id) || []),
+                    post.id,
+                ]}
+                heading="More posts"
+            />
+        </aside>
     </div>
 </Layout>

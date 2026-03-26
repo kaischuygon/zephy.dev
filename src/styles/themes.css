@@ -266,7 +266,7 @@
         --color-accent-900: oklch(0.208 0.042 265.755);
         --color-accent-950: oklch(0.129 0.042 264.695);
     }
-    
+
     [data-theme="gray"] {
         --color-accent-50: oklch(0.985 0.002 247.839);
         --color-accent-100: oklch(0.967 0.003 264.542);
@@ -280,7 +280,7 @@
         --color-accent-900: oklch(0.21 0.034 264.665);
         --color-accent-950: oklch(0.13 0.028 261.692);
     }
-    
+
     [data-theme="zinc"] {
         --color-accent-50: oklch(0.985 0 0);
         --color-accent-100: oklch(0.967 0.001 286.375);
@@ -294,7 +294,7 @@
         --color-accent-900: oklch(0.21 0.006 285.885);
         --color-accent-950: oklch(0.141 0.005 285.823);
     }
-    
+
     [data-theme="neutral"] {
         --color-accent-50: oklch(0.985 0 0);
         --color-accent-100: oklch(0.97 0 0);
@@ -308,7 +308,7 @@
         --color-accent-900: oklch(0.205 0 0);
         --color-accent-950: oklch(0.145 0 0);
     }
-    
+
     [data-theme="stone"] {
         --color-accent-50: oklch(0.985 0.001 106.423);
         --color-accent-100: oklch(0.97 0.001 106.424);

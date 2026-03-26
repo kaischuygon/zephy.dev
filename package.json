@@ -1,39 +1,39 @@
 {
-  "name": "zephy-dev",
-  "type": "module",
-  "version": "1.0.0",
-  "license": "MIT",
-  "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro",
-    "format": "prettier --write .",
-    "format:check": "prettier --check ."
-  },
-  "dependencies": {
-    "@astrojs/mdx": "4.3.13",
-    "@astrojs/react": "4.4.2",
-    "@astrojs/rss": "4.0.14",
-    "@astrojs/vercel": "9.0.2",
-    "@iconify-json/fa7-brands": "^1.2.1",
-    "@iconify-json/lineicons": "^1.2.6",
-    "@tailwindcss/vite": "^4.1.5",
-    "@types/react": "^19.2.2",
-    "@types/react-dom": "^19.2.2",
-    "astro": "5.16.6",
-    "astro-icon": "^1.1.5",
-    "astro-pagefind": "^1.8.5",
-    "astro-seo": "^0.8.4",
-    "dlx": "^0.2.1",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "tailwindcss": "^4.1.5"
-  },
-  "devDependencies": {
-    "@tailwindcss/typography": "^0.5.16",
-    "prettier": "^3.5.3",
-    "prettier-plugin-astro": "^0.14.1",
-    "prettier-plugin-tailwindcss": "^0.6.12"
-  }
+    "name": "zephy-dev",
+    "type": "module",
+    "version": "1.0.0",
+    "license": "MIT",
+    "scripts": {
+        "dev": "astro dev",
+        "build": "astro build",
+        "preview": "astro preview",
+        "astro": "astro",
+        "format": "prettier --write .",
+        "format:check": "prettier --check ."
+    },
+    "dependencies": {
+        "@astrojs/mdx": "4.3.13",
+        "@astrojs/react": "4.4.2",
+        "@astrojs/rss": "4.0.14",
+        "@astrojs/vercel": "9.0.2",
+        "@iconify-json/fa7-brands": "^1.2.1",
+        "@iconify-json/lineicons": "^1.2.6",
+        "@tailwindcss/vite": "^4.1.5",
+        "@types/react": "^19.2.2",
+        "@types/react-dom": "^19.2.2",
+        "astro": "5.16.6",
+        "astro-icon": "^1.1.5",
+        "astro-pagefind": "^1.8.5",
+        "astro-seo": "^0.8.4",
+        "dlx": "^0.2.1",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0",
+        "tailwindcss": "^4.1.5"
+    },
+    "devDependencies": {
+        "@tailwindcss/typography": "^0.5.16",
+        "prettier": "^3.5.3",
+        "prettier-plugin-astro": "^0.14.1",
+        "prettier-plugin-tailwindcss": "^0.6.12"
+    }
 }

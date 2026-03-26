@@ -1,29 +1,29 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import { getPostTags, getTagSlug } from '../utils/blogTags';
+import type { CollectionEntry } from "astro:content";
+import { getPostTags, getTagSlug } from "../utils/blogTags";
 
 interface Props {
-    post: CollectionEntry<'blog'>
+    post: CollectionEntry<"blog">;
 }
 
 const { post } = Astro.props as Props;
 
-const link = `/blog/${post.id}`
+const link = `/blog/${post.id}`;
 const tags = getPostTags(post);
 ---
 
 <a
     href={link}
-    class="shadow-square-clickable flex flex-col gap-2 border"
+    class="shadow-square-clickable flex h-full w-full flex-col gap-2 border"
 >
-    <div class="p-2">
+    <div class="flex h-full flex-col p-2">
         <h2 class="text-xl font-semibold">{post.data.title}</h2>
         <span class="text-xs font-light">
             {post.data.pubDate?.toLocaleDateString()}
         </span>
         {
             tags.length > 0 && (
-                <div class="flex flex-wrap gap-1 text-xs italic wrap-break-word whitespace-normal">
+                <div class="flex flex-wrap gap-1 text-xs wrap-break-word whitespace-normal italic">
                     {tags.join(" • ")}
                 </div>
             )
