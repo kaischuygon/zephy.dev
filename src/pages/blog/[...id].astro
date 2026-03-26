@@ -62,7 +62,10 @@ const tags = getPostTags(post);
             <hr />
         </section>
 
-        <aside id="related_more" class="flex w-full flex-col gap-2 lg:w-sm ml-auto">
+        <aside
+            id="related_more"
+            class="ml-auto flex w-full flex-col gap-2 lg:w-sm"
+        >
             {post.data.related && <RelatedPosts item={post} />}
             <Posts
                 count={3}
