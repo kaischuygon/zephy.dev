@@ -9,6 +9,7 @@ interface Props {
     ignore_ids?: string[];
     enableTagFilter?: boolean;
     enableDateFilter?: boolean;
+    heading?: string;
 }
 
 const {
@@ -16,6 +17,7 @@ const {
     ignore_ids = [],
     enableTagFilter = false,
     enableDateFilter = false,
+    heading = "",
 } = Astro.props as Props;
 
 const posts = (await getCollection("blog"))
@@ -134,20 +136,27 @@ const TOP_TAG_COUNT = 10;
         )
     }
 
-    <div class="flex flex-col gap-2" data-post-list>
-        {
-            postCards.map((postCard) => (
-                <div
-                    data-post-card
-                    data-tags={postCard.tagSlugs.join(" ")}
-                    data-year={String(postCard.year)}
-                    data-month={String(postCard.month)}
-                >
-                    <Post post={postCard.post} />
-                </div>
-            ))
-        }
-    </div>
+
+    {postCards.length > 0 && (
+        <section class="w-full">
+            <h2 class="mb-2 text-2xl font-semibold">{heading}</h2>
+            <div class="grid gap-4 grid-cols-1" data-post-list>
+                {
+                    postCards.map((postCard) => (
+                        <div
+                            data-post-card
+                            data-tags={postCard.tagSlugs.join(" ")}
+                            data-year={String(postCard.year)}
+                            data-month={String(postCard.month)}
+                            class="h-full"
+                        >
+                            <Post post={postCard.post} />
+                        </div>
+                    ))
+                }
+            </div>
+        </section>
+    )}
 
     {count >= posts.length && (
         <a href="/blog" class="inline-block mt-2 font-semibold">

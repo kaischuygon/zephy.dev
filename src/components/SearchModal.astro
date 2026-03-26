@@ -2,15 +2,18 @@
 import { Icon } from "astro-icon/components";
 import Search from "astro-pagefind/components/Search";
 ---
-<button id="searchButton" title="Search">search&nbsp;<kbd title="press s to search">s</kbd></button>
+
+<button id="searchButton" title="Search"
+    >search&nbsp;<kbd title="press s to search">s</kbd></button
+>
 
 <dialog
     id="searchDialog"
     closedby="any"
-    class="absolute mx-auto w-sm max-w-11/12 mt-8 max-h-[90vh] overflow-scroll"
+    class="absolute mx-auto mt-8 max-h-[90vh] w-sm max-w-11/12 overflow-scroll"
 >
     <search class="flex flex-col gap-2 p-4">
-        <div class="flex gap-2 justify-between items-center">
+        <div class="flex items-center justify-between gap-2">
             <h2 class="font-semibold">Search</h2>
             <Icon
                 name="lineicons:xmark"
@@ -36,13 +39,13 @@ import Search from "astro-pagefind/components/Search";
         --pagefind-input-background: unset;
         --pagefind-ui-border: var(--color-accent-500);
         --pagefind-ui-tag: var(--color-accent-500);
-        
+
         --pagefind-ui-border-width: 1px;
         --pagefind-ui-border-radius: 0px;
         --pagefind-ui-image-border-radius: 0px;
         --pagefind-ui-image-box-ratio: 3 / 2;
         --pagefind-ui-font: var(--font-sans);
-        
+
         --pagefind-button-background: var(--pagefind-input-background);
         --pagefind-button-color: var(--pagefind-ui-message-text);
     }
@@ -96,27 +99,27 @@ import Search from "astro-pagefind/components/Search";
 
     // searchDialog.showModal();
 
-    searchButton.addEventListener("click", e => {
+    searchButton.addEventListener("click", (e) => {
         e.preventDefault();
         searchDialog.showModal();
     });
 
-    closeBtn.addEventListener("click", e => {
+    closeBtn.addEventListener("click", (e) => {
         e.preventDefault();
         searchDialog.close();
     });
 
-    searchDialog.addEventListener("toggle", e => {
+    searchDialog.addEventListener("toggle", (e) => {
         e.preventDefault();
-        if(e.newState === "open") {
+        if (e.newState === "open") {
             document.body.classList.add("overflow-hidden");
         } else {
             document.body.classList.remove("overflow-hidden");
         }
     });
 
-    document.addEventListener("keypress", e => {
-        switch(e.key) {
+    document.addEventListener("keypress", (e) => {
+        switch (e.key) {
             case "s":
                 searchButton.click();
                 break;

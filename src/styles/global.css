@@ -23,9 +23,9 @@
 
 body {
     @apply font-sans antialiased;
-    
+
     @apply accent-accent-500 bg-white text-black;
-    
+
     @variant dark {
         @apply bg-black text-white;
     }
@@ -36,7 +36,7 @@ body {
 }
 
 .prose a {
-    @apply no-underline! text-accent-500!;
+    @apply text-accent-500! no-underline!;
 }
 
 .prose pre {
@@ -51,7 +51,8 @@ body {
     @apply shadow-square hover:shadow-square-2 active:shadow-square-4;
 }
 
-a, .clickable {
+a,
+.clickable {
     @apply text-accent-500 border-accent-500;
     @apply bg-accent-500/5 hover:bg-accent-500/10 active:bg-accent-500/20 focus-visible:outline-accent-500;
 }
@@ -64,17 +65,21 @@ dialog {
     @apply border-accent-500 shadow-square shadow-accent-500 border backdrop:bg-black/75;
 }
 
-input, select, textarea, button, .clickable {
+input,
+select,
+textarea,
+button,
+.clickable {
     @apply h-full;
 }
 
 [data-tag-filter][data-active="true"] {
-    @apply bg-accent-500/20 font-semibold shadow-square;
+    @apply bg-accent-500/20 shadow-square font-semibold;
 }
 
 [data-year-filter][data-active="true"],
 [data-month-filter][data-active="true"] {
-    @apply bg-accent-500/20 font-semibold shadow-square border-solid;
+    @apply bg-accent-500/20 shadow-square border-solid font-semibold;
 }
 
 [data-tag-filter][aria-pressed="true"] {
@@ -82,5 +87,5 @@ input, select, textarea, button, .clickable {
 }
 
 kbd {
-    @apply text-xs border px-0.5 rounded-sm;
+    @apply rounded-sm border px-0.5 text-xs;
 }

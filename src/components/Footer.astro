@@ -3,35 +3,43 @@ import { Icon } from "astro-icon/components";
 ---
 
 <footer class="flex justify-between gap-2 p-2">
-    <div class="flex gap-2 flex-col md:flex-row">
+    <div class="flex flex-col gap-2 md:flex-row">
         <span>
             © 2026 <Icon name="wind" title="site-logo" class="inline" />
-            <a href="https://zephy.dev" target="_blank" rel="noopener noreferrer">
+            <a
+                href="https://zephy.dev"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
                 zephy.dev
             </a>
         </span>
-        <span class="hidden md:inline">
-            •
-        </span>
+        <span class="hidden md:inline"> • </span>
         <span>
-            Developed with: <Icon name="lineicons:astro" title="astro" class="inline" />
-            <a href="https://astro.build" target="_blank" rel="noopener noreferrer">
+            Developed with: <Icon
+                name="lineicons:astro"
+                title="astro"
+                class="inline"
+            />
+            <a
+                href="https://astro.build"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
                 Astro
             </a>
         </span>
     </div>
-    <div class="flex gap-2 flex-col md:flex-row text-right">
+    <div class="flex flex-col gap-2 text-right md:flex-row">
         <span>
             <Icon name="lineicons:github" title="github" class="inline" />
             <a
                 href="https://github.com/kaischuygon/zephy.dev"
                 target="_blank"
                 rel="noopener noreferrer">source</a
-            > 
+            >
         </span>
-        <span class="hidden md:inline">
-            •
-        </span>
+        <span class="hidden md:inline"> • </span>
         <span>
             <Icon name="lineicons:envelope-1" title="mail" class="inline" />
             <a

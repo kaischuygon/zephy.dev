@@ -3,7 +3,17 @@ import { getCollection } from "astro:content";
 import PortfolioItem from "./PortfolioItem.astro";
 import { Icon } from "astro-icon/components";
 
-const { count=-1, ignore_id=undefined } = Astro.props;
+interface Props {
+    count?: number;
+    ignore_id?: string;
+    heading?: string;
+}
+
+const {
+    count = -1,
+    ignore_id = undefined,
+    heading = "",
+} = Astro.props as Props;
 
 const portfolioItems = (await getCollection("portfolio"))
     .filter((item) => (ignore_id ? item.id !== ignore_id : item))
@@ -11,17 +21,27 @@ const portfolioItems = (await getCollection("portfolio"))
     .slice(0, count);
 ---
 
-<div class="flex flex-wrap gap-2">
-    {portfolioItems.map((item) => <PortfolioItem item={item} />)}
-</div>
-
-{count >= portfolioItems.length && (
-    <a href="/portfolio" class="inline-block mt-2 font-semibold">
-        view full portfolio
-        <Icon
-            class="inline"
-            title="up-right"
-            name="lineicons:arrow-angular-top-right"
-        />
-    </a>
-)}
+{
+    portfolioItems.length > 0 && (
+        <section class="w-full">
+            <h2 class="mb-2 text-2xl font-semibold">{heading}</h2>
+            <div class="grid grid-flow-dense auto-rows-fr grid-cols-[min_1fr] gap-2">
+                {portfolioItems.map((item) => (
+                    <div class="h-full max-w-full min-w-xs">
+                        <PortfolioItem item={item} />
+                    </div>
+                ))}
+            </div>
+            {count >= portfolioItems.length && (
+                <a href="/portfolio" class="mt-2 inline-block font-semibold">
+                    view full portfolio
+                    <Icon
+                        class="inline"
+                        title="up-right"
+                        name="lineicons:arrow-angular-top-right"
+                    />
+                </a>
+            )}
+        </section>
+    )
+}

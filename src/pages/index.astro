@@ -8,7 +8,10 @@ import Posts from "../components/Posts.astro";
 ---
 
 <Layout>
-    <section id="splash" class="grid gap-4 grid-rows-2 md:grid-rows-1 grid-cols-1 md:grid-cols-[auto_1fr]">
+    <section
+        id="splash"
+        class="grid grid-cols-1 grid-rows-2 gap-4 md:grid-cols-[auto_1fr] md:grid-rows-1"
+    >
         <Image
             src={portrait}
             loading="eager"
@@ -16,7 +19,7 @@ import Posts from "../components/Posts.astro";
             alt="me, Kai Schuyler Gonzalez"
             width={250}
             height={250}
-            class="shadow-square block aspect-square border row-start-1"
+            class="shadow-square row-start-1 block aspect-square border"
         />
         <div class="prose dark:prose-invert">
             <h1>👋🏼 Hello!</h1>
@@ -30,7 +33,9 @@ import Posts from "../components/Posts.astro";
             </p>
             <p>
                 Currently, I'm a software engineer at <a
-                    href="https://corporate.charter.com/" target="_blank" rel="noopener noreferrer">Spectrum</a
+                    href="https://corporate.charter.com/"
+                    target="_blank"
+                    rel="noopener noreferrer">Spectrum</a
                 > in Denver, CO.
             </p>
         </div>
@@ -38,12 +43,10 @@ import Posts from "../components/Posts.astro";
 
     <section id="featured">
         <section id="recent-posts" class="mt-8">
-			<h2 class="mb-2 text-2xl font-semibold">Recent posts</h2>
-            <Posts count={2} />
+            <Posts count={2} heading="Recent posts" />
         </section>
         <section id="recent-portfolio" class="mt-8">
-			<h2 class="mb-2 text-2xl font-semibold">Recent projects</h2>
-			<PortfolioItems count={2} />
+            <PortfolioItems count={2} heading="Featured projects" />
         </section>
     </section>
 </Layout>
