@@ -18,6 +18,12 @@ const TAG_ALIASES: Record<string, string> = {
     "web development": "Web Development",
     "ux": "UX Design",
     "ux design": "UX Design",
+    // Ensure all variants of zephy.dev map to the emoji version
+    "zephy.dev": "💨 zephy.dev",
+    "zephy dev": "💨 zephy.dev",
+    "zephy-dev": "💨 zephy.dev",
+    "zephy_dev": "💨 zephy.dev",
+    "astro": "🚀 Astro"
 };
 
 function canonicalKey(tag: string): string {

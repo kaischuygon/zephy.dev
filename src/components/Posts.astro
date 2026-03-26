@@ -40,36 +40,71 @@ const postCards = posts.map((post) => {
 
 const availableYears = [...new Set(postCards.map((postCard) => postCard.year))].sort((a, b) => b - a);
 
-const tagMap = new Map<string, string>();
+// Count tag frequency
+const tagFrequency = new Map<string, { label: string; count: number }>();
 for (const postCard of postCards) {
     postCard.tagSlugs.forEach((slug, index) => {
-        if (!tagMap.has(slug)) {
-            tagMap.set(slug, postCard.tags[index] ?? slug);
+        const label = postCard.tags[index] ?? slug;
+        if (!tagFrequency.has(slug)) {
+            tagFrequency.set(slug, { label, count: 1 });
+        } else {
+            tagFrequency.get(slug)!.count++;
         }
     });
 }
 
-const availableTags = [...tagMap.entries()]
-    .map(([slug, label]) => ({ slug, label }))
-    .sort((a, b) => a.label.localeCompare(b.label));
+const availableTags = [...tagFrequency.entries()]
+    .map(([slug, { label, count }]) => ({ slug, label, count }))
+    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
+
+const TOP_TAG_COUNT = 10;
 ---
 
+
 <section data-posts-root>
+    <div class="flex justify-between items-center" hidden={!enableTagFilter && !enableDateFilter}>
+        <h2 class="mb-2 text-xl font-semibold">Filter by</h2>
+        <button
+            type="button"
+            id="clear-filters-btn"
+            class="clickable shadow-square hover:shadow-square-2 active:shadow-square-4 border px-2 py-1 text-sm grayscale cursor-not-allowed"
+            disabled
+        >
+            Clear filters
+        </button>
+    </div>
     {
         enableTagFilter && availableTags.length > 0 && (
-            <section class="mb-4">
-                <h2 class="mb-2 text-xl font-semibold">Filter by tags</h2>
-                <div class="flex flex-wrap gap-2" data-tag-filters>
+            <section class="mb-4 flex flex-col gap-1">
+                <label class="font-semibold">Tags</label>
+
+                <div class="flex flex-wrap gap-2" data-tag-filters data-top-tag-count={TOP_TAG_COUNT}>
                     <button type="button" class="clickable border border-dotted px-2 py-1 text-sm" data-tag-filter="all" data-active="true" aria-pressed="true">
                         All
                     </button>
-                    {
-                        availableTags.map((tag) => (
-                            <button type="button" class="clickable border border-dotted px-2 py-1 text-sm" data-tag-filter={tag.slug} data-active="false" aria-pressed="false">
-                                {tag.label}
-                            </button>
-                        ))
-                    }
+                    {availableTags.map((tag, i) => (
+                        <button
+                            type="button"
+                            class={`clickable border border-dotted px-2 py-1 text-sm flex items-center gap-1 tag-badge${i >= TOP_TAG_COUNT ? ' hidden' : ''}`}
+                            data-tag-filter={tag.slug}
+                            data-active="false"
+                            aria-pressed="false"
+                            data-tag-index={i}
+                        >
+                            <span>{tag.label}</span>
+                            <span class="text-xs opacity-60">{tag.count}</span>
+                        </button>
+                    ))}
+                    {availableTags.length > TOP_TAG_COUNT && (
+                        <button
+                            type="button"
+                            id="toggle-tags-btn"
+                            class="clickable border px-2 py-1 text-sm tag-toggle-btn"
+                            aria-expanded="false"
+                        >
+                            Show all
+                        </button>
+                    )}
                 </div>
             </section>
         )
@@ -79,8 +114,8 @@ const availableTags = [...tagMap.entries()]
         enableDateFilter && availableYears.length > 0 && (
             <section class="mb-4 flex flex-wrap items-end gap-2" data-date-filters>
                 <div class="flex flex-col gap-1">
-                    <label for="post-year-filter" class="text-sm font-semibold">Year</label>
-                    <select id="post-year-filter" class="clickable border border-dotted px-2 py-1 text-sm" data-year-filter data-active="false">
+                    <label for="post-year-filter" class="font-semibold">Year</label>
+                    <select id="post-year-filter" class="clickable border border-dotted px-2 py-1 text-sm disabled:grayscale disabled:cursor-not-allowed" data-year-filter data-active="false">
                         <option value="">All years</option>
                         {
                             availableYears.map((year) => (
@@ -90,8 +125,8 @@ const availableTags = [...tagMap.entries()]
                     </select>
                 </div>
                 <div class="flex flex-col gap-1">
-                    <label for="post-month-filter" class="text-sm font-semibold">Month</label>
-                    <select id="post-month-filter" class="clickable border border-dotted px-2 py-1 text-sm" data-month-filter data-active="false" disabled>
+                    <label for="post-month-filter" class="font-semibold">Month</label>
+                    <select id="post-month-filter" class="clickable border border-dotted px-2 py-1 text-sm disabled:grayscale disabled:cursor-not-allowed" data-month-filter data-active="false" disabled>
                         <option value="">All months</option>
                     </select>
                 </div>
@@ -137,6 +172,8 @@ const availableTags = [...tagMap.entries()]
                 const TAG_QUERY_KEY = "tag";
                 const YEAR_QUERY_KEY = "year";
                 const MONTH_QUERY_KEY = "month";
+
+                const clearBtn = root?.querySelector("#clear-filters-btn");
 
                 const MONTH_LABELS = [
                     "January",
@@ -252,14 +289,16 @@ const availableTags = [...tagMap.entries()]
                 const applyFilter = () => {
                     const selectedSet = new Set(selectedTags);
                     const showAll = selectedSet.size === 0;
+                    const noYear = !selectedYear;
+                    const noMonth = !selectedMonth;
 
                     for (const card of cards) {
                         const tagList = (card.getAttribute("data-tags") || "").split(" ").filter(Boolean);
                         const cardYear = card.getAttribute("data-year") || "";
                         const cardMonth = card.getAttribute("data-month") || "";
                         const matchesTags = showAll || tagList.some((tag) => selectedSet.has(tag));
-                        const matchesYear = !selectedYear || cardYear === selectedYear;
-                        const matchesMonth = !selectedMonth || cardMonth === selectedMonth;
+                        const matchesYear = noYear || cardYear === selectedYear;
+                        const matchesMonth = noMonth || cardMonth === selectedMonth;
                         const visible = matchesTags && matchesYear && matchesMonth;
                         card.style.display = visible ? "block" : "none";
                     }
@@ -282,12 +321,33 @@ const availableTags = [...tagMap.entries()]
                     if (monthSelect) {
                         monthSelect.setAttribute("data-active", selectedMonth ? "true" : "false");
                     }
+
+                    // Enable/disable clear filters button
+                    const filtersActive = selectedTags.length > 0 || selectedYear || selectedMonth;
+                    if (clearBtn) {
+                        clearBtn.disabled = !filtersActive;
+                        clearBtn.classList.toggle("grayscale", !filtersActive);
+                        clearBtn.classList.toggle("cursor-not-allowed", !filtersActive);
+                    }
                 };
+                // Clear filters button handler
+                if (clearBtn) {
+                    clearBtn.addEventListener("click", () => {
+                        if (clearBtn.disabled) return;
+                        selectedTags = [];
+                        selectedYear = "";
+                        selectedMonth = "";
+                        applyFilter();
+                        writeSelectedTagsToUrl(selectedTags);
+                    });
+                }
 
-                for (const button of filterButtons) {
-                    button.addEventListener("click", () => {
+                // Tag button event delegation (handles both static and dynamic tag buttons)
+                if (filterContainer) {
+                    filterContainer.addEventListener("click", (e) => {
+                        const button = e.target.closest("[data-tag-filter]");
+                        if (!button) return;
                         const slug = button.getAttribute("data-tag-filter") || "all";
-
                         if (slug === "all") {
                             selectedTags = [];
                         } else {
@@ -299,7 +359,6 @@ const availableTags = [...tagMap.entries()]
                             }
                             selectedTags = [...selectedSet];
                         }
-
                         applyFilter();
                         writeSelectedTagsToUrl(selectedTags);
                     });
@@ -331,6 +390,24 @@ const availableTags = [...tagMap.entries()]
                     applyFilter();
                 });
 
+                // Show all/less tags logic (single toggle button)
+                const toggleBtn = root?.querySelector("#toggle-tags-btn");
+                let expanded = false;
+                // Get TOP_TAG_COUNT from data attribute
+                const topTagCount = filterContainer ? parseInt(filterContainer.getAttribute('data-top-tag-count'), 10) : 10;
+                if (toggleBtn) {
+                    toggleBtn.addEventListener("click", () => {
+                        expanded = !expanded;
+                        filterContainer.querySelectorAll('.tag-badge').forEach((el, i) => {
+                            if (i >= topTagCount) {
+                                el.classList.toggle('hidden', !expanded);
+                            }
+                        });
+                        // Change button text and aria-expanded
+                        toggleBtn.textContent = expanded ? 'Show less' : 'Show all';
+                        toggleBtn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+                    });
+                }
                 applyFilter();
             </script>
         )

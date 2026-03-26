@@ -38,10 +38,10 @@ const tags = getPostTags(post);
 			<h1 data-pagefind-meta="title">
 				{post.data.title}
 			</h1>
-			<div class="mb-2 flex flex-wrap gap-2 break-words whitespace-normal max-w-full overflow-x-auto">
+			<div class="mb-2 flex flex-wrap gap-2">
 				{
-					tags.map((tag, i) => (
-						<a href={`/blog?tag=${encodeURIComponent(getTagSlug(tag))}`} class="shadow-square border p-1 no-underline break-all max-w-full">
+					tags.map((tag) => (
+						<a href={`/blog?tag=${encodeURIComponent(getTagSlug(tag))}`} class="border border-solid! shadow-square px-1 py-0.5">
 							{tag}
 						</a>
 					))

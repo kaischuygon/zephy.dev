@@ -79,9 +79,11 @@ const sortedExtraLinks = [...extraLinks].sort((a, b) =>
                     <>
                         <a
                             href={link}
-                            class="inline-flex w-min items-center gap-1 font-mono font-semibold md:ml-auto break-all max-w-full"
+                            class="inline-flex w-min items-center gap-1 font-mono font-semibold md:ml-auto break-normal max-w-full"
                         >
-                            {title}
+                            <span>
+                                {title}
+                            </span>
                         </a>
                         {index < navEntries.length - 1 && (
                             <span class="text-xs opacity-60 md:hidden" aria-hidden="true">•</span>
@@ -100,7 +102,7 @@ const sortedExtraLinks = [...extraLinks].sort((a, b) =>
                             href={link.href}
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="inline-flex w-min items-center gap-1 font-mono font-semibold md:ml-auto"
+                            class="inline-flex w-min items-center gap-1 font-mono font-semibold md:ml-auto break-normal max-w-full"
                         >
                             {link?.icon?.match(/[a-z1-9]:[a-z\-]/) ? (
                                 <Icon name={link.icon} class="inline" />
