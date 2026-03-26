@@ -12,7 +12,7 @@ const extraLinks: {
     title: string;
     icon?: string;
     href: string;
-    pinned: boolean;
+    pinned?: boolean;
 }[] = [
     {
         title: "kino.wtf",
@@ -24,13 +24,11 @@ const extraLinks: {
         title: "letterboxd",
         icon: "fa7-brands:letterboxd",
         href: "https://letterboxd.com/kschuyler/",
-        pinned: false,
     },
     {
         title: "contact",
         icon: "lineicons:envelope-1",
         href: "mailto:kai.schuyler@gmail.com",
-        pinned: false,
     },
 ];
 
@@ -103,20 +101,22 @@ const sortedExtraLinks = [...extraLinks].sort((a, b) =>
                 // Display extra links, with pinned ones first
                 sortedExtraLinks.map((link, index) => (
                     <>
-                        <a
-                            href={link.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="inline-flex w-min max-w-full items-center gap-1 font-mono font-semibold break-normal md:ml-auto"
-                        >
-                            {link?.icon?.match(/[a-z1-9]:[a-z\-]/) ? (
-                                <Icon name={link.icon} class="inline" />
-                            ) : (
-                                <span class="inline">{link.icon}</span>
-                            )}
-                            <span>{link.title}</span>
+                        <span class="inline-flex w-min max-w-full items-center gap-1 font-mono font-semibold break-normal md:ml-auto">
+                            <a
+                                href={link.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="inline-flex w-min max-w-full items-center gap-1 break-normal md:ml-auto"
+                            >
+                                {link?.icon?.match(/[a-z1-9]:[a-z\-]/) ? (
+                                    <Icon name={link.icon} class="inline" />
+                                ) : (
+                                    <span class="inline">{link.icon}</span>
+                                )}
+                                <span>{link.title}</span>
+                            </a>
                             {link.pinned && <span class="text-xs">📌</span>}
-                        </a>
+                        </span>
                         {index < sortedExtraLinks.length - 1 && (
                             <span
                                 class="text-xs opacity-60 md:hidden"
