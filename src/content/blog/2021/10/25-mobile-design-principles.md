@@ -4,7 +4,7 @@ pubDate: 2021-10-21 00:00:00
 description: |
   Thoughts "Principles of Mobile App Design" by Jenny Gove.
 categories:
-  - UX design
+  - UX Design
 tags:
   - UX Design
   - Mobile Development

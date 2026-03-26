@@ -6,8 +6,8 @@ img_alt: A phone running endless picross
 description: |
   An Android game that generates random picross puzzles.
 tags:
-  - Android
-  - Kotlin
+  - mobile app
+  - game
 ---
 
 ## Description

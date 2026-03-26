@@ -4,8 +4,8 @@ pubDate: 2021-09-13 00:00:00
 description: |
   Reviewing Apple's video on essential design principles.
 categories:
-  - Design
-  - App Dev
+    - Design
+    - App Development
 tags:
     - Design
     - App Development
