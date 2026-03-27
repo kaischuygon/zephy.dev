@@ -20,7 +20,10 @@ interface Props {
 
 const { title, collectionItem } = Astro.props;
 
-const getTitle = collectionItem?.data.title ?? title ?? "zephy.dev";
+const author = "Kai Schuyler Gonzalez";
+const getTitle =
+    (collectionItem?.data.title ?? title ?? "zephy.dev") +
+    " | " + author;
 
 const generalDescription =
     "Personal portfolio site of Kai Schuyler Gonzalez, a software engineer / designer based in Denver, CO.";
@@ -40,6 +43,27 @@ const getImage = collectionItem?.data.img || "/og-image.png";
         <meta name="color-scheme" content="light dark" />
         <meta name="generator" content={Astro.generator} />
         <title>{getTitle}</title>
+        <meta name="author" content={author} />
+
+        <!-- Structured Data for SEO -->
+        <script type="application/ld+json" is:inline>
+            {
+                "@context": "https://schema.org",
+                "@type": "Person",
+                "name": "Kai Schuyler Gonzalez",
+                "url": "https://zephy.dev",
+                "sameAs": [
+                    "https://github.com/kaischuygon",
+                    "mailto:kai.schuyler@gmail.com"
+                ],
+                "jobTitle": "Software Engineer / Designer",
+                "worksFor": {
+                    "@type": "Organization",
+                    "name": "zephy.dev"
+                },
+                "description": "Personal portfolio site of Kai Schuyler Gonzalez, a software engineer / designer based in Denver, CO."
+            }
+        </script>
 
         <!-- Favicon -->
         <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -96,8 +120,8 @@ const getImage = collectionItem?.data.img || "/og-image.png";
         <!-- All SEO goes here -->
         <SEO
             title={getTitle}
-            titleTemplate="%s | zephy.dev"
-            titleDefault="zephy.dev"
+            titleTemplate={"%s | zephy.dev | " + author}
+            titleDefault={"zephy.dev | " + author}
             description={getDescription}
             canonical="https://zephy.dev"
             openGraph={{
@@ -111,7 +135,7 @@ const getImage = collectionItem?.data.img || "/og-image.png";
                 },
                 article: {
                     publishedTime: collectionItem?.data.pubDate?.toISOString(),
-                    authors: ["Kai Schuyler Gonzalez"],
+                    authors: [author],
                     tags:
                         collectionItem?.collection === "blog"
                             ? (collectionItem?.data?.categories ?? [])
@@ -127,7 +151,7 @@ const getImage = collectionItem?.data.img || "/og-image.png";
                 image: getImage,
                 imageAlt:
                     collectionItem?.data.img_alt ??
-                    "zephy.dev: Kais personal site and portfolio",
+                    "zephy.dev: Kai Schuyler Gonzalez's personal site and portfolio",
             }}
             extend={{
                 // extending the default link tags
