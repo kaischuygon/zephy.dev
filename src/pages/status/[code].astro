@@ -1,0 +1,82 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+interface StatusInfo {
+    code: number;
+    title: string;
+    description: string;
+    rangeLabel: string;
+}
+
+export function getStaticPaths() {
+    const KNOWN_STATUS_TEXT: Record<number, string> = {
+        100: "Continue", 101: "Switching Protocols", 102: "Processing", 103: "Early Hints",
+        200: "OK", 201: "Created", 202: "Accepted", 203: "Non-Authoritative Information",
+        204: "No Content", 205: "Reset Content", 206: "Partial Content", 207: "Multi-Status",
+        208: "Already Reported", 226: "IM Used",
+        300: "Multiple Choices", 301: "Moved Permanently", 302: "Found", 303: "See Other",
+        304: "Not Modified", 305: "Use Proxy", 307: "Temporary Redirect", 308: "Permanent Redirect",
+        400: "Bad Request", 401: "Unauthorized", 402: "Payment Required", 403: "Forbidden",
+        404: "Not Found", 405: "Method Not Allowed", 406: "Not Acceptable", 407: "Proxy Authentication Required",
+        408: "Request Timeout", 409: "Conflict", 410: "Gone", 411: "Length Required",
+        412: "Precondition Failed", 413: "Payload Too Large", 414: "URI Too Long",
+        415: "Unsupported Media Type", 416: "Range Not Satisfiable", 417: "Expectation Failed",
+        418: "I'm a teapot", 421: "Misdirected Request", 422: "Unprocessable Content",
+        423: "Locked", 424: "Failed Dependency", 425: "Too Early", 426: "Upgrade Required",
+        428: "Precondition Required", 429: "Too Many Requests", 431: "Request Header Fields Too Large",
+        451: "Unavailable For Legal Reasons",
+        500: "Internal Server Error", 501: "Not Implemented", 502: "Bad Gateway",
+        503: "Service Unavailable", 504: "Gateway Timeout", 505: "HTTP Version Not Supported",
+        506: "Variant Also Negotiates", 507: "Insufficient Storage", 508: "Loop Detected",
+        510: "Not Extended", 511: "Network Authentication Required",
+    };
+
+    function getRangeLabel(code: number) {
+        if (code >= 100 && code < 200) return "Informational";
+        if (code >= 200 && code < 300) return "Success";
+        if (code >= 300 && code < 400) return "Redirection";
+        if (code >= 400 && code < 500) return "Client Error";
+        return "Server Error";
+    }
+
+    function getDescription(code: number) {
+        const rangeLabel = getRangeLabel(code);
+        if (rangeLabel === "Informational") return "This status is informational and usually not shown to end users.";
+        if (rangeLabel === "Success") return "This request completed successfully.";
+        if (rangeLabel === "Redirection") return "This request requires a redirect or additional action.";
+        if (rangeLabel === "Client Error") return "The request could not be completed because of a client-side issue.";
+        return "The request failed because of a server-side issue.";
+    }
+
+    return Array.from({ length: 500 }, (_, index) => {
+        const code = 100 + index;
+        const title = KNOWN_STATUS_TEXT[code] ?? "Unassigned HTTP Status";
+        const rangeLabel = getRangeLabel(code);
+        const description = getDescription(code);
+        return {
+            params: { code: String(code) },
+            props: { statusInfo: { code, title, description, rangeLabel } },
+        };
+    });
+}
+
+const { statusInfo } = Astro.props as { statusInfo: StatusInfo };
+
+// Static HTML pages cannot be emitted with no-body statuses.
+const noBodyStatuses = new Set([204, 205, 304]);
+if (!noBodyStatuses.has(statusInfo.code)) {
+    if (statusInfo.code >= 400) Astro.response.status = statusInfo.code;
+}
+---
+
+<Layout title={`${statusInfo.code} ${statusInfo.title}`}>
+    <article class="prose dark:prose-invert">
+        <p class="font-mono opacity-70">HTTP Status</p>
+        <h1>{statusInfo.code}: {statusInfo.title}</h1>
+        <p>{statusInfo.rangeLabel}</p>
+        <p>{statusInfo.description}</p>
+        <p>
+            Go back to the <a href="/">homepage</a>.
+        </p>
+    </article>
+</Layout>
