@@ -1,4 +1,5 @@
 ---
+import { getCollection } from "astro:content";
 import { Icon } from "astro-icon/components";
 
 let navlinks = {
@@ -7,6 +8,17 @@ let navlinks = {
     portfolio: "/portfolio",
     blog: "/blog",
 };
+
+const sideNavPages = await getCollection("pages", ({ data }) =>
+    data.sideNav,
+);
+
+const pageLinks = sideNavPages
+    .map((item) => ({
+        title: item.data.title,
+        href: `/${item.id}`,
+    }))
+    .filter((item) => !Object.values(navlinks).includes(item.href));
 
 const extraLinks: {
     title: string;
@@ -32,7 +44,10 @@ const extraLinks: {
     },
 ];
 
-const navEntries = Object.entries(navlinks);
+const navEntries = [
+    ...Object.entries(navlinks).map(([title, href]) => ({ title, href })),
+    ...pageLinks,
+];
 const sortedExtraLinks = [...extraLinks].sort((a, b) =>
     a.pinned === b.pinned ? 0 : a.pinned ? -1 : 1,
 );
@@ -49,7 +64,7 @@ const sortedExtraLinks = [...extraLinks].sort((a, b) =>
             class="m-1 block text-4xl md:text-8xl"
             aria-label="site logo"
         >
-            <Icon name="wind" title="site-logo" />
+            <Icon name="wind" title="zephy.dev logo" />
         </a>
 
         <button
@@ -75,13 +90,13 @@ const sortedExtraLinks = [...extraLinks].sort((a, b) =>
             class="flex max-w-full flex-row flex-wrap items-center gap-2 overflow-x-auto wrap-break-word whitespace-normal md:flex-col"
         >
             {
-                navEntries.map(([title, link], index) => (
+                navEntries.map(({ title, href }, index) => (
                     <>
                         <a
-                            href={link}
+                            href={href}
                             class="inline-flex w-min max-w-full items-center gap-1 font-mono font-semibold break-normal md:ml-auto"
                         >
-                            <span>{title}</span>
+                            <span>{title?.toLowerCase()}</span>
                         </a>
                         {index < navEntries.length - 1 && (
                             <span

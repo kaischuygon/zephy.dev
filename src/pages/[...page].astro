@@ -1,0 +1,32 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+
+// 1. Generate a new path for every collection entry
+export async function getStaticPaths() {
+    const items = await getCollection("pages");
+    return items.map((item) => ({
+        params: { page: item.id },
+        props: { item },
+    }));
+}
+
+const { item } = Astro.props;
+const { Content } = await render(item);
+---
+
+<Layout>
+    <article class="prose dark:prose-invert">
+        <h1>{item.data.title}</h1>
+        {
+            item.data.img && (
+                <img
+                    src={item.data.img}
+                    alt={item.data.img_alt ?? item.data.title}
+                    class="shadow-square mb-6 border"
+                />
+            )
+        }
+        <Content />
+    </article>
+</Layout>

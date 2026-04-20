@@ -42,7 +42,7 @@ const imgSrc = images[item.data.img] ?? item.data.img;
             </h1>
             <div class="mb-2 flex flex-wrap gap-2">
                 {
-                    item.data.tags.map((tag, i) => (
+                    item.data.tags.map((tag) => (
                         <div class="shadow-square border border-solid! px-1 py-0.5">
                             {tag}
                         </div>
@@ -53,12 +53,11 @@ const imgSrc = images[item.data.img] ?? item.data.img;
                 src={typeof imgSrc === "function" ? imgSrc() : imgSrc}
                 alt={item.data.img_alt}
                 loading="eager"
-                width={500}
-                height={500}
+                width={1200}
+                height={630}
                 class="shadow-square mb-2 w-full border"
             />
             <Content />
-            <hr />
         </section>
 
         <aside
