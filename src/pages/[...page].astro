@@ -15,7 +15,7 @@ const { item } = Astro.props;
 const { Content } = await render(item);
 ---
 
-<Layout>
+<Layout title={item.data.title} description={item.data.description}>
     <article class="prose dark:prose-invert">
         <h1>{item.data.title}</h1>
         {

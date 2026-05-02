@@ -15,10 +15,11 @@ import colorSchemes from "../content/color-schemes.json";
 
 interface Props {
     title?: string;
+    description?: string;
     collectionItem?: CollectionEntry<"blog"> | CollectionEntry<"portfolio">;
 }
 
-const { title, collectionItem } = Astro.props;
+const { title, description, collectionItem } = Astro.props;
 
 const author = "Kai Schuyler Gonzalez";
 const getTitle =
@@ -27,9 +28,7 @@ const getTitle =
 const generalDescription =
     "Personal portfolio site of Kai Schuyler Gonzalez, a software engineer / designer based in Denver, CO.";
 
-const getDescription = collectionItem
-    ? collectionItem.data.description
-    : generalDescription;
+const getDescription = description ?? collectionItem?.data.description ?? generalDescription;
 
 const getImage = collectionItem?.data.img || "/og-image.png";
 ---
