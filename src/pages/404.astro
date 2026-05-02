@@ -1,10 +1,20 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { getStatusInfo } from "../utils/statusInfo";
+
+const statusInfo = getStatusInfo(404);
+Astro.response.status = 404;
 ---
 
-<Layout>
+<Layout
+    title={`${statusInfo.code} ${statusInfo.title}`}
+    description={statusInfo.description}
+>
     <div class="prose dark:prose-invert">
-        <h1>Page not found.</h1>
+        <p class="font-mono opacity-70">HTTP Status</p>
+        <h1>{statusInfo.code}: {statusInfo.title}</h1>
+        <p>{statusInfo.rangeLabel}</p>
+        <p>{statusInfo.description}</p>
         <p>
             Please go back to the <a href="/">homepage</a>
             or <button class="clickable" onclick="searchButton?.click()"
