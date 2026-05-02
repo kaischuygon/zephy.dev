@@ -29,7 +29,11 @@ function formatMonthYear(date: Date) {
     return dateFormatter.format(date);
 }
 
-function formatDateRange(startDate: Date, endDate?: Date, presentLabel = "Present") {
+function formatDateRange(
+    startDate: Date,
+    endDate?: Date,
+    presentLabel = "Present",
+) {
     const start = formatMonthYear(startDate);
     const end = endDate ? formatMonthYear(endDate) : presentLabel;
 
@@ -63,7 +67,9 @@ export default function ContentBlock({
     const classes = [
         "not-prose",
         "flex",
-        rightContent !== undefined && rightContent !== null ? "justify-between" : "",
+        rightContent !== undefined && rightContent !== null
+            ? "justify-between"
+            : "",
         className,
     ]
         .filter(Boolean)
@@ -72,21 +78,37 @@ export default function ContentBlock({
     return (
         <div className={classes}>
             <span>
-                {partial?.length
-                    ? partial.map(({ text, style = "normal", className: segmentClassName }, index) => (
-                          <span
-                              key={`partial-segment-${index}`}
-                              className={[getTextStyleClass(style), segmentClassName]
-                                  .filter(Boolean)
-                                  .join(" ")}
-                          >
-                              {text}
-                          </span>
-                      ))
-                    : <span className={getTextStyleClass(leftStyle)}>{left}</span>}
+                {partial?.length ? (
+                    partial.map(
+                        (
+                            {
+                                text,
+                                style = "normal",
+                                className: segmentClassName,
+                            },
+                            index,
+                        ) => (
+                            <span
+                                key={`partial-segment-${index}`}
+                                className={[
+                                    getTextStyleClass(style),
+                                    segmentClassName,
+                                ]
+                                    .filter(Boolean)
+                                    .join(" ")}
+                            >
+                                {text}
+                            </span>
+                        ),
+                    )
+                ) : (
+                    <span className={getTextStyleClass(leftStyle)}>{left}</span>
+                )}
             </span>
             {rightContent !== undefined && rightContent !== null ? (
-                <span className={getTextStyleClass(rightStyle)}>{rightContent}</span>
+                <span className={getTextStyleClass(rightStyle)}>
+                    {rightContent}
+                </span>
             ) : null}
         </div>
     );

@@ -1,6 +1,10 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { getStatusInfo, noBodyStatuses, type StatusInfo } from "../../utils/statusInfo";
+import {
+    getStatusInfo,
+    noBodyStatuses,
+    type StatusInfo,
+} from "../../utils/statusInfo";
 
 export function getStaticPaths() {
     return Array.from({ length: 500 }, (_, index) => {
