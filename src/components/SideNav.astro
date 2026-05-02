@@ -9,9 +9,7 @@ let navlinks = {
     blog: "/blog",
 };
 
-const sideNavPages = await getCollection("pages", ({ data }) =>
-    data.sideNav,
-);
+const sideNavPages = await getCollection("pages", ({ data }) => data.sideNav);
 
 const pageLinks = sideNavPages
     .map((item) => ({
