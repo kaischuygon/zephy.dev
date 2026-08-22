@@ -1,7 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
+import { MdLightMode } from "react-icons/md";
 
 export default function ThemeSelect() {
     const [theme, setTheme] = useState();
+    const THEMES = [
+        'system',
+        'light',
+        'dark'
+    ]
 
     useEffect(() => {
         if (localStorage.theme) {
@@ -28,17 +34,22 @@ export default function ThemeSelect() {
         }
     }, [theme]);
 
+    const selectId = useId('themeSelect');
+    const selectRef = useRef();
+
     return (
-        <select
-            id="themeSelect"
-            title="set theme"
-            aria-hidden="true"
-            value={theme}
-            onChange={(e) => setTheme(e.target.value)}
-        >
-            <option value="system">system</option>
-            <option value="light">light</option>
-            <option value="dark">dark</option>
-        </select>
+        <label htmlFor={selectId} className="clickable shadow-square-clickable border p-1 flex gap-1 items-center cursor-pointer" onClick={() => selectRef.current?.showPicker()}>
+            <MdLightMode />
+            <span hidden>theme</span>
+            <select
+                id={selectId}
+                ref={selectRef}
+                title="set theme"
+                value={theme}
+                onChange={(e) => setTheme(e.target.value)}
+            >
+                {THEMES.map(theme => <option value={theme}>{theme}</option>)}
+            </select>
+        </label>
     );
 }

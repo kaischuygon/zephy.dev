@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
+import { BiSolidPalette } from "react-icons/bi";
 import colorSchemes from "../content/color-schemes.json";
 
 export default function AccentSelect() {
@@ -63,21 +64,27 @@ export default function AccentSelect() {
         }
     }, [accentColor]);
 
+    const selectId = useId('accentSelect');
+    const selectRef = useRef();
+
     return (
-        <select
-            id="accentSelect"
-            title="set accent color"
-            aria-hidden="true"
-            value={accentColor}
-            onChange={(e) => setAccentColor(e.target.value)}
-        >
-            <option value="daily">daily</option>
-            <hr />
-            {colorSchemes.map((color) => (
-                <option key={color} value={color}>
-                    {color}
-                </option>
-            ))}
-        </select>
+        <label htmlFor={selectId} className="clickable shadow-square-clickable border p-1 flex gap-1 items-center cursor-pointer" onClick={() => selectRef.current?.showPicker()}>
+            <BiSolidPalette />
+            <span hidden>accent</span>
+            <select
+                id={selectId}
+                ref={selectRef}
+                title="set accent color"
+                value={accentColor}
+                onChange={(e) => setAccentColor(e.target.value)}
+            >
+                <option value="daily">daily</option>
+                {colorSchemes.map((color) => (
+                    <option key={color} value={color}>
+                        {color}
+                    </option>
+                ))}
+            </select>
+        </label>
     );
 }

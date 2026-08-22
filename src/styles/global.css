@@ -31,20 +31,33 @@ body {
     }
 }
 
-.prose {
-    @apply font-serif!;
-}
-
-.prose a {
-    @apply text-accent-500! no-underline!;
-}
-
-.prose pre {
-    @apply max-w-full overflow-x-auto;
-}
-
-.prose code {
-    overflow-wrap: anywhere;
+[data-theme="red"] { .accent-prose { @apply prose-red} }
+[data-theme="orange"] { .accent-prose { @apply prose-orange} }
+[data-theme="amber"] { .accent-prose { @apply prose-amber} }
+[data-theme="yellow"] { .accent-prose { @apply prose-yellow} }
+[data-theme="lime"] { .accent-prose { @apply prose-lime} }
+[data-theme="green"] { .accent-prose { @apply prose-green} }
+[data-theme="emerald"] { .accent-prose { @apply prose-emerald} }
+[data-theme="teal"] { .accent-prose { @apply prose-teal} }
+[data-theme="cyan"] { .accent-prose { @apply prose-cyan} }
+[data-theme="sky"] { .accent-prose { @apply prose-sky} }
+[data-theme="blue"] { .accent-prose { @apply prose-blue} }
+[data-theme="indigo"] { .accent-prose { @apply prose-indigo} }
+[data-theme="violet"] { .accent-prose { @apply prose-violet} }
+[data-theme="purple"] { .accent-prose { @apply prose-purple} }
+[data-theme="fuchsia"] { .accent-prose { @apply prose-fuchsia} }
+[data-theme="pink"] { .accent-prose { @apply prose-pink} }
+[data-theme="rose"] { .accent-prose { @apply prose-rose} }
+[data-theme="slate"] { .accent-prose { @apply prose-slate} }
+[data-theme="gray"] { .accent-prose { @apply prose-gray} }
+[data-theme="zinc"] { .accent-prose { @apply prose-zinc} }
+[data-theme="neutral"] { .accent-prose { @apply prose-neutral} }
+[data-theme="stone"] { .accent-prose { @apply prose-stone} }
+.accent-prose {
+    @apply prose dark:prose-invert font-serif!
+        prose-a:no-underline!
+        prose-pre:max-w-full prose-pre:overflow-x-auto
+        prose-code:wrap-anywhere
 }
 
 .shadow-square-clickable {
@@ -53,8 +66,8 @@ body {
 
 a,
 .clickable {
-    @apply text-accent-500 border-accent-500;
-    @apply bg-accent-500/5 hover:bg-accent-500/10 active:bg-accent-500/20 focus-visible:outline-accent-500;
+    @apply text-accent-500 border-accent-500
+        bg-accent-500/5 hover:bg-accent-500/10 active:bg-accent-500/20 focus-visible:outline-accent-500;
 }
 
 a {
@@ -62,7 +75,8 @@ a {
 }
 
 dialog {
-    @apply border-accent-500 shadow-square shadow-accent-500 border backdrop:bg-black/75;
+    @apply border-accent-500 shadow-square 
+        shadow-accent-500 border backdrop:bg-black/75;
 }
 
 input,

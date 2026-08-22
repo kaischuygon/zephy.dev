@@ -18,6 +18,8 @@ export default defineConfig({
         pagefind(),
     ],
 
+    compressHTML: true,
+
     vite: {
         plugins: [tailwindcss()],
     },
