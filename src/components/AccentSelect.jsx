@@ -64,11 +64,15 @@ export default function AccentSelect() {
         }
     }, [accentColor]);
 
-    const selectId = useId('accentSelect');
+    const selectId = useId("accentSelect");
     const selectRef = useRef();
 
     return (
-        <label htmlFor={selectId} className="clickable shadow-square-clickable border p-1 flex gap-1 items-center cursor-pointer" onClick={() => selectRef.current?.showPicker()}>
+        <label
+            htmlFor={selectId}
+            className="clickable shadow-square-clickable flex cursor-pointer items-center gap-1 border p-1"
+            onClick={() => selectRef.current?.showPicker()}
+        >
             <BiSolidPalette />
             <span hidden>accent</span>
             <select
