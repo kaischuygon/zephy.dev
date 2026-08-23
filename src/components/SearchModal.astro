@@ -1,6 +1,6 @@
 ---
 import { Icon } from "astro-icon/components";
-import Search from "astro-pagefind/components/Search";
+import Search from "astro-pagefind/components/Search.astro";
 ---
 
 <button id="searchButton" title="Search"
@@ -22,7 +22,7 @@ import Search from "astro-pagefind/components/Search";
                 class="clickable ml-auto text-2xl"
             />
         </div>
-        <Search id="search" uiOptions={{ showImages: false }} />
+        <Search configOptions={{ showImages: false, id:"search" }} searchboxOptions={{ showImages: false }} />
     </search>
 </dialog>
 
