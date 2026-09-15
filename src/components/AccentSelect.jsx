@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { BiSolidPalette } from "react-icons/bi";
-import colorSchemes from "../content/color-schemes.json";
+import accentColors from "../content/accent-colors.json";
 
 export default function AccentSelect() {
     // default to 'daily' so the <select> is controlled from the start
@@ -8,7 +8,7 @@ export default function AccentSelect() {
 
     const today = new Date();
     const dailyAccentColor =
-        colorSchemes[today.getDate() % colorSchemes.length];
+        accentColors[today.getDate() % accentColors.length];
 
     useEffect(() => {
         // load the color from local storage with a safe guard
@@ -22,7 +22,7 @@ export default function AccentSelect() {
 
         if (!selected) {
             setAccentColor("daily");
-        } else if (selected === "daily" || colorSchemes.includes(selected)) {
+        } else if (selected === "daily" || accentColors.includes(selected)) {
             setAccentColor(selected);
         } else {
             // invalid value in localStorage: fall back to daily
@@ -38,7 +38,7 @@ export default function AccentSelect() {
                 document.documentElement.dataset["theme"] = dailyAccentColor;
             } else {
                 // Only persist/apply if it's a known color
-                if (colorSchemes.includes(accentColor)) {
+                if (accentColors.includes(accentColor)) {
                     localStorage.setItem("accent", accentColor);
                     document.documentElement.dataset["theme"] = accentColor;
                 } else {
@@ -55,7 +55,7 @@ export default function AccentSelect() {
                 if (accentColor === "daily") {
                     document.documentElement.dataset["theme"] =
                         dailyAccentColor;
-                } else if (colorSchemes.includes(accentColor)) {
+                } else if (accentColors.includes(accentColor)) {
                     document.documentElement.dataset["theme"] = accentColor;
                 }
             } catch (err) {
@@ -70,7 +70,7 @@ export default function AccentSelect() {
     return (
         <label
             htmlFor={selectId}
-            className="clickable shadow-square-clickable flex cursor-pointer items-center gap-1 border p-1"
+            className="clickable btn flex cursor-pointer items-center gap-1 p-1"
             onClick={() => selectRef.current?.showPicker()}
         >
             <BiSolidPalette />
@@ -83,7 +83,7 @@ export default function AccentSelect() {
                 onChange={(e) => setAccentColor(e.target.value)}
             >
                 <option value="daily">daily</option>
-                {colorSchemes.map((color) => (
+                {accentColors.map((color) => (
                     <option key={color} value={color}>
                         {color}
                     </option>

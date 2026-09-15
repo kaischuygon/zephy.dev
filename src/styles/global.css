@@ -1,165 +1,187 @@
-@import url("https://fonts.googleapis.com/css2?family=Poly:ital@0;1&family=Space+Grotesk:wght@300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poly:ital@0;1&family=Space+Grotesk:wght@300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Nunito+Sans:wght@300..800&family=Noto+Color+Emoji&display=swap");
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 @import "./themes.css";
+@import "./surfaces.css";
+@import "./theme-recipes.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
     --font-sans:
         "Space Grotesk", ui-sans-serif, system-ui, sans-serif,
-        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
     --font-serif:
         Poly, ui-serif, Georgia, Cambria, "Times New Roman", Times, serif,
-        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
     --font-mono:
         "Space Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-        "Liberation Mono", "Courier New", monospace;
+        "Liberation Mono", "Courier New", monospace, "Apple Color Emoji",
+        "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
     --shadow-square: 2px 2px;
     --shadow-square-2: 3px 3px;
     --shadow-square-4: 4px 4px;
+
+    /* Sharp corners by default (0), matching the rest of the site.
+       Sections that want rounding (currently just recipes) override this
+       — see theme-recipes.css — rather than every component reaching for
+       a hardcoded `rounded-*` utility. */
+    --radius-theme: 0px;
+
+    /* Link/clickable underline style as a token so a themed section can
+       swap it (recipes uses dashed) without touching the `a` rule below.
+       Doesn't match a Tailwind-recognized namespace (there's no
+       "border-style" theme key), so it generates no utility class of its
+       own — it's referenced directly via var() in the `a` rule instead.
+       Still lives here rather than a separate :root block: no reason to
+       split when @theme emits real CSS custom properties either way. */
+    --border-style-link: dotted;
+
+    /* The shade actually used across the site — a token so a section can
+       pick a different step of the same accent scale without needing a
+       whole separate hue. Defaults to 500; recipes overrides this to 300
+       (see theme-recipes.css). Everywhere that used to hardcode `accent-500`
+       now uses the bare `accent` utilities (text-accent, border-accent,
+       bg-accent/5, etc.) so it follows this token automatically. */
+    --color-accent: var(--color-accent-500);
 }
 
 body {
     @apply font-sans antialiased;
 
-    @apply accent-accent-500 bg-white text-black;
+    @apply accent-accent bg-surface-50 text-surface-950;
 
     @variant dark {
-        @apply bg-black text-white;
+        @apply bg-surface-950 text-surface-50;
     }
 }
 
-[data-theme="red"] {
-    .accent-prose {
-        @apply prose-red;
-    }
-}
-[data-theme="orange"] {
-    .accent-prose {
-        @apply prose-orange;
-    }
-}
-[data-theme="amber"] {
-    .accent-prose {
-        @apply prose-amber;
-    }
-}
-[data-theme="yellow"] {
-    .accent-prose {
-        @apply prose-yellow;
-    }
-}
-[data-theme="lime"] {
-    .accent-prose {
-        @apply prose-lime;
-    }
-}
-[data-theme="green"] {
-    .accent-prose {
-        @apply prose-green;
-    }
-}
-[data-theme="emerald"] {
-    .accent-prose {
-        @apply prose-emerald;
-    }
-}
-[data-theme="teal"] {
-    .accent-prose {
-        @apply prose-teal;
-    }
-}
-[data-theme="cyan"] {
-    .accent-prose {
-        @apply prose-cyan;
-    }
-}
-[data-theme="sky"] {
-    .accent-prose {
-        @apply prose-sky;
-    }
-}
-[data-theme="blue"] {
-    .accent-prose {
-        @apply prose-blue;
-    }
-}
-[data-theme="indigo"] {
-    .accent-prose {
-        @apply prose-indigo;
-    }
-}
-[data-theme="violet"] {
-    .accent-prose {
-        @apply prose-violet;
-    }
-}
-[data-theme="purple"] {
-    .accent-prose {
-        @apply prose-purple;
-    }
-}
-[data-theme="fuchsia"] {
-    .accent-prose {
-        @apply prose-fuchsia;
-    }
-}
-[data-theme="pink"] {
-    .accent-prose {
-        @apply prose-pink;
-    }
-}
-[data-theme="rose"] {
-    .accent-prose {
-        @apply prose-rose;
-    }
-}
-[data-theme="slate"] {
-    .accent-prose {
-        @apply prose-slate;
-    }
-}
-[data-theme="gray"] {
-    .accent-prose {
-        @apply prose-gray;
-    }
-}
-[data-theme="zinc"] {
-    .accent-prose {
-        @apply prose-zinc;
-    }
-}
-[data-theme="neutral"] {
-    .accent-prose {
-        @apply prose-neutral;
-    }
-}
-[data-theme="stone"] {
-    .accent-prose {
-        @apply prose-stone;
-    }
-}
-.accent-prose {
-    @apply prose dark:prose-invert prose-a:no-underline! prose-pre:max-w-full prose-pre:overflow-x-auto prose-code:wrap-anywhere font-serif!;
-}
+/* Ties prose text color to whichever surface palette is active, via
+   Typography's own --tw-prose-* variables, rather than its built-in
+   prose-{color} modifiers — those only exist for 5 of our 9 surface names
+   (slate/gray/zinc/neutral/stone; taupe/mauve/mist/olive have no
+   prose-taupe etc. shipped), so this covers all 9 uniformly (and any
+   future [data-surface="X"] addition) with no per-palette block needed.
 
-.shadow-square-clickable {
-    @apply shadow-square hover:shadow-square-2 active:shadow-square-4;
+   Uses light-dark() instead of dark:prose-invert + a parallel set of
+   --tw-prose-invert-* variables — one declaration per role instead of two,
+   and it switches off the page's actual color-scheme (already toggled via
+   the scheme-light/dark:scheme-dark classes on <html>) rather than needing
+   .dark to be present specifically. */
+.surface-prose {
+    @apply prose prose-a:no-underline! prose-pre:max-w-full prose-pre:overflow-x-auto prose-code:wrap-anywhere font-serif!;
+
+    --tw-prose-body: light-dark(
+        var(--color-surface-700),
+        var(--color-surface-300)
+    );
+    --tw-prose-headings: light-dark(
+        var(--color-surface-900),
+        var(--color-surface-50)
+    );
+    --tw-prose-lead: light-dark(
+        var(--color-surface-600),
+        var(--color-surface-400)
+    );
+    --tw-prose-links: light-dark(
+        var(--color-surface-900),
+        var(--color-surface-50)
+    );
+    --tw-prose-bold: light-dark(
+        var(--color-surface-900),
+        var(--color-surface-50)
+    );
+    --tw-prose-counters: light-dark(
+        var(--color-surface-500),
+        var(--color-surface-400)
+    );
+    --tw-prose-bullets: light-dark(
+        var(--color-surface-300),
+        var(--color-surface-600)
+    );
+    --tw-prose-hr: light-dark(
+        var(--color-surface-200),
+        var(--color-surface-700)
+    );
+    --tw-prose-quotes: light-dark(
+        var(--color-surface-900),
+        var(--color-surface-100)
+    );
+    --tw-prose-quote-borders: light-dark(
+        var(--color-surface-200),
+        var(--color-surface-700)
+    );
+    --tw-prose-captions: light-dark(
+        var(--color-surface-500),
+        var(--color-surface-400)
+    );
+    --tw-prose-kbd: light-dark(
+        var(--color-surface-900),
+        var(--color-surface-50)
+    );
+    --tw-prose-code: light-dark(
+        var(--color-surface-900),
+        var(--color-surface-50)
+    );
+    --tw-prose-pre-code: light-dark(
+        var(--color-surface-100),
+        var(--color-surface-300)
+    );
+    --tw-prose-pre-bg: light-dark(
+        var(--color-surface-800),
+        var(--color-surface-900)
+    );
+    --tw-prose-th-borders: light-dark(
+        var(--color-surface-300),
+        var(--color-surface-600)
+    );
+    --tw-prose-td-borders: light-dark(
+        var(--color-surface-200),
+        var(--color-surface-700)
+    );
 }
 
 a,
 .clickable {
-    @apply text-accent-500 border-accent-500 bg-accent-500/5 hover:bg-accent-500/10 active:bg-accent-500/20 focus-visible:outline-accent-500;
+    @apply text-accent border-accent bg-accent/5 hover:bg-accent/10 active:bg-accent/20 focus-visible:outline-accent;
+}
+
+.clickable {
+    @apply rounded-theme;
+}
+
+/* For anything button- or card-shaped (has a border, wants the
+   shadow-square progression) — buttons, selects, and bordered card links
+   (Post, PortfolioItem, RecipeItem) alike. Combine with `clickable` in
+   markup when it's not already a link/anchor, e.g. class="clickable btn
+   ...". Not merged into `.clickable` itself since some clickables are
+   icon-only controls (the search modal's close button) that were never
+   meant to look like a bordered button. */
+.btn {
+    @apply shadow-square hover:shadow-square-2 active:shadow-square-4 bg-accent/5 hover:bg-accent/10 active:bg-accent/20 border;
+    border-style: var(--border-style-link);
+    &:active {
+        border-style: solid;
+    }
+
+    /* Recedes back to the plain page surface instead of a grayscale
+       filter — keeps the accent-colored border/text legible while still
+       reading as "off". */
+    &:disabled {
+        @apply cursor-not-allowed grayscale;
+    }
 }
 
 a {
-    @apply border-b border-dotted;
+    @apply border-b;
+    border-style: var(--border-style-link);
 }
 
 dialog {
-    @apply border-accent-500 shadow-square shadow-accent-500 border backdrop:bg-black/75;
+    @apply border-accent shadow-square shadow-accent border backdrop:bg-black/75;
 }
 
 input,
@@ -171,12 +193,12 @@ button,
 }
 
 [data-tag-filter][data-active="true"] {
-    @apply bg-accent-500/20 shadow-square font-semibold;
+    @apply bg-accent/20 shadow-square font-semibold;
 }
 
 [data-year-filter][data-active="true"],
 [data-month-filter][data-active="true"] {
-    @apply bg-accent-500/20 shadow-square border-solid font-semibold;
+    @apply bg-accent/20 shadow-square border-solid font-semibold;
 }
 
 [data-tag-filter][aria-pressed="true"] {

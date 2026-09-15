@@ -1,0 +1,46 @@
+/*
+ * "Recipes" section theme.
+ *
+ * A slightly different, warmer, less dev-focused look for the recipes part
+ * of the site, scoped entirely to [data-section="recipes"] so nothing
+ * outside /recipes is affected. Applied by Layout.astro when a page passes
+ * `section="recipes"`, on <body> — so it cascades to nav/sidenav/footer
+ * too, not just the article body. Layout.astro also sets
+ * data-surface="taupe" there (see surfaces.css) — that alone is what makes
+ * the site's normal bg-surface-50/100/900/950 steps read as warm here
+ * instead of gray, no separate shade override needed.
+ *
+ * This only touches tokens other rules already reference (--font-sans,
+ * --font-serif, --color-accent, --radius-theme, --border-style-link), so
+ * every existing component (cards, buttons, links, shadow-square,
+ * .surface-prose, etc.) picks up the new look automatically without needing
+ * recipes-specific variants.
+ */
+[data-section="recipes"] {
+    /* Warm, editorial font pairing instead of the site's dev-toned one.
+       Fraunces for anything using --font-serif (article/prose body, via
+       .surface-prose); Nunito Sans for anything using --font-sans (nav,
+       buttons, headings, general UI text). No mono equivalent needed for
+       recipes specifically, so --font-mono is left as the site default. */
+    --font-sans:
+        "Nunito Sans", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
+    --font-serif:
+        Fraunces, ui-serif, Georgia, Cambria, "Times New Roman", Times, serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
+
+    /* Soft rounding instead of the site's sharp corners. */
+    --radius-theme: 0.75rem;
+
+    /* Dashed instead of dotted underlines on links. */
+    --border-style-link: dashed;
+
+    /* A lighter shade of the accent (300) instead of the site's normal
+       500. */
+    --color-accent: light-dark(
+        var(--color-accent-300),
+        var(--color-accent-200)
+    );
+}

@@ -1,0 +1,31 @@
+name: Rebuild recipes
+
+# The recipes collection is fetched from Notion at build time, so edits made
+# in Notion don't show up on the site until the next deploy. Notion doesn't
+# have an outbound webhook we can wire up directly here, so this just polls
+# on a schedule and re-triggers a Vercel deploy, which re-runs the Notion
+# sync as part of the normal build.
+#
+# Setup (one-time):
+#   1. Vercel project → Settings → Git → Deploy Hooks → create one (any
+#      name, pointed at the `main` branch) → copy the URL.
+#   2. GitHub repo → Settings → Secrets and variables → Actions →
+#      New repository secret → name it VERCEL_DEPLOY_HOOK_URL, paste the URL.
+on:
+    schedule:
+        - cron: "0 * * * *" # hourly — tune to taste
+    workflow_dispatch:
+
+jobs:
+    trigger-deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Trigger Vercel deploy hook
+              env:
+                  DEPLOY_HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
+              run: |
+                  if [ -z "$DEPLOY_HOOK_URL" ]; then
+                    echo "VERCEL_DEPLOY_HOOK_URL secret is not set yet — skipping. See the comment at the top of this workflow for setup steps."
+                    exit 0
+                  fi
+                  curl -fsS -X POST "$DEPLOY_HOOK_URL"

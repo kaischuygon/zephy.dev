@@ -10,7 +10,7 @@ import Search from "astro-pagefind/components/Search.astro";
 <dialog
     id="searchDialog"
     closedby="any"
-    class="absolute mx-auto mt-8 max-h-[90vh] w-sm max-w-11/12 overflow-scroll"
+    class="bg-surface-50 text-surface-900 rounded-theme dark:bg-surface-950 dark:text-surface-50 absolute mx-auto mt-8 max-h-[90vh] w-sm max-w-11/12 overflow-scroll"
 >
     <search class="flex flex-col gap-2 p-4">
         <div class="flex items-center justify-between gap-2">
@@ -31,21 +31,43 @@ import Search from "astro-pagefind/components/Search.astro";
 
 <style is:inline>
     :root {
-        /* Pagefind */
+        /* Pagefind — tied to the same tokens as the rest of the app.
+           These are plain CSS custom properties consumed by Pagefind's own
+           stylesheet, not Tailwind utility classes, so dark mode can't use
+           a `dark:` variant here the way most of the site does — light-dark()
+           does the same job (and only works because <html> already
+           toggles color-scheme via the scheme-light/dark:scheme-dark
+           classes in Layout.astro), same approach as .surface-prose in
+           global.css. */
         --pagefind-ui-scale: 0.75;
-        --pagefind-ui-primary: var(--color-accent-500);
-        --pagefind-ui-text: unset;
-        --pagefind-ui-message-text: unset;
-        --pagefind-ui-result-title-text: var(--color-accent-500);
-        --pagefind-ui-result-text: unset;
-        --pagefind-ui-background: unset;
-        --pagefind-input-background: unset;
-        --pagefind-ui-border: var(--color-accent-500);
-        --pagefind-ui-tag: var(--color-accent-500);
+        --pagefind-ui-primary: var(--color-accent);
+        --pagefind-ui-text: light-dark(
+            var(--color-surface-900),
+            var(--color-surface-50)
+        );
+        --pagefind-ui-message-text: light-dark(
+            var(--color-surface-500),
+            var(--color-surface-400)
+        );
+        --pagefind-ui-result-title-text: var(--color-accent);
+        --pagefind-ui-result-text: light-dark(
+            var(--color-surface-700),
+            var(--color-surface-300)
+        );
+        --pagefind-ui-background: light-dark(
+            var(--color-surface-50),
+            var(--color-surface-950)
+        );
+        --pagefind-input-background: light-dark(
+            var(--color-surface-100),
+            var(--color-surface-900)
+        );
+        --pagefind-ui-border: var(--color-accent);
+        --pagefind-ui-tag: var(--color-accent);
 
         --pagefind-ui-border-width: 1px;
-        --pagefind-ui-border-radius: 0px;
-        --pagefind-ui-image-border-radius: 0px;
+        --pagefind-ui-border-radius: var(--radius-theme);
+        --pagefind-ui-image-border-radius: var(--radius-theme);
         --pagefind-ui-image-box-ratio: 3 / 2;
         --pagefind-ui-font: var(--font-sans);
 
@@ -57,6 +79,7 @@ import Search from "astro-pagefind/components/Search.astro";
     #search .pagefind-ui__search-clear {
         background-color: var(--pagefind-input-background);
         color: var(--pagefind-ui-text);
+        border-style: var(--border-style-link);
     }
 
     #search .pagefind-ui__result-title,

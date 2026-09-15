@@ -1,0 +1,24 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+    item: CollectionEntry<"recipes">;
+}
+
+const { item } = Astro.props as Props;
+const link = `/recipes/${item.id}`;
+---
+
+<a href={link} class="btn rounded-theme flex h-full w-full flex-col gap-2 p-3">
+    <div class="flex items-center gap-2">
+        {item.data.icon && <span class="text-2xl">{item.data.icon}</span>}
+        <h2 class="text-xl font-semibold">{item.data.name}</h2>
+    </div>
+    <span class="text-xs font-light">
+        {[item.data.cuisine, item.data.category].filter(Boolean).join(" • ")}
+    </span>
+    <div class="mt-auto flex flex-wrap gap-1 text-xs">
+        {item.data.totalTime && <span>⏱ {item.data.totalTime}</span>}
+        {item.data.servings && <span>🍽 {item.data.servings}</span>}
+    </div>
+</a>

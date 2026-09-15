@@ -15,10 +15,7 @@ const imgSrc = images[item.data.img] ?? item.data.img;
 const link = `/portfolio/${item.id}`;
 ---
 
-<a
-    href={link}
-    class="shadow-square-clickable flex h-full w-full flex-col gap-2 border"
->
+<a href={link} class="btn flex h-full w-full flex-col gap-2">
     <Image
         src={typeof imgSrc === "function" ? imgSrc() : imgSrc}
         alt={item.data.img_alt}

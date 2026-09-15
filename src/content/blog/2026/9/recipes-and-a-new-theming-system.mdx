@@ -1,0 +1,33 @@
+---
+title: Recipes, and a redesigned theming system
+pubDate: 2026-09-15 00:00:00
+description: |
+  A new /recipes section synced live from Notion, plus a full rework of the site's color system — accent and surface are now separate, user-selectable palettes.
+isDraft: false
+tags:
+  - Astro
+  - Tailwind CSS
+  - Notion
+  - Recipes
+  - zephy.dev
+---
+
+## What's new on zephy.dev?
+
+A new recipes section, and a rebuilt theming system underneath it.
+
+### 🔪 Recipes
+
+As someone that loves to cook, I wanted to share my growing collection of tried and true recipes. These are a collection of dishes I grew up with, others I've picked up from working as a cook, and others I just enjoy making and have tested over and over. 
+
+These are live now in the new [recipes](/recipes) section — a running collection pulled live from a Notion database at build time, with cuisine/category/tag filtering and full-text search alongside the blog and portfolio. I went this route since I already kept track of my recipes on Notion and wanted to be able to keep that as the source of truth. 
+
+The recipe pages themselves are fairly simple and easy to follow, but ingredient checklists are actually clickable, so you can tick things off as you prep (nothing saved anywhere — just a nice-to-have). Pictures, unit conversions and more coming soon.
+
+### A real color system
+
+The accent picker got a companion: a separate **surface** picker for backgrounds, with its own family of neutral tones — slate, gray, zinc, taupe, mauve, mist, olive, and more. Recipes gets a warm, editorial look of its own — a different font pairing, softer rounded corners, dashed underlines — built entirely from shared tokens rather than a one-off stylesheet, so the same system can back future sections too.
+
+---
+
+Thanks for reading — happy cooking!

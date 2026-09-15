@@ -26,7 +26,7 @@ const imgSrc = images[item.data.img] ?? item.data.img;
 
 <Layout collectionItem={item}>
     <div class="flex flex-col gap-4 lg:flex-row" data-pagefind-body>
-        <section id={item.id} class="accent-prose min-w-0 grow">
+        <section id={item.id} class="surface-prose min-w-0 grow">
             <div>
                 <a href="/portfolio">
                     <Icon
@@ -40,10 +40,10 @@ const imgSrc = images[item.data.img] ?? item.data.img;
             <h1 data-pagefind-meta="title">
                 {item.data.title}
             </h1>
-            <div class="mb-2 flex flex-wrap gap-2">
+            <div class="not-prose mb-2 flex flex-wrap gap-2">
                 {
                     item.data.tags.map((tag) => (
-                        <div class="shadow-square border border-solid! px-1 py-0.5">
+                        <div class="shadow-square border px-1 py-0.5">
                             {tag}
                         </div>
                     ))

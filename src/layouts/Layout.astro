@@ -8,18 +8,28 @@ import Footer from "../components/Footer.astro";
 import SocialLinks from "../components/SocialLinks.astro";
 import ThemeSelect from "../components/ThemeSelect";
 import AccentSelect from "../components/AccentSelect";
+import SurfaceSelect from "../components/SurfaceSelect";
 import SearchModal from "../components/SearchModal.astro";
 import SideNav from "../components/SideNav.astro";
 
-import colorSchemes from "../content/color-schemes.json";
+import accentColors from "../content/accent-colors.json";
+import surfaceColors from "../content/surface-colors.json";
 
 interface Props {
     title?: string;
     description?: string;
-    collectionItem?: CollectionEntry<"blog"> | CollectionEntry<"portfolio">;
+    collectionItem?:
+        | CollectionEntry<"blog">
+        | CollectionEntry<"portfolio">
+        | CollectionEntry<"recipes">;
+    /** Opts into a section-specific theme (see src/styles/theme-recipes.css).
+     * Applied as data-section on <body>; also locks data-surface to
+     * "taupe" (see src/styles/surfaces.css) regardless of the site-wide
+     * surface pick. */
+    section?: "recipes";
 }
 
-const { title, description, collectionItem } = Astro.props;
+const { title, description, collectionItem, section } = Astro.props;
 
 const author = "Kai Schuyler Gonzalez";
 const getTitle =
@@ -91,10 +101,10 @@ const getImage = collectionItem?.data.img || "/og-image.png";
         </script>
 
         <!-- Load saved accent color or daily -->
-        <script is:inline data-astro-rerun define:vars={{ colorSchemes }}>
+        <script is:inline data-astro-rerun define:vars={{ accentColors }}>
             const today = new Date();
             const dailyAccentColor =
-                colorSchemes[today.getDate() % colorSchemes.length];
+                accentColors[today.getDate() % accentColors.length];
             // load the color from local storage, guarded for environments where it's unavailable
             let selected = null;
             try {
@@ -103,16 +113,42 @@ const getImage = collectionItem?.data.img || "/og-image.png";
                 selected = null;
             }
 
-            // validate selected value against the known colorSchemes
+            // validate selected value against the known accentColors
             if (
                 !selected ||
                 selected === "daily" ||
-                !colorSchemes.includes(selected)
+                !accentColors.includes(selected)
             ) {
                 // default to the computed daily accent
                 document.documentElement.dataset["theme"] = dailyAccentColor;
             } else {
                 document.documentElement.dataset["theme"] = selected;
+            }
+        </script>
+
+        <!-- Load saved surface color or daily -->
+        <script is:inline data-astro-rerun define:vars={{ surfaceColors }}>
+            const surfaceToday = new Date();
+            const dailySurfaceColor =
+                surfaceColors[surfaceToday.getDate() % surfaceColors.length];
+            // load the color from local storage, guarded for environments where it's unavailable
+            let selectedSurface = null;
+            try {
+                selectedSurface = localStorage.getItem("surface");
+            } catch (e) {
+                selectedSurface = null;
+            }
+
+            // validate selected value against the known surfaceColors
+            if (
+                !selectedSurface ||
+                selectedSurface === "daily" ||
+                !surfaceColors.includes(selectedSurface)
+            ) {
+                // default to the computed daily surface
+                document.documentElement.dataset["surface"] = dailySurfaceColor;
+            } else {
+                document.documentElement.dataset["surface"] = selectedSurface;
             }
         </script>
 
@@ -158,7 +194,10 @@ const getImage = collectionItem?.data.img || "/og-image.png";
             }}
         />
     </head>
-    <body>
+    <body
+        data-section={section}
+        data-surface={section === "recipes" ? "taupe" : undefined}
+    >
         <div
             class="container mx-auto grid h-screen grid-rows-[0fr_1fr_0fr] gap-4 p-2"
         >
@@ -167,10 +206,8 @@ const getImage = collectionItem?.data.img || "/og-image.png";
                 <div class="flex items-center justify-end gap-2">
                     <ThemeSelect client:load />
                     <AccentSelect client:load />
-                    <label
-                        for="searchButton"
-                        class="clickable shadow-square-clickable border p-1"
-                    >
+                    <SurfaceSelect client:load locked={section === "recipes"} />
+                    <label for="searchButton" class="clickable btn p-1">
                         <Icon
                             title="search"
                             name="lineicons:search-1"

@@ -12,10 +12,7 @@ const link = `/blog/${post.id}`;
 const tags = getPostTags(post);
 ---
 
-<a
-    href={link}
-    class="shadow-square-clickable flex h-full w-full flex-col gap-2 border"
->
+<a href={link} class="btn flex h-full w-full flex-col gap-2">
     <div class="flex h-full flex-col p-2">
         <h2 class="text-xl font-semibold">{post.data.title}</h2>
         <span class="text-xs font-light">
