@@ -3,12 +3,9 @@ import { BiSolidLayer } from "react-icons/bi";
 import surfaceColors from "../content/surface-colors.json";
 
 export default function SurfaceSelect({ locked = false } = {}) {
-    // default to 'daily' so the <select> is controlled from the start
-    const [surfaceColor, setSurfaceColor] = useState("daily");
-
-    const today = new Date();
-    const dailySurfaceColor =
-        surfaceColors[today.getDate() % surfaceColors.length];
+    const DEFAULT = "mist";
+    // start with default so the <select> is controlled from the start
+    const [surfaceColor, setSurfaceColor] = useState(DEFAULT);
 
     useEffect(() => {
         // load the color from local storage with a safe guard
@@ -16,45 +13,45 @@ export default function SurfaceSelect({ locked = false } = {}) {
         try {
             selected = localStorage.getItem("surface");
         } catch (e) {
-            // localStorage unavailable (e.g. privacy mode) — fall back to daily
+            // localStorage unavailable (e.g. privacy mode) — fall back to default
             selected = null;
         }
 
         if (!selected) {
-            setSurfaceColor("daily");
-        } else if (selected === "daily" || surfaceColors.includes(selected)) {
+            setSurfaceColor(DEFAULT);
+        } else if (selected === DEFAULT || surfaceColors.includes(selected)) {
             setSurfaceColor(selected);
         } else {
-            // invalid value in localStorage: fall back to daily
-            setSurfaceColor("daily");
+            // invalid value in localStorage: fall back to default
+            setSurfaceColor(DEFAULT);
         }
     }, []);
 
     useEffect(() => {
         try {
-            if (surfaceColor === "daily") {
-                // Persist the choice and apply the computed daily color
-                localStorage.setItem("surface", "daily");
-                document.documentElement.dataset["surface"] = dailySurfaceColor;
+            if (surfaceColor === DEFAULT) {
+                // Persist the choice and apply the default
+                localStorage.setItem("surface", DEFAULT);
+                document.documentElement.dataset["surface"] = DEFAULT;
             } else {
                 // Only persist/apply if it's a known color
                 if (surfaceColors.includes(surfaceColor)) {
                     localStorage.setItem("surface", surfaceColor);
                     document.documentElement.dataset["surface"] = surfaceColor;
                 } else {
-                    // unknown value — fall back to daily
-                    localStorage.setItem("surface", "daily");
+                    // unknown value — fall back to default
+                    localStorage.setItem("surface", DEFAULT);
                     document.documentElement.dataset["surface"] =
-                        dailySurfaceColor;
-                    setSurfaceColor("daily");
+                        DEFAULT;
+                    setSurfaceColor(DEFAULT);
                 }
             }
         } catch (e) {
             // localStorage or document access could fail; apply theme only if possible
             try {
-                if (surfaceColor === "daily") {
+                if (surfaceColor === DEFAULT) {
                     document.documentElement.dataset["surface"] =
-                        dailySurfaceColor;
+                        DEFAULT;
                 } else if (surfaceColors.includes(surfaceColor)) {
                     document.documentElement.dataset["surface"] = surfaceColor;
                 }
@@ -97,7 +94,6 @@ export default function SurfaceSelect({ locked = false } = {}) {
                 disabled={locked}
                 onChange={(e) => setSurfaceColor(e.target.value)}
             >
-                <option value="daily">daily</option>
                 {surfaceColors.map((color) => (
                     <option key={color} value={color}>
                         {color}

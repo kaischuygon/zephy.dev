@@ -1,7 +1,6 @@
 ---
 import { getCollection, render } from "astro:content";
-import Layout from "../../layouts/Layout.astro";
-import { Icon } from "astro-icon/components";
+import ArticleLayout from "../../layouts/ArticleLayout.astro";
 import Posts from "../../components/Posts.astro";
 import RelatedPosts from "../../components/RelatedPosts.astro";
 import { getPostTags, getTagSlug } from "../../utils/blogTags";
@@ -21,59 +20,53 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 const tags = getPostTags(post);
+
+const year = post.data.pubDate.getFullYear();
+const month = post.data.pubDate.getMonth() + 1;
+const breadcrumbItems = [
+    { label: "Home", href: "/" },
+    { label: "Blog", href: "/blog" },
+    { label: String(year), href: `/blog/${year}` },
+    {
+        label: post.data.pubDate.toLocaleDateString(undefined, {
+            month: "long",
+        }),
+        href: `/blog/${year}/${month}`,
+    },
+    { label: post.data.title ?? "Untitled post" },
+];
 ---
 
-<Layout collectionItem={post}>
-    <div class="flex flex-col gap-4 lg:flex-row">
-        <section
-            id={post.id}
-            class="surface-prose min-w-0 grow"
-            data-pagefind-body
-        >
-            <div>
-                <a href="/blog">
-                    <Icon
-                        class="inline"
-                        title="arrow-left"
-                        name="lineicons:arrow-left"
-                    />
-                    back to blog
+<ArticleLayout collectionItem={post} breadcrumbItems={breadcrumbItems}>
+    <h4 class="my-4 font-light">
+        {post.data.pubDate?.toLocaleDateString()}
+    </h4>
+    <h1 data-pagefind-meta="title">
+        {post.data.title}
+    </h1>
+    <div class="not-prose mb-2 flex flex-wrap gap-2">
+        {
+            tags.map((tag) => (
+                <a
+                    href={`/blog?tag=${encodeURIComponent(getTagSlug(tag))}`}
+                    class="btn px-1 py-0"
+                >
+                    {tag}
                 </a>
-            </div>
-            <h4 class="my-4 font-light">
-                {post.data.pubDate?.toLocaleDateString()}
-            </h4>
-            <h1 data-pagefind-meta="title">
-                {post.data.title}
-            </h1>
-            <div class="not-prose mb-2 flex flex-wrap gap-2">
-                {
-                    tags.map((tag) => (
-                        <a
-                            href={`/blog?tag=${encodeURIComponent(getTagSlug(tag))}`}
-                            class="btn px-1 py-0"
-                        >
-                            {tag}
-                        </a>
-                    ))
-                }
-            </div>
-            <Content />
-        </section>
-
-        <aside
-            id="related_more"
-            class="ml-auto flex w-full flex-col gap-2 lg:w-sm"
-        >
-            {post.data.related && <RelatedPosts item={post} />}
-            <Posts
-                count={3}
-                ignore_ids={[
-                    ...(post.data.related?.map((r) => r.id) || []),
-                    post.id,
-                ]}
-                heading="More posts"
-            />
-        </aside>
+            ))
+        }
     </div>
-</Layout>
+    <Content />
+
+    <Fragment slot="related">
+        {post.data.related && <RelatedPosts item={post} />}
+        <Posts
+            count={3}
+            ignore_ids={[
+                ...(post.data.related?.map((r) => r.id) || []),
+                post.id,
+            ]}
+            heading="More posts"
+        />
+    </Fragment>
+</ArticleLayout>

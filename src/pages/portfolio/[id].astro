@@ -1,7 +1,6 @@
 ---
 import { getCollection, render } from "astro:content";
-import Layout from "../../layouts/Layout.astro";
-import { Icon } from "astro-icon/components";
+import ArticleLayout from "../../layouts/ArticleLayout.astro";
 import { Image } from "astro:assets";
 import PortfolioItems from "../../components/PortfolioItems.astro";
 import RelatedPosts from "../../components/RelatedPosts.astro";
@@ -22,59 +21,46 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
 const { item } = Astro.props;
 const { Content } = await render(item);
 const imgSrc = images[item.data.img] ?? item.data.img;
+
+const breadcrumbItems = [
+    { label: "Home", href: "/" },
+    { label: "Portfolio", href: "/portfolio" },
+    { label: item.data.title },
+];
 ---
 
-<Layout collectionItem={item}>
-    <div class="flex flex-col gap-4 lg:flex-row" data-pagefind-body>
-        <section id={item.id} class="surface-prose min-w-0 grow">
-            <div>
-                <a href="/portfolio">
-                    <Icon
-                        class="inline"
-                        title="arrow-left"
-                        name="lineicons:arrow-left"
-                    />
-                    back to portfolio
-                </a>
-            </div>
-            <h1 data-pagefind-meta="title">
-                {item.data.title}
-            </h1>
-            <div class="not-prose mb-2 flex flex-wrap gap-2">
-                {
-                    item.data.tags.map((tag) => (
-                        <div class="shadow-square border px-1 py-0.5">
-                            {tag}
-                        </div>
-                    ))
-                }
-            </div>
-            <Image
-                src={typeof imgSrc === "function" ? imgSrc() : imgSrc}
-                alt={item.data.img_alt}
-                loading="eager"
-                width={1200}
-                height={630}
-                class="shadow-square mb-2 w-full border"
-            />
-            <Content />
-        </section>
-
-        <aside
-            id="related_more"
-            class="ml-auto flex w-full flex-col gap-2 lg:w-sm"
-        >
-            {
-                item.data.related && (
-                    <RelatedPosts item={item} heading="Related Posts" />
-                )
-            }
-            <PortfolioItems
-                count={3}
-                ignore_id={item.id}
-                heading="More Projects"
-                columns="grid-cols-1"
-            />
-        </aside>
+<ArticleLayout collectionItem={item} breadcrumbItems={breadcrumbItems}>
+    <h1 data-pagefind-meta="title">
+        {item.data.title}
+    </h1>
+    <div class="not-prose mb-2 flex flex-wrap gap-2">
+        {
+            item.data.tags.map((tag) => (
+                <div class="shadow-square border px-1 py-0.5">{tag}</div>
+            ))
+        }
     </div>
-</Layout>
+    <Image
+        src={typeof imgSrc === "function" ? imgSrc() : imgSrc}
+        alt={item.data.img_alt}
+        loading="eager"
+        width={1200}
+        height={630}
+        class="shadow-square mb-2 w-full border"
+    />
+    <Content />
+
+    <Fragment slot="related">
+        {
+            item.data.related && (
+                <RelatedPosts item={item} heading="Related Posts" />
+            )
+        }
+        <PortfolioItems
+            count={3}
+            ignore_id={item.id}
+            heading="More Projects"
+            columns="grid-cols-1"
+        />
+    </Fragment>
+</ArticleLayout>

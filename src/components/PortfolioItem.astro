@@ -1,6 +1,6 @@
 ---
-import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
+import CollectionCard from "./CollectionCard.astro";
 
 interface Props {
     item: CollectionEntry<"portfolio">;
@@ -15,20 +15,18 @@ const imgSrc = images[item.data.img] ?? item.data.img;
 const link = `/portfolio/${item.id}`;
 ---
 
-<a href={link} class="btn flex h-full w-full flex-col gap-2">
-    <Image
-        src={typeof imgSrc === "function" ? imgSrc() : imgSrc}
-        alt={item.data.img_alt}
-        loading="eager"
-        width={1200}
-        height={630}
-        class="aspect-video w-full"
-    />
-    <div class="flex h-full w-auto flex-col p-2">
-        <h2 class="text-xl font-semibold">{item.data.title}</h2>
-        <span class="text-xs font-light">
-            {item.data.tags.join(" • ")}
-        </span>
-        <p class="text-ellipsis">{item.data.description}</p>
-    </div>
-</a>
+<CollectionCard
+    href={link}
+    title={item.data.title}
+    media={{
+        type: "image",
+        src: typeof imgSrc === "function" ? imgSrc() : imgSrc,
+        alt: item.data.img_alt,
+    }}
+    descriptionClampLines={3}
+>
+    <span slot="subtitle" class="text-xs font-light">
+        {item.data.tags.join(" • ")}
+    </span>
+    <p slot="description">{item.data.description}</p>
+</CollectionCard>

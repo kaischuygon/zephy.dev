@@ -11,7 +11,7 @@
  * instead of gray, no separate shade override needed.
  *
  * This only touches tokens other rules already reference (--font-sans,
- * --font-serif, --color-accent, --radius-theme, --border-style-link), so
+ * --font-serif, --color-accent, --radius-theme), so
  * every existing component (cards, buttons, links, shadow-square,
  * .surface-prose, etc.) picks up the new look automatically without needing
  * recipes-specific variants.
@@ -24,18 +24,15 @@
        recipes specifically, so --font-mono is left as the site default. */
     --font-sans:
         "Nunito Sans", ui-sans-serif, system-ui, sans-serif,
-        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-        "Noto Color Emoji";
+        "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", 
+        "Segoe UI Symbol";
     --font-serif:
         Fraunces, ui-serif, Georgia, Cambria, "Times New Roman", Times, serif,
-        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-        "Noto Color Emoji";
+        "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", 
+        "Segoe UI Symbol";
 
     /* Soft rounding instead of the site's sharp corners. */
     --radius-theme: 0.75rem;
-
-    /* Dashed instead of dotted underlines on links. */
-    --border-style-link: dashed;
 
     /* A lighter shade of the accent (300) instead of the site's normal
        500. */

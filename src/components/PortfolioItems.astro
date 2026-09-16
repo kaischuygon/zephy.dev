@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import PortfolioItem from "./PortfolioItem.astro";
-import { Icon } from "astro-icon/components";
+import ViewAllLink from "./ViewAllLink.astro";
 
 interface Props {
     count?: number;
@@ -20,7 +20,7 @@ const {
 const portfolioItems = (await getCollection("portfolio"))
     .filter((item) => (ignore_id ? item.id !== ignore_id : item))
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-    .slice(0, count);
+    .slice(0, count === -1 ? undefined : count);
 ---
 
 {
@@ -35,14 +35,7 @@ const portfolioItems = (await getCollection("portfolio"))
                 ))}
             </div>
             {count >= portfolioItems.length && (
-                <a href="/portfolio" class="mt-2 inline-block font-semibold">
-                    view full portfolio
-                    <Icon
-                        class="inline"
-                        title="up-right"
-                        name="lineicons:arrow-angular-top-right"
-                    />
-                </a>
+                <ViewAllLink href="/portfolio" label="view full portfolio" />
             )}
         </section>
     )

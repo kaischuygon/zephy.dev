@@ -16,6 +16,7 @@
         "build": "astro build",
         "preview": "astro preview",
         "astro": "astro",
+        "recipes:snapshot": "node --experimental-strip-types scripts/snapshot-recipes.ts",
         "format": "prettier --write .",
         "format:check": "prettier --check ."
     },

@@ -2,22 +2,76 @@ name: Rebuild recipes
 
 # The recipes collection is fetched from Notion at build time, so edits made
 # in Notion don't show up on the site until the next deploy. Notion doesn't
-# have an outbound webhook we can wire up directly here, so this just polls
-# on a schedule and re-triggers a Vercel deploy, which re-runs the Notion
-# sync as part of the normal build.
+# have an outbound webhook we can wire up directly here, so this polls on a
+# schedule: first refreshes the committed recipes fallback snapshot (used at
+# build time if Notion itself is ever unreachable — see
+# src/loaders/notionRecipes.ts and scripts/snapshot-recipes.ts), then
+# re-triggers a Vercel deploy, which re-runs the live Notion sync as part of
+# the normal build.
 #
 # Setup (one-time):
 #   1. Vercel project → Settings → Git → Deploy Hooks → create one (any
 #      name, pointed at the `main` branch) → copy the URL.
 #   2. GitHub repo → Settings → Secrets and variables → Actions →
 #      New repository secret → name it VERCEL_DEPLOY_HOOK_URL, paste the URL.
+#   3. Same place → add NOTION_TOKEN and NOTION_RECIPES_DATA_SOURCE_ID (same
+#      values as the site's own .env) so this workflow can refresh the
+#      snapshot.
 on:
     schedule:
         - cron: "0 * * * *" # hourly — tune to taste
     workflow_dispatch:
 
+permissions:
+    contents: write
+
 jobs:
+    refresh-snapshot:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v5
+              with:
+                  fetch-depth: 0
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v5
+              with:
+                  node-version: 22.23.2
+
+            - name: Enable Corepack
+              run: corepack enable
+
+            - name: Install dependencies
+              run: yarn install --frozen-lockfile
+
+            - name: Refresh recipes snapshot
+              env:
+                  NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+                  NOTION_RECIPES_DATA_SOURCE_ID: ${{ secrets.NOTION_RECIPES_DATA_SOURCE_ID }}
+              run: |
+                  if [ -z "$NOTION_TOKEN" ] || [ -z "$NOTION_RECIPES_DATA_SOURCE_ID" ]; then
+                    echo "NOTION_TOKEN/NOTION_RECIPES_DATA_SOURCE_ID secrets are not set yet — skipping the snapshot refresh."
+                    exit 0
+                  fi
+                  yarn recipes:snapshot
+
+            - name: Commit snapshot changes
+              run: |
+                  if [[ -n "$(git status --porcelain -- src/content/recipes-snapshot.json)" ]]; then
+                    git config user.name "github-actions[bot]"
+                    git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                    git add src/content/recipes-snapshot.json
+                    git commit -m "chore: refresh recipes fallback snapshot"
+                    git push
+                  else
+                    echo "No snapshot changes to commit"
+                  fi
+
     trigger-deploy:
+        needs: refresh-snapshot
+        if: ${{ !cancelled() }}
         runs-on: ubuntu-latest
         steps:
             - name: Trigger Vercel deploy hook

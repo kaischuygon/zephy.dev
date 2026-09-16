@@ -1,7 +1,8 @@
 ---
 import { getCollection, render } from "astro:content";
-import Layout from "../../layouts/Layout.astro";
-import { Icon } from "astro-icon/components";
+import ArticleLayout from "../../layouts/ArticleLayout.astro";
+import Recipes from "../../components/Recipes.astro";
+import RelatedRecipes from "../../components/RelatedRecipes.astro";
 
 export async function getStaticPaths() {
     const recipes = await getCollection("recipes");
@@ -22,61 +23,69 @@ const meta = [
     recipe.data.totalTime,
     recipe.data.servings,
 ].filter(Boolean);
+
+const breadcrumbItems = [
+    { label: "Home", href: "/" },
+    { label: "Recipes", href: "/recipes" },
+    { label: recipe.data.name },
+];
 ---
 
-<Layout collectionItem={recipe} section="recipes">
-    <section
-        id={recipe.id}
-        class="surface-prose min-w-0 grow"
-        data-pagefind-body
-    >
-        <div>
-            <a href="/recipes">
-                <Icon
-                    class="inline"
-                    title="arrow-left"
-                    name="lineicons:arrow-left"
-                />
-                back to recipes
-            </a>
-        </div>
-        <h1 data-pagefind-meta="title">
-            {recipe.data.icon && <span>{recipe.data.icon} </span>}
-            {recipe.data.name}
-        </h1>
-        <div class="not-prose mb-2 flex flex-wrap gap-2 text-sm">
-            {
-                meta.map((value) => (
-                    <span class="text-accent rounded-theme shadow-square border px-2 py-1">
-                        {value}
+<ArticleLayout
+    collectionItem={recipe}
+    section="recipes"
+    breadcrumbItems={breadcrumbItems}
+>
+    <h1 data-pagefind-meta="title">
+        {recipe.data.icon && <span>{recipe.data.icon} </span>}
+        {recipe.data.name}
+    </h1>
+    <div class="not-prose mb-2 flex flex-wrap gap-2 text-sm">
+        {
+            meta.map((value) => (
+                <span class="text-accent rounded-theme shadow-square border px-2 py-1">
+                    {value}
+                </span>
+            ))
+        }
+    </div>
+    {
+        recipe.data.tags.length > 0 && (
+            <div class="not-prose mb-2 flex flex-wrap gap-2">
+                {recipe.data.tags.map((tag: string) => (
+                    <span class="rounded-theme border px-2 py-1 text-xs">
+                        {tag}
                     </span>
-                ))
-            }
-        </div>
-        {
-            recipe.data.tags.length > 0 && (
-                <div class="not-prose mb-2 flex flex-wrap gap-2">
-                    {recipe.data.tags.map((tag: string) => (
-                        <span class="rounded-theme border px-2 py-1 text-xs">
-                            {tag}
-                        </span>
-                    ))}
-                </div>
-            )
-        }
-        <Content />
-        {
-            recipe.data.source && (
-                <p class="text-sm">
-                    Source:{" "}
-                    <a href={recipe.data.source} target="_blank">
-                        {recipe.data.source}
-                    </a>
-                </p>
-            )
-        }
-    </section>
-</Layout>
+                ))}
+            </div>
+        )
+    }
+    <Content />
+    {
+        recipe.data.source && (
+            <p class="text-sm">
+                Source:{" "}
+                <a href={recipe.data.source} target="_blank">
+                    {recipe.data.source}
+                </a>
+            </p>
+        )
+    }
+
+    <Fragment slot="related">
+        {recipe.data.related && <RelatedRecipes item={recipe} />}
+        <Recipes
+            count={3}
+            ignore_ids={[
+                ...(recipe.data.related?.map((r: { id: string }) => r.id) ||
+                    []),
+                recipe.id,
+            ]}
+            heading="More recipes"
+            columns="grid-cols-1"
+        />
+    </Fragment>
+</ArticleLayout>
 
 <style>
     /* Ingredient checkboxes come from GFM task list markdown (- [ ] item),

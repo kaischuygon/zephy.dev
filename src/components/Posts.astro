@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content";
 import Post from "./Post.astro";
 import PostsFilter from "./PostsFilter";
-import { Icon } from "astro-icon/components";
+import ViewAllLink from "./ViewAllLink.astro";
 import { getPostTags, getTagSlug } from "../utils/blogTags";
 
 interface Props {
@@ -10,6 +10,12 @@ interface Props {
     ignore_ids?: string[];
     enableTagFilter?: boolean;
     enableDateFilter?: boolean;
+    /** Restricts to posts published in this year/month — used by the
+     * /blog/[year] and /blog/[year]/[month] archive routes. month is
+     * unpadded (1-12), matching pubDate.getMonth() + 1 and the
+     * data-month/?month= convention PostsFilter already uses. */
+    year?: number;
+    month?: number;
     heading?: string;
 }
 
@@ -18,26 +24,32 @@ const {
     ignore_ids = [],
     enableTagFilter = false,
     enableDateFilter = false,
+    year,
+    month,
     heading = "",
 } = Astro.props as Props;
 
 const posts = (await getCollection("blog"))
     .filter((post) => (ignore_ids ? !ignore_ids.includes(post.id) : post))
     .filter((post) => !post.data.isDraft)
+    .filter((post) => !year || post.data.pubDate.getFullYear() === year)
+    .filter(
+        (post) => !month || post.data.pubDate.getMonth() + 1 === month,
+    )
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-    .slice(0, count);
+    .slice(0, count === -1 ? undefined : count);
 
 const postCards = posts.map((post) => {
     const tags = getPostTags(post);
-    const year = post.data.pubDate.getFullYear();
-    const month = post.data.pubDate.getMonth() + 1;
+    const postYear = post.data.pubDate.getFullYear();
+    const postMonth = post.data.pubDate.getMonth() + 1;
 
     return {
         post,
         tags,
         tagSlugs: tags.map(getTagSlug),
-        year,
-        month,
+        year: postYear,
+        month: postMonth,
     };
 });
 
@@ -98,14 +110,5 @@ const TOP_TAG_COUNT = 10;
         </section>
     )}
 
-    {count >= posts.length && (
-        <a href="/blog" class="inline-block mt-2 font-semibold">
-            view all posts
-            <Icon
-                class="inline"
-                title="up-right"
-                name="lineicons:arrow-angular-top-right"
-            />
-        </a>
-    )}
+    {count >= posts.length && <ViewAllLink href="/blog" label="view all posts" />}
 </section>
