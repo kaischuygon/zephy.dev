@@ -7,32 +7,39 @@
     "engines": {
         "node": ">=22.23.2"
     },
+    "resolutions": {
+        "zod": "^4.5.4",
+        "vite": "^8.2.2"
+    },
     "scripts": {
         "dev": "astro dev",
         "build": "astro build",
         "preview": "astro preview",
         "astro": "astro",
+        "recipes:snapshot": "node --experimental-strip-types scripts/snapshot-recipes.ts",
         "format": "prettier --write .",
         "format:check": "prettier --check ."
     },
     "dependencies": {
         "@astrojs/check": "0.9.10",
-        "@astrojs/mdx": "7.0.7",
-        "@astrojs/react": "6.0.4",
+        "@astrojs/mdx": "8.0.1",
+        "@astrojs/react": "6.0.5",
         "@astrojs/rss": "4.0.19",
-        "@astrojs/vercel": "11.0.7",
+        "@astrojs/vercel": "11.0.10",
         "@emnapi/core": "^1.7.1",
         "@emnapi/runtime": "^1.7.1",
         "@iconify-json/fa7-brands": "^1.2.2",
         "@iconify-json/lineicons": "^1.2.6",
+        "@notionhq/client": "^5.26.0",
         "@tailwindcss/vite": "^4.2.2",
         "@types/react": "^19.2.14",
         "@types/react-dom": "^19.2.3",
-        "astro": "7.2.4",
+        "astro": "7.3.2",
         "astro-icon": "^1.1.5",
         "astro-pagefind": "^2.0.1",
         "astro-seo": "^1.1.0",
         "dlx": "^0.2.1",
+        "notion-to-md": "^3.1.9",
         "react": "^19.2.5",
         "react-dom": "^19.2.5",
         "react-icons": "^5.6.0",

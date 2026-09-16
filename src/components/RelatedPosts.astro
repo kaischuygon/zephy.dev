@@ -20,7 +20,7 @@ const validRelatedPosts = relatedPosts.filter(
     validRelatedPosts.length > 0 && (
         <section class="w-full">
             <h2 class="mb-2 text-2xl font-semibold">{heading}</h2>
-            <div class="grid grid-cols-1 gap-4">
+            <div class="flex flex-col gap-2">
                 {validRelatedPosts.map((relatedPost) => (
                     <Post post={relatedPost} />
                 ))}

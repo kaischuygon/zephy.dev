@@ -1,0 +1,24 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Recipes from "../../components/Recipes.astro";
+import { getCollection } from "astro:content";
+
+const recipeCount = (await getCollection("recipes")).length;
+---
+
+<Layout
+    title="Recipes"
+    description="A running collection of recipes, synced from Notion."
+    section="recipes"
+>
+    <h1 class="mb-2 text-3xl font-semibold">Recipes</h1>
+    {
+        recipeCount === 0 && (
+            <p class="text-sm">
+                No recipes synced yet — check that <code>NOTION_TOKEN</code> and{" "}
+                <code>NOTION_RECIPES_DATA_SOURCE_ID</code> are set.
+            </p>
+        )
+    }
+    <Recipes enableFilters />
+</Layout>

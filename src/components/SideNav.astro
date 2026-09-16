@@ -2,12 +2,18 @@
 import { getCollection } from "astro:content";
 import { Icon } from "astro-icon/components";
 
-let navlinks = {
-    home: "/",
-    about: "/about",
-    portfolio: "/portfolio",
-    blog: "/blog",
-};
+const navlinks: {
+    title: string;
+    icon?: string;
+    href: string;
+    new?: boolean;
+}[] = [
+    { title: "home", href: "/" },
+    { title: "about", href: "/about" },
+    { title: "portfolio", href: "/portfolio" },
+    { title: "blog", href: "/blog" },
+    { title: "recipes", href: "/recipes", new: true },
+];
 
 const sideNavPages = await getCollection("pages", ({ data }) => data.sideNav);
 
@@ -16,7 +22,7 @@ const pageLinks = sideNavPages
         title: item.data.title,
         href: `/${item.id}`,
     }))
-    .filter((item) => !Object.values(navlinks).includes(item.href));
+    .filter((item) => !navlinks.some((navlink) => navlink.href === item.href));
 
 const extraLinks: {
     title: string;
@@ -42,17 +48,20 @@ const extraLinks: {
     },
 ];
 
-const navEntries = [
-    ...Object.entries(navlinks).map(([title, href]) => ({ title, href })),
-    ...pageLinks,
-];
+const navEntries: {
+    title: string;
+    href: string;
+    icon?: string;
+    pinned?: string;
+    new?: boolean;
+}[] = [...navlinks, ...pageLinks];
 const sortedExtraLinks = [...extraLinks].sort((a, b) =>
     a.pinned === b.pinned ? 0 : a.pinned ? -1 : 1,
 );
 ---
 
 <nav
-    class="top-0 flex h-min max-h-screen w-full flex-col gap-2 text-left md:sticky md:items-end md:text-right"
+    class="top-0 flex h-min max-h-screen w-full flex-col gap-2 overflow-y-auto text-left md:sticky md:items-end md:text-right"
 >
     <div
         class="flex w-full items-center justify-between md:w-auto md:flex-col md:items-end md:justify-start md:gap-2"
@@ -67,7 +76,7 @@ const sortedExtraLinks = [...extraLinks].sort((a, b) =>
 
         <button
             type="button"
-            class="clickable shadow-square active:shadow-square-2 aria-expanded:shadow-square-4 border px-2 py-1 font-mono font-semibold md:hidden"
+            class="clickable btn active:shadow-square-2! aria-expanded:shadow-square-4! px-2 py-1 font-mono font-semibold md:hidden"
             data-nav-toggle
             aria-expanded="false"
             aria-controls="mobile-nav-content"
@@ -83,19 +92,28 @@ const sortedExtraLinks = [...extraLinks].sort((a, b) =>
     >
         <h1 class="text-xl font-bold">zephy.dev</h1>
         <h3>Kai's portfolio and blog</h3>
-        <hr class="border-accent-500/25 my-2 w-full max-w-none" />
+        <hr class="border-surface-500/25 my-2 w-full max-w-none" />
         <div
             class="flex max-w-full flex-row flex-wrap items-center gap-2 overflow-x-auto wrap-break-word whitespace-normal md:flex-col"
         >
             {
-                navEntries.map(({ title, href }, index) => (
+                navEntries.map(({ title, href, icon, new: isNew }, index) => (
                     <>
-                        <a
-                            href={href}
-                            class="inline-flex w-min max-w-full items-center gap-1 font-mono font-semibold break-normal md:ml-auto"
-                        >
-                            <span>{title?.toLowerCase()}</span>
-                        </a>
+                        <span class="inline-flex w-min max-w-full items-center gap-1 font-mono font-semibold break-normal md:ml-auto">
+                            <a
+                                href={href}
+                                class="inline-flex w-min max-w-full items-center gap-1 break-normal md:ml-auto"
+                            >
+                                {icon &&
+                                    (icon.match(/[a-z1-9]:[a-z\-]/) ? (
+                                        <Icon name={icon} class="inline" />
+                                    ) : (
+                                        <span class="inline">{icon}</span>
+                                    ))}
+                                <span>{title?.toLowerCase()}</span>
+                            </a>
+                            {isNew && <span class="text-xs">✨</span>}
+                        </span>
                         {index < navEntries.length - 1 && (
                             <span
                                 class="text-xs opacity-60 md:hidden"
@@ -108,27 +126,27 @@ const sortedExtraLinks = [...extraLinks].sort((a, b) =>
                 ))
             }
         </div>
-        <hr class="border-accent-500/25 my-2 w-full max-w-none" />
+        <hr class="border-surface-500/25 my-2 w-full max-w-none" />
         <div class="flex flex-row flex-wrap items-center gap-2 md:flex-col">
             {
                 // Display extra links, with pinned ones first
-                sortedExtraLinks.map((link, index) => (
+                sortedExtraLinks.map(({ href, icon, title, pinned }, index) => (
                     <>
                         <span class="inline-flex w-min max-w-full items-center gap-1 font-mono font-semibold break-normal md:ml-auto">
                             <a
-                                href={link.href}
+                                href={href}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 class="inline-flex w-min max-w-full items-center gap-1 break-normal md:ml-auto"
                             >
-                                {link?.icon?.match(/[a-z1-9]:[a-z\-]/) ? (
-                                    <Icon name={link.icon} class="inline" />
+                                {icon?.match(/[a-z1-9]:[a-z\-]/) ? (
+                                    <Icon name={icon} class="inline" />
                                 ) : (
-                                    <span class="inline">{link.icon}</span>
+                                    <span class="inline">{icon}</span>
                                 )}
-                                <span>{link.title}</span>
+                                <span>{title}</span>
                             </a>
-                            {link.pinned && <span class="text-xs">📌</span>}
+                            {pinned && <span class="text-xs">📌</span>}
                         </span>
                         {index < sortedExtraLinks.length - 1 && (
                             <span
@@ -142,7 +160,7 @@ const sortedExtraLinks = [...extraLinks].sort((a, b) =>
                 ))
             }
         </div>
-        <hr class="border-accent-500/25 my-2 w-full max-w-none" />
+        <hr class="border-surface-500/25 my-2 w-full max-w-none" />
     </div>
 
     <script is:inline>

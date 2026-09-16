@@ -5,6 +5,7 @@ import { z } from "astro/zod";
 // 2. Import loader(s)
 import { glob } from "astro/loaders";
 import { rssSchema } from "@astrojs/rss";
+import { notionRecipesLoader } from "./loaders/notionRecipes";
 
 // 3. Define your collection(s)
 const portfolio = defineCollection({
@@ -53,4 +54,8 @@ const pages = defineCollection({
     }),
 });
 
-export const collections = { portfolio, blog, pages };
+const recipes = defineCollection({
+    loader: notionRecipesLoader(),
+});
+
+export const collections = { portfolio, blog, pages, recipes };

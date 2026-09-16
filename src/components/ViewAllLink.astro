@@ -1,0 +1,19 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+    href: string;
+    label: string;
+}
+
+const { href, label } = Astro.props as Props;
+---
+
+<a href={href} class="mt-2 inline-block font-semibold">
+    {label}
+    <Icon
+        class="inline"
+        title="up-right"
+        name="lineicons:arrow-angular-top-right"
+    />
+</a>

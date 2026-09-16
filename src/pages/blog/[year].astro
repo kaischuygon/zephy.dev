@@ -1,0 +1,33 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+import Posts from "../../components/Posts.astro";
+
+export async function getStaticPaths() {
+    const posts = (await getCollection("blog")).filter(
+        (post) => !post.data.isDraft,
+    );
+    const years = [
+        ...new Set(posts.map((post) => post.data.pubDate.getFullYear())),
+    ];
+
+    return years.map((year) => ({
+        params: { year: String(year) },
+    }));
+}
+
+const { year } = Astro.params;
+
+const breadcrumbItems = [
+    { label: "Home", href: "/" },
+    { label: "Blog", href: "/blog" },
+    { label: year },
+];
+---
+
+<Layout title={`Blog — ${year}`}>
+    <Breadcrumb items={breadcrumbItems} />
+    <h1 class="mb-4 text-4xl font-bold">Blog — {year}</h1>
+    <Posts year={Number(year)} enableTagFilter />
+</Layout>

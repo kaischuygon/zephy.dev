@@ -1,0 +1,162 @@
+---
+import { getCollection, render } from "astro:content";
+import ArticleLayout from "../../layouts/ArticleLayout.astro";
+import Recipes from "../../components/Recipes.astro";
+import RelatedRecipes from "../../components/RelatedRecipes.astro";
+
+export async function getStaticPaths() {
+    const recipes = await getCollection("recipes");
+    return recipes.map((recipe) => ({
+        params: { id: recipe.id },
+        props: { recipe },
+    }));
+}
+
+const { recipe } = Astro.props;
+const { Content } = await render(recipe);
+
+// recipe.data.status (Idea/To Try/Tested/Favorite) is deliberately left
+// out — that's for organizing the Notion database, not for display here.
+const meta = [
+    recipe.data.cuisine,
+    recipe.data.category,
+    recipe.data.totalTime,
+    recipe.data.servings,
+].filter(Boolean);
+
+const breadcrumbItems = [
+    { label: "Home", href: "/" },
+    { label: "Recipes", href: "/recipes" },
+    { label: recipe.data.name },
+];
+---
+
+<ArticleLayout
+    collectionItem={recipe}
+    section="recipes"
+    breadcrumbItems={breadcrumbItems}
+>
+    <h1 data-pagefind-meta="title">
+        {recipe.data.icon && <span>{recipe.data.icon} </span>}
+        {recipe.data.name}
+    </h1>
+    <div class="not-prose mb-2 flex flex-wrap gap-2 text-sm">
+        {
+            meta.map((value) => (
+                <span class="text-accent rounded-theme shadow-square border px-2 py-1">
+                    {value}
+                </span>
+            ))
+        }
+    </div>
+    {
+        recipe.data.tags.length > 0 && (
+            <div class="not-prose mb-2 flex flex-wrap gap-2">
+                {recipe.data.tags.map((tag: string) => (
+                    <span class="rounded-theme border px-2 py-1 text-xs">
+                        {tag}
+                    </span>
+                ))}
+            </div>
+        )
+    }
+    <Content />
+    {
+        recipe.data.source && (
+            <p class="text-sm">
+                Source:{" "}
+                <a href={recipe.data.source} target="_blank">
+                    {recipe.data.source}
+                </a>
+            </p>
+        )
+    }
+
+    <Fragment slot="related">
+        {recipe.data.related && <RelatedRecipes item={recipe} />}
+        <Recipes
+            count={3}
+            ignore_ids={[
+                ...(recipe.data.related?.map((r: { id: string }) => r.id) ||
+                    []),
+                recipe.id,
+            ]}
+            heading="More recipes"
+            columns="grid-cols-1"
+        />
+    </Fragment>
+</ArticleLayout>
+
+<style>
+    /* Ingredient checkboxes come from GFM task list markdown (- [ ] item),
+       which the markdown renderer emits as
+       <ul class="contains-task-list"><li class="task-list-item"><input
+       type="checkbox" disabled> text</li>...</ul> — disabled by default
+       (sensible for a static status indicator, not for something meant to
+       be clicked), and with the checkbox and its text as plain siblings
+       rather than a <label>, so clicking the text doesn't toggle it.
+
+       The script below fixes both: enables the checkboxes, and wraps each
+       item's contents in a real <label> so the whole row is clickable, not
+       just the tiny box. These rules make it look the part — no list
+       marker (the checkbox itself sits where the bullet would), row laid
+       out as checkbox-then-text, and a strikethrough as a bit of visual
+       payoff for checking one off. Not persisted anywhere on purpose —
+       this is a lightweight "check things off as you shop/cook" aid, not
+       saved state. */
+    /* :global() throughout: these target elements <Content /> renders from
+       markdown, not elements written in this component's own template, so
+       Astro's usual scoped-style hash never lands on them — a scoped
+       selector here would require an attribute that can never be present
+       and silently match nothing. [data-pagefind-body] is already specific
+       enough (one per recipe page) that going global costs nothing. */
+    :global([data-pagefind-body] .contains-task-list) {
+        list-style: none;
+        padding-left: 0;
+        margin-left: 0;
+    }
+
+    :global([data-pagefind-body] .task-list-item label) {
+        display: flex;
+        align-items: baseline;
+        gap: 0.5rem;
+        cursor: pointer;
+    }
+
+    :global([data-pagefind-body] .task-list-item input[type="checkbox"]) {
+        flex-shrink: 0;
+        translate: 0 0.15em;
+    }
+
+    :global(
+        [data-pagefind-body] .task-list-item:has(input[type="checkbox"]:checked)
+    ) {
+        opacity: 0.5;
+        text-decoration: line-through;
+    }
+</style>
+
+<script>
+    // See the style block above for the full picture. This turns each
+    // <li class="task-list-item"><input type="checkbox" disabled> text</li>
+    // into <li class="task-list-item"><label><input type="checkbox"> text
+    // </label></li> — a real <label> wrapping the checkbox and its text,
+    // so the whole row is clickable and toggles it, the way a checklist
+    // should behave.
+    document
+        .querySelectorAll<HTMLLIElement>("[data-pagefind-body] .task-list-item")
+        .forEach((item) => {
+            const checkbox = item.querySelector<HTMLInputElement>(
+                "input[type='checkbox']",
+            );
+            if (!checkbox) return;
+
+            checkbox.disabled = false;
+
+            const label = document.createElement("label");
+            while (item.firstChild) {
+                label.append(item.firstChild);
+            }
+            item.append(label);
+        });
+</script>
