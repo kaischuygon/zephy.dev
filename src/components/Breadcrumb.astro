@@ -23,9 +23,7 @@ const { items } = Astro.props as Props;
                                 {item.label}
                             </a>
                         ) : (
-                            <span aria-current="page">
-                                {item.label}
-                            </span>
+                            <span aria-current="page">{item.label}</span>
                         )}
                     </li>
                 ))}

@@ -23,12 +23,11 @@
        buttons, headings, general UI text). No mono equivalent needed for
        recipes specifically, so --font-mono is left as the site default. */
     --font-sans:
-        "Nunito Sans", ui-sans-serif, system-ui, sans-serif,
-        "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", 
-        "Segoe UI Symbol";
+        "Nunito Sans", ui-sans-serif, system-ui, sans-serif, "Noto Color Emoji",
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     --font-serif:
         Fraunces, ui-serif, Georgia, Cambria, "Times New Roman", Times, serif,
-        "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", 
+        "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji",
         "Segoe UI Symbol";
 
     /* Soft rounding instead of the site's sharp corners. */

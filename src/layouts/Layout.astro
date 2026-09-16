@@ -203,7 +203,7 @@ const getImage = collectionItem?.data.img || "/og-image.png";
         >
             <nav class="flex flex-wrap items-center justify-end gap-2 text-sm">
                 <SocialLinks />
-                <div class="flex items-center justify-end gap-2 flex-wrap">
+                <div class="flex flex-wrap items-center justify-end gap-2">
                     <ThemeSelect client:load />
                     <AccentSelect client:load />
                     <SurfaceSelect client:load locked={section === "recipes"} />

@@ -41,8 +41,7 @@ export default function SurfaceSelect({ locked = false } = {}) {
                 } else {
                     // unknown value — fall back to default
                     localStorage.setItem("surface", DEFAULT);
-                    document.documentElement.dataset["surface"] =
-                        DEFAULT;
+                    document.documentElement.dataset["surface"] = DEFAULT;
                     setSurfaceColor(DEFAULT);
                 }
             }
@@ -50,8 +49,7 @@ export default function SurfaceSelect({ locked = false } = {}) {
             // localStorage or document access could fail; apply theme only if possible
             try {
                 if (surfaceColor === DEFAULT) {
-                    document.documentElement.dataset["surface"] =
-                        DEFAULT;
+                    document.documentElement.dataset["surface"] = DEFAULT;
                 } else if (surfaceColors.includes(surfaceColor)) {
                     document.documentElement.dataset["surface"] = surfaceColor;
                 }
