@@ -1,0 +1,84 @@
+---
+import { Image } from "astro:assets";
+
+type Media =
+    | {
+          type: "image";
+          src: ImageMetadata | Promise<{ default: ImageMetadata }> | string;
+          alt: string;
+      }
+    | { type: "emoji"; icon?: string };
+
+interface Props {
+    href: string;
+    title: string;
+    media?: Media;
+    /** Tailwind's scanner needs the literal class string present in source,
+     * so this is applied via an exhaustive ternary below rather than a
+     * template-interpolated `line-clamp-${n}` — the latter would never be
+     * picked up at build time. */
+    descriptionClampLines?: 2 | 3;
+}
+
+const { href, title, media, descriptionClampLines } = Astro.props as Props;
+
+const clampClass =
+    descriptionClampLines === 2
+        ? "line-clamp-2"
+        : descriptionClampLines === 3
+          ? "line-clamp-3"
+          : "";
+---
+
+<a href={href} class="btn rounded-theme flex h-full w-full flex-col gap-2">
+    {
+        media && (
+            <div class="bg-accent/5 aspect-video w-full shrink-0 overflow-hidden">
+                {media.type === "image" ? (
+                    // Split on typeof rather than passing the pre-widened
+                    // union straight through — astro:assets' <Image> has
+                    // separate overloads for a string (remote) src and an
+                    // ImageMetadata/Promise (local) src, and TS can only
+                    // pick the right one when it narrows per-branch here,
+                    // not from a single already-unioned variable.
+                    typeof media.src === "string" ? (
+                        <Image
+                            src={media.src}
+                            alt={media.alt}
+                            loading="eager"
+                            width={1200}
+                            height={630}
+                            class="h-full w-full object-cover"
+                        />
+                    ) : (
+                        <Image
+                            src={media.src}
+                            alt={media.alt}
+                            loading="eager"
+                            width={1200}
+                            height={630}
+                            class="h-full w-full object-cover"
+                        />
+                    )
+                ) : (
+                    <div class="flex h-full w-full items-center justify-center text-4xl">
+                        {media.icon}
+                    </div>
+                )}
+            </div>
+        )
+    }
+    <div class="flex h-full flex-col gap-1 p-2">
+        <h2 class="text-xl font-semibold">{title}</h2>
+        <slot name="subtitle" />
+        <slot name="tags" />
+        {
+            Astro.slots.has("description") && (
+                <div class={`font-serif ${clampClass}`}>
+                    <slot name="description" />
+                </div>
+            )
+        }
+        <slot name="footer" />
+    </div>
+</a>

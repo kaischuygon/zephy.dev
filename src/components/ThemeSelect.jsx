@@ -36,7 +36,7 @@ export default function ThemeSelect() {
     return (
         <label
             htmlFor={selectId}
-            className="clickable shadow-square-clickable flex cursor-pointer items-center gap-1 border p-1"
+            className="clickable btn flex cursor-pointer items-center gap-1 p-1"
             onClick={() => selectRef.current?.showPicker()}
         >
             <MdLightMode />
@@ -49,7 +49,9 @@ export default function ThemeSelect() {
                 onChange={(e) => setTheme(e.target.value)}
             >
                 {THEMES.map((theme) => (
-                    <option value={theme}>{theme}</option>
+                    <option value={theme} key={theme}>
+                        {theme}
+                    </option>
                 ))}
             </select>
         </label>

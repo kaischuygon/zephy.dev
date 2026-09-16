@@ -1,0 +1,25 @@
+---
+import type { CollectionEntry } from "astro:content";
+import CollectionCard from "./CollectionCard.astro";
+
+interface Props {
+    item: CollectionEntry<"recipes">;
+}
+
+const { item } = Astro.props as Props;
+const link = `/recipes/${item.id}`;
+---
+
+<CollectionCard
+    href={link}
+    title={item.data.name}
+    media={{ type: "emoji", icon: item.data.icon }}
+>
+    <span slot="subtitle" class="text-xs font-light">
+        {[item.data.cuisine, item.data.category].filter(Boolean).join(" • ")}
+    </span>
+    <div slot="footer" class="mt-auto flex flex-wrap gap-1 text-xs">
+        {item.data.totalTime && <span>⏱ {item.data.totalTime}</span>}
+        {item.data.servings && <span>🍽 {item.data.servings}</span>}
+    </div>
+</CollectionCard>

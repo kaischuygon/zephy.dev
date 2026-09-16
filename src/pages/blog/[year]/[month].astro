@@ -1,0 +1,42 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../../layouts/Layout.astro";
+import Breadcrumb from "../../../components/Breadcrumb.astro";
+import Posts from "../../../components/Posts.astro";
+
+export async function getStaticPaths() {
+    const posts = (await getCollection("blog")).filter(
+        (post) => !post.data.isDraft,
+    );
+    const yearMonths = new Set(
+        posts.map(
+            (post) =>
+                `${post.data.pubDate.getFullYear()}/${post.data.pubDate.getMonth() + 1}`,
+        ),
+    );
+
+    return [...yearMonths].map((yearMonth) => {
+        const [year, month] = yearMonth.split("/");
+        return { params: { year, month } };
+    });
+}
+
+const { year, month } = Astro.params;
+const monthLabel = new Date(Number(year), Number(month) - 1).toLocaleDateString(
+    undefined,
+    { month: "long" },
+);
+
+const breadcrumbItems = [
+    { label: "Home", href: "/" },
+    { label: "Blog", href: "/blog" },
+    { label: year, href: `/blog/${year}` },
+    { label: monthLabel },
+];
+---
+
+<Layout title={`Blog — ${monthLabel} ${year}`}>
+    <Breadcrumb items={breadcrumbItems} />
+    <h1 class="mb-4 text-4xl font-bold">Blog — {monthLabel} {year}</h1>
+    <Posts year={Number(year)} month={Number(month)} enableTagFilter />
+</Layout>

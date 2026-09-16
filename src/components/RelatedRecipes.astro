@@ -1,0 +1,30 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getEntries } from "astro:content";
+import RecipeItem from "./RecipeItem.astro";
+
+interface Props {
+    item: CollectionEntry<"recipes">;
+    heading?: string;
+}
+
+const { item, heading = "Related Recipes" } = Astro.props as Props;
+
+const relatedRecipes = await getEntries(item.data.related || []);
+const validRelatedRecipes = relatedRecipes.filter(
+    (recipe): recipe is CollectionEntry<"recipes"> => Boolean(recipe),
+);
+---
+
+{
+    validRelatedRecipes.length > 0 && (
+        <section class="w-full">
+            <h2 class="mb-2 text-2xl font-semibold">{heading}</h2>
+            <div class="flex flex-col gap-2">
+                {validRelatedRecipes.map((relatedRecipe) => (
+                    <RecipeItem item={relatedRecipe} />
+                ))}
+            </div>
+        </section>
+    )
+}

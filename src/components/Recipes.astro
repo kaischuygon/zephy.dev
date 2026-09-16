@@ -1,0 +1,118 @@
+---
+import { getCollection } from "astro:content";
+import RecipeItem from "./RecipeItem.astro";
+import RecipesFilter from "./RecipesFilter";
+import ViewAllLink from "./ViewAllLink.astro";
+
+interface Props {
+    count?: number;
+    ignore_ids?: string[];
+    enableFilters?: boolean;
+    heading?: string;
+    columns?: string;
+}
+
+const {
+    count = -1,
+    ignore_ids = [],
+    enableFilters = false,
+    heading = "",
+    columns = "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4",
+} = Astro.props as Props;
+
+function slugify(value: string): string {
+    return value
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, "")
+        .trim()
+        .replace(/\s+/g, "-");
+}
+
+const recipes = (await getCollection("recipes"))
+    .filter((item) => !ignore_ids.includes(item.id))
+    .sort((a, b) => a.data.name.localeCompare(b.data.name))
+    .slice(0, count === -1 ? undefined : count);
+
+const recipeCards = recipes.map((item) => ({
+    item,
+    cuisineSlug: item.data.cuisine ? slugify(item.data.cuisine) : "",
+    categorySlug: item.data.category ? slugify(item.data.category) : "",
+    tagSlugs: item.data.tags.map(slugify),
+}));
+
+const availableCuisines = [
+    ...new Map(
+        recipeCards
+            .filter((r) => r.item.data.cuisine)
+            .map((r) => [r.cuisineSlug, r.item.data.cuisine as string]),
+    ),
+].sort((a, b) => a[1].localeCompare(b[1]));
+
+const availableCategories = [
+    ...new Map(
+        recipeCards
+            .filter((r) => r.item.data.category)
+            .map((r) => [r.categorySlug, r.item.data.category as string]),
+    ),
+].sort((a, b) => a[1].localeCompare(b[1]));
+
+const tagFrequency = new Map<string, { label: string; count: number }>();
+for (const card of recipeCards) {
+    card.item.data.tags.forEach((label: string, index: number) => {
+        const slug = card.tagSlugs[index];
+        if (!tagFrequency.has(slug)) {
+            tagFrequency.set(slug, { label, count: 1 });
+        } else {
+            tagFrequency.get(slug)!.count++;
+        }
+    });
+}
+const availableTags = [...tagFrequency.entries()]
+    .map(([slug, { label, count }]) => ({ slug, label, count }))
+    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
+
+const TOP_TAG_COUNT = 10;
+---
+
+<section data-recipes-root>
+    {
+        enableFilters && (
+            <RecipesFilter
+                client:load
+                availableCuisines={availableCuisines}
+                availableCategories={availableCategories}
+                availableTags={availableTags}
+                topTagCount={TOP_TAG_COUNT}
+            />
+        )
+    }
+
+    {
+        recipeCards.length > 0 && (
+            <section class="w-full">
+                {heading && (
+                    <h2 class="mb-2 text-2xl font-semibold">{heading}</h2>
+                )}
+                <div class={`grid gap-2 ${columns}`} data-recipe-list>
+                    {recipeCards.map((card) => (
+                        <div
+                            data-recipe-card
+                            data-cuisine={card.cuisineSlug}
+                            data-category={card.categorySlug}
+                            data-tags={card.tagSlugs.join(" ")}
+                            class="h-full"
+                        >
+                            <RecipeItem item={card.item} />
+                        </div>
+                    ))}
+                </div>
+            </section>
+        )
+    }
+
+    {
+        count >= recipes.length && (
+            <ViewAllLink href="/recipes" label="view all recipes" />
+        )
+    }
+</section>
