@@ -287,7 +287,7 @@
     {
         "id": "3dc72417-c053-8187-bc3a-f320b21c918f",
         "data": {
-            "name": "Sopa Negra",
+            "name": "Sopa Negra (Black Bean Soup)",
             "icon": "🍲",
             "cuisine": "Costa Rican",
             "category": "Soup",
@@ -298,7 +298,7 @@
                 "Family Recipe",
                 "Make-Ahead"
             ],
-            "notionUrl": "https://app.notion.com/p/Sopa-Negra-3dc72417c0538187bc3af320b21c918f"
+            "notionUrl": "https://app.notion.com/p/Sopa-Negra-Black-Bean-Soup-3dc72417c0538187bc3af320b21c918f"
         },
         "body": "\n## Ingredients\n\n- [ ] 400g dry black beans (soaked overnight, or quick-soaked)\n- [ ] 2 liters water\n- [ ] 1 bay leaf\n- [ ] 1/4 sweet red pepper, finely diced\n- [ ] 1/4 white onion, finely diced\n- [ ] 3 garlic cloves, minced\n- [ ] 2 stalks celery, diced\n- [ ] 1/2 bunch cilantro, stems and leaves separated, chopped (reserve some leaves for garnish)\n- [ ] 18g salt, plus more to taste\n- [ ] 15-30ml oil (for sofrito)\n- [ ] 4-6 eggs\n- [ ] Ripe green plantain\n- [ ] Salsa Lizano, to serve\n\n## Instructions\n\n1. Combine soaked beans, 2 liters water, and the bay leaf in a large pot. Bring to a boil, then reduce to a simmer, partially covered, for about 1.5-2 hours until beans are tender.\n    - NOTE: If you have a pressure cooker, this can be done in as little as 30 minutes, and you can start on the rest of the prep as soon as you start the pressure cooker.\n2. About 30 minutes before the beans are done, heat oil in a skillet and sauté the onion, red pepper, cilantro, and garlic until soft and fragrant (5 minutes) — this is the sofrito.\n3. Stir the sofrito into the pot along with most of the chopped cilantro. Simmer another 20-30 minutes so flavors meld.\n4. Make the patacones:\n    1. Heat a pan with a light layer of oil at the bottom.\n    2. Cut green plantain into rounds, about half an inch.\n    3. Press rounds with a tortilla press until flat but not wafer thin, they need to be able to maintain their shape in the pan.\n    4. Cook until golden brown on both sides, lightly salting to taste.\n    5. Let sit on paper towels to drain oil and set aside.\n5. Season with the salt (start with 1 tbsp, adjust to taste). Remove the bay leaf before serving.\n6. For a thicker, more traditional body, stick blend some or ladle 250-475ml of the soup into a blender, purée, and stir back in.\n7. For the last 5 or so minutes of cooking:\n    1. While stirring in a circular motion, drop eggs one at a time into the pot to boil, wait enough for the whites to set between eggs.\n    2. Add patacones.\n8. Ladle into bowls, top with the reserved cilantro, and serve with salsa lizano on the side for people to add to taste.\n\n## Notes\n\n\nDay-old beans taste even better — this is a great make-ahead soup. \n\n"
     },
@@ -426,7 +426,7 @@
         "id": "3dc72417-c053-81da-9b16-e2de0c8188a2",
         "data": {
             "name": "Hot Mustard Aioli",
-            "icon": "🟡",
+            "icon": "🥡",
             "cuisine": "Taiwanese",
             "category": "Sauce & Dressing",
             "status": "Idea",
