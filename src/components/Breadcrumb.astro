@@ -16,14 +16,22 @@ const { items } = Astro.props as Props;
         <nav aria-label="Breadcrumb" class="not-prose mb-2 text-sm">
             <ol class="flex flex-wrap items-center gap-1">
                 {items.map((item, index) => (
-                    <li class="flex items-center gap-1">
+                    <li class="flex min-w-0 items-center gap-1">
                         {index > 0 && <span aria-hidden="true">/</span>}
                         {item.href ? (
-                            <a href={item.href} class="clickable">
+                            <a
+                                href={item.href}
+                                class="clickable inline-block max-w-40 truncate"
+                            >
                                 {item.label}
                             </a>
                         ) : (
-                            <span aria-current="page">{item.label}</span>
+                            <span
+                                aria-current="page"
+                                class="inline-block max-w-40 truncate"
+                            >
+                                {item.label}
+                            </span>
                         )}
                     </li>
                 ))}
