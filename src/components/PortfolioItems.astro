@@ -23,20 +23,18 @@ const portfolioItems = (await getCollection("portfolio"))
     .slice(0, count === -1 ? undefined : count);
 ---
 
-{
-    portfolioItems.length > 0 && (
-        <section class="w-full">
-            <h2 class="mb-2 text-2xl font-semibold">{heading}</h2>
-            <div class={`grid gap-2 ${columns}`}>
-                {portfolioItems.map((item) => (
-                    <div class="h-full w-full">
-                        <PortfolioItem item={item} />
-                    </div>
-                ))}
-            </div>
-            {count >= portfolioItems.length && (
-                <ViewAllLink href="/portfolio" label="view full portfolio" />
-            )}
-        </section>
-    )
-}
+{portfolioItems.length > 0 && (
+    <section class="w-full">
+        <h2 class="mb-2 text-2xl font-semibold">{heading}</h2>
+        <div class={`grid gap-2 ${columns}`}>
+            {portfolioItems.map((item) => (
+                <div class="h-full w-full">
+                    <PortfolioItem item={item} />
+                </div>
+            ))}
+        </div>
+        {count >= portfolioItems.length && (
+            <ViewAllLink href="/portfolio" label="view full portfolio" />
+        )}
+    </section>
+)}

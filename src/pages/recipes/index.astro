@@ -12,13 +12,11 @@ const recipeCount = (await getCollection("recipes")).length;
     section="recipes"
 >
     <h1 class="mb-2 text-3xl font-semibold">Recipes</h1>
-    {
-        recipeCount === 0 && (
-            <p class="text-sm">
-                No recipes synced yet — check that <code>NOTION_TOKEN</code> and{" "}
-                <code>NOTION_RECIPES_DATA_SOURCE_ID</code> are set.
-            </p>
-        )
-    }
+    {recipeCount === 0 && (
+        <p class="text-sm">
+            No recipes synced yet — check that <code>NOTION_TOKEN</code> and{" "}
+            <code>NOTION_RECIPES_DATA_SOURCE_ID</code> are set.
+        </p>
+    )}
     <Recipes enableFilters />
 </Layout>

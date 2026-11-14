@@ -16,15 +16,13 @@ const validRelatedRecipes = relatedRecipes.filter(
 );
 ---
 
-{
-    validRelatedRecipes.length > 0 && (
-        <section class="w-full">
-            <h2 class="mb-2 text-2xl font-semibold">{heading}</h2>
-            <div class="flex flex-col gap-2">
-                {validRelatedRecipes.map((relatedRecipe) => (
-                    <RecipeItem item={relatedRecipe} />
-                ))}
-            </div>
-        </section>
-    )
-}
+{validRelatedRecipes.length > 0 && (
+    <section class="w-full">
+        <h2 class="mb-2 text-2xl font-semibold">{heading}</h2>
+        <div class="flex flex-col gap-2">
+            {validRelatedRecipes.map((relatedRecipe) => (
+                <RecipeItem item={relatedRecipe} />
+            ))}
+        </div>
+    </section>
+)}

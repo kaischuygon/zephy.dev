@@ -41,36 +41,30 @@ const breadcrumbItems = [
         {recipe.data.name}
     </h1>
     <div class="not-prose mb-2 flex flex-wrap gap-2 text-sm">
-        {
-            meta.map((value) => (
-                <span class="text-accent rounded-theme shadow-square border px-2 py-1">
-                    {value}
-                </span>
-            ))
-        }
+        {meta.map((value) => (
+            <span class="text-accent rounded-theme shadow-square border px-2 py-1">
+                {value}
+            </span>
+        ))}
     </div>
-    {
-        recipe.data.tags.length > 0 && (
-            <div class="not-prose mb-2 flex flex-wrap gap-2">
-                {recipe.data.tags.map((tag: string) => (
-                    <span class="rounded-theme border px-2 py-1 text-xs">
-                        {tag}
-                    </span>
-                ))}
-            </div>
-        )
-    }
+    {recipe.data.tags.length > 0 && (
+        <div class="not-prose mb-2 flex flex-wrap gap-2">
+            {recipe.data.tags.map((tag: string) => (
+                <span class="rounded-theme border px-2 py-1 text-xs">
+                    {tag}
+                </span>
+            ))}
+        </div>
+    )}
     <Content />
-    {
-        recipe.data.source && (
-            <p class="text-sm">
-                Source:{" "}
-                <a href={recipe.data.source} target="_blank">
-                    {recipe.data.source}
-                </a>
-            </p>
-        )
-    }
+    {recipe.data.source && (
+        <p class="text-sm">
+            Source:{" "}
+            <a href={recipe.data.source} target="_blank">
+                {recipe.data.source}
+            </a>
+        </p>
+    )}
 
     <Fragment slot="related">
         {recipe.data.related && <RelatedRecipes item={recipe} />}

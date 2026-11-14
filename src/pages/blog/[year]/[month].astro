@@ -37,6 +37,8 @@ const breadcrumbItems = [
 
 <Layout title={`Blog — ${monthLabel} ${year}`}>
     <Breadcrumb items={breadcrumbItems} />
-    <h1 class="mb-4 text-4xl font-bold">Blog — {monthLabel} {year}</h1>
+    <h1 class="mb-4 text-4xl font-bold">
+        Blog — {monthLabel} {year}
+    </h1>
     <Posts year={Number(year)} month={Number(month)} enableTagFilter />
 </Layout>
