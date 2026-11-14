@@ -75,44 +75,36 @@ const TOP_TAG_COUNT = 10;
 ---
 
 <section data-recipes-root>
-    {
-        enableFilters && (
-            <RecipesFilter
-                client:load
-                availableCuisines={availableCuisines}
-                availableCategories={availableCategories}
-                availableTags={availableTags}
-                topTagCount={TOP_TAG_COUNT}
-            />
-        )
-    }
+    {enableFilters && (
+        <RecipesFilter
+            client:load
+            availableCuisines={availableCuisines}
+            availableCategories={availableCategories}
+            availableTags={availableTags}
+            topTagCount={TOP_TAG_COUNT}
+        />
+    )}
 
-    {
-        recipeCards.length > 0 && (
-            <section class="w-full">
-                {heading && (
-                    <h2 class="mb-2 text-2xl font-semibold">{heading}</h2>
-                )}
-                <div class={`grid gap-2 ${columns}`} data-recipe-list>
-                    {recipeCards.map((card) => (
-                        <div
-                            data-recipe-card
-                            data-cuisine={card.cuisineSlug}
-                            data-category={card.categorySlug}
-                            data-tags={card.tagSlugs.join(" ")}
-                            class="h-full"
-                        >
-                            <RecipeItem item={card.item} />
-                        </div>
-                    ))}
-                </div>
-            </section>
-        )
-    }
+    {recipeCards.length > 0 && (
+        <section class="w-full">
+            {heading && <h2 class="mb-2 text-2xl font-semibold">{heading}</h2>}
+            <div class={`grid gap-2 ${columns}`} data-recipe-list>
+                {recipeCards.map((card) => (
+                    <div
+                        data-recipe-card
+                        data-cuisine={card.cuisineSlug}
+                        data-category={card.categorySlug}
+                        data-tags={card.tagSlugs.join(" ")}
+                        class="h-full"
+                    >
+                        <RecipeItem item={card.item} />
+                    </div>
+                ))}
+            </div>
+        </section>
+    )}
 
-    {
-        count >= recipes.length && (
-            <ViewAllLink href="/recipes" label="view all recipes" />
-        )
-    }
+    {count >= recipes.length && (
+        <ViewAllLink href="/recipes" label="view all recipes" />
+    )}
 </section>

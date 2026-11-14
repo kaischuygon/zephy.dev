@@ -21,15 +21,13 @@ const tags = getPostTags(post);
     <span slot="subtitle" class="text-xs font-light">
         {post.data.pubDate?.toLocaleDateString()}
     </span>
-    {
-        tags.length > 0 && (
-            <div
-                slot="tags"
-                class="flex flex-wrap gap-1 text-xs wrap-break-word whitespace-normal italic"
-            >
-                {tags.join(" • ")}
-            </div>
-        )
-    }
+    {tags.length > 0 && (
+        <div
+            slot="tags"
+            class="flex flex-wrap gap-1 text-xs wrap-break-word whitespace-normal italic"
+        >
+            {tags.join(" • ")}
+        </div>
+    )}
     <p slot="description">{post.data.description}</p>
 </CollectionCard>

@@ -60,12 +60,8 @@ const sortedExtraLinks = [...extraLinks].sort((a, b) =>
 );
 ---
 
-<nav
-    class="top-0 flex h-min w-full flex-col gap-2 text-left md:sticky md:max-h-screen md:items-end md:overflow-y-auto md:text-right"
->
-    <div
-        class="flex w-full items-center justify-between md:w-auto md:flex-col md:items-end md:justify-start md:gap-2"
-    >
+<nav class="top-0 flex h-min w-full flex-col gap-2 text-left md:sticky md:max-h-screen md:items-end md:overflow-y-auto md:text-right">
+    <div class="flex w-full items-center justify-between md:w-auto md:flex-col md:items-end md:justify-start md:gap-2">
         <a
             href="/"
             class="m-1 block text-4xl md:text-8xl"
@@ -93,38 +89,34 @@ const sortedExtraLinks = [...extraLinks].sort((a, b) =>
         <h1 class="text-xl font-bold">zephy.dev</h1>
         <h3>Kai's portfolio and blog</h3>
         <hr class="border-surface-500/25 my-2 w-full max-w-none" />
-        <div
-            class="flex max-w-full flex-row flex-wrap items-center gap-2 overflow-x-auto wrap-break-word whitespace-normal md:flex-col"
-        >
-            {
-                navEntries.map(({ title, href, icon, new: isNew }, index) => (
-                    <>
-                        <span class="inline-flex w-min max-w-full items-center gap-1 font-mono font-semibold break-normal md:ml-auto">
-                            <a
-                                href={href}
-                                class="inline-flex w-min max-w-full items-center gap-1 break-normal md:ml-auto"
-                            >
-                                {icon &&
-                                    (icon.match(/[a-z1-9]:[a-z\-]/) ? (
-                                        <Icon name={icon} class="inline" />
-                                    ) : (
-                                        <span class="inline">{icon}</span>
-                                    ))}
-                                <span>{title?.toLowerCase()}</span>
-                            </a>
-                            {isNew && <span class="text-xs">✨</span>}
+        <div class="flex max-w-full flex-row flex-wrap items-center gap-2 overflow-x-auto wrap-break-word whitespace-normal md:flex-col">
+            {navEntries.map(({ title, href, icon, new: isNew }, index) => (
+                <>
+                    <span class="inline-flex w-min max-w-full items-center gap-1 font-mono font-semibold break-normal md:ml-auto">
+                        <a
+                            href={href}
+                            class="inline-flex w-min max-w-full items-center gap-1 break-normal md:ml-auto"
+                        >
+                            {icon &&
+                                (icon.match(/[a-z1-9]:[a-z\-]/) ? (
+                                    <Icon name={icon} class="inline" />
+                                ) : (
+                                    <span class="inline">{icon}</span>
+                                ))}
+                            <span>{title?.toLowerCase()}</span>
+                        </a>
+                        {isNew && <span class="text-xs">✨</span>}
+                    </span>
+                    {index < navEntries.length - 1 && (
+                        <span
+                            class="text-xs opacity-60 md:hidden"
+                            aria-hidden="true"
+                        >
+                            •
                         </span>
-                        {index < navEntries.length - 1 && (
-                            <span
-                                class="text-xs opacity-60 md:hidden"
-                                aria-hidden="true"
-                            >
-                                •
-                            </span>
-                        )}
-                    </>
-                ))
-            }
+                    )}
+                </>
+            ))}
         </div>
         <hr class="border-surface-500/25 my-2 w-full max-w-none" />
         <div class="flex flex-row flex-wrap items-center gap-2 md:flex-col">

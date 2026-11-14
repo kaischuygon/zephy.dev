@@ -18,15 +18,13 @@ const { Content } = await render(item);
 <Layout title={item.data.title} description={item.data.description}>
     <article class="surface-prose">
         <h1>{item.data.title}</h1>
-        {
-            item.data.img && (
-                <img
-                    src={item.data.img}
-                    alt={item.data.img_alt ?? item.data.title}
-                    class="shadow-square mb-6 border"
-                />
-            )
-        }
+        {item.data.img && (
+            <img
+                src={item.data.img}
+                alt={item.data.img_alt ?? item.data.title}
+                class="shadow-square mb-6 border"
+            />
+        )}
         <Content />
     </article>
 </Layout>
